@@ -1,8 +1,13 @@
+<<<<<<< Updated upstream
  
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+=======
+
+import java.sql.*;
+>>>>>>> Stashed changes
 
 public class dbFunctions
 {
@@ -40,14 +45,25 @@ public class dbFunctions
 		return results;
 	}
 
-	public ResultSet update(String stmt) throws Exception
+	public int update(String stmt) throws Exception
 	{
 		Statement update = connection.createStatement();
-		ResultSet results = update.executeQuery(stmt);
+		int results = update.executeUpdate(stmt);
 		return results;
 
 	}
+	public int update(String stmt, String[] args) throws Exception
+	{
+		PreparedStatement update = connection.prepareStatement(stmt);
+		for(int i = 1; i <= args.length; ++i)
+		{
+			update.setObject(i, args[i-1]);
+		}
+		int results = update.executeUpdate();
+		return results;
 
+	}
+	
 	public ArrayList< HashMap< String, Object > > selectUsing(String table, String columns, String values) throws SQLException
 	{
 
@@ -88,5 +104,4 @@ public class dbFunctions
 		return output;
 	}
 }
-
 
