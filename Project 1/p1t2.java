@@ -43,7 +43,7 @@ public class p1t2
 			System.out.println("(1) Search movies by star name or ID number.");
 			System.out.println("(2) Insert new star into databse.");
 			System.out.println("(3) Insert customer into databse.");
-			System.out.print("> ");
+			System.out.print(">");
 	}
 
 	/**
@@ -135,23 +135,13 @@ public class p1t2
 	{
 		System.out.print("Enter name of star to be entered: ");
 		String[] tokes = get_tokenized_input();
-		String first = "", last = "";
 		int result;
-		if(tokes.length > 1)
-		{
-			first = tokes[0];
-			last = tokes[1];
-		}
-		else
-		{
-			last = tokes[0];
-		}
+		String[] names = resolve_first_and_last_name(tokes);
 		
-		result = db.update("INSERT INTO stars (first_name, last_name) VALUES (\"" + first + "\", \"" + last + "\")");
-
+		result = db.update("INSERT INTO stars (first_name, last_name) VALUES (\"" + names[0] + "\", \"" + names[1] + "\")");
 		if(result > 0)
 		{
-			System.out.println("Inserted \"" + first + "\" \"" + last + "\" into stars ");
+			System.out.println("Inserted \"" + names[0] + "\" \"" + names[1] + "\" into stars ");
 		}
 		else
 		{
@@ -181,8 +171,23 @@ public class p1t2
 
 	public String[] get_tokenized_input()
 	{
-		String in = System.console().readLine();
-		String[] tokes = in.split(" ");
+		String in = System.console().readLine().trim();
+		String[] tokes = in.split(" ",2);
 		return tokes;
+	}
+	public String[] resolve_first_and_last_name(String[] tokes)
+	{
+		String[] names = new String[2];
+		if(tokes.length > 1)
+		{
+			names[0] = tokes[0];
+			names[1] = tokes[1];
+		}
+		else
+		{
+			names[0] = "";
+			names[1] = tokes[0];
+		}
+		return names;
 	}
 }
