@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;statement&apos; in &apos;dbFunctions.selectUsing(...)&apos; to &apos;statementString&apos;&#x0D;&#x0A;- Original project: &apos;Project 1&apos;&#x0D;&#x0A;- Original element: &apos;dbFunctions.selectUsing(String, String, String).statement&apos;&#x0D;&#x0A;- Renamed element: &apos;statement&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;statement&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/&lt;{dbFunctions.java[dbFunctions~selectUsing~QString;~QString;~QString;@statement!1361!1405!1368!1376!QString;!0!false" name="statementString" references="true" stamp="1459810372836" version="1.0"/>
+</session>
