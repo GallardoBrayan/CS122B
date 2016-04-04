@@ -1,13 +1,10 @@
  
 import java.sql.*;
+import java.utils.ArrayList;
 
 public class dbFunctions
 {
 	private Connection connection;
-	public void main(String[] args) throws Exception
-	{
-
-	}
 
 	/**
 		Establishes connection to database
@@ -33,6 +30,7 @@ public class dbFunctions
        	return str.concat(sb.toString());
     
 	}
+
 	public ResultSet select(String stmt) throws Exception
 	{
 		Statement select = connection.createStatement();
@@ -48,4 +46,32 @@ public class dbFunctions
 
 	}
 
+	public ArrayList< HashMap< String, Object > > selectUsing(String table, String columns, String values)
+	{
+
+		String statement = "SELECT * FROM " + table ;
+		ArrayList<String> listOfColums = Arrays.asList(columns.split(","));
+		ArrayList<String> listOfvalues = Arrays.asList(values.split(","));
+		if(listOfColums.size() > 0)
+		{
+			statement += " WHERE " + listOfColums.at(i) + "=" + listOfvalues.at(i);	
+			for(int i = 0; i < listOfColums.size(); i++)
+			{
+
+				statement +=  " AND " + listOfColums.at(i) + "=" + listOfvalues.at(i);
+			}
+		}
+		statement += ";";
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
