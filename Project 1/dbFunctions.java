@@ -47,5 +47,16 @@ public class dbFunctions
 		return results;
 
 	}
+	public int update(String stmt, String[] args) throws Exception
+	{
+		PreparedStatement update = connection.prepareStatement(stmt);
+		for(int i = 1; i <= args.length; ++i)
+		{
+			update.setObject(i, args[i-1]);
+		}
+		int results = update.executeUpdate();
+		return results;
+
+	}
 
 }

@@ -65,6 +65,9 @@ public class p1t2
 			case 2:
 				insert_new_star();
 				break;
+			case 3:
+				insert_new_customer();
+				break;
 			default:
 				System.out.println("Incorrect option number entered");
 		}
@@ -98,7 +101,6 @@ public class p1t2
 				star_ids = db.select("SELECT id,first_name,last_name FROM stars WHERE first_name = \"" + tokes[0] + "\" AND last_name = \"" + tokes[1] + "\"");
 			}
 		}
-
 		print_movie_info(star_ids);
 	}
 
@@ -128,7 +130,6 @@ public class p1t2
 				}
 			}
 		}
-
 	}
 
 	public void insert_new_star() throws Exception
@@ -138,7 +139,7 @@ public class p1t2
 		int result;
 		String[] names = resolve_first_and_last_name(tokes);
 		
-		result = db.update("INSERT INTO stars (first_name, last_name) VALUES (\"" + names[0] + "\", \"" + names[1] + "\")");
+		result = db.update("INSERT INTO stars (first_name, last_name) VALUES (?,?)", names);
 		if(result > 0)
 		{
 			System.out.println("Inserted \"" + names[0] + "\" \"" + names[1] + "\" into stars ");
@@ -149,6 +150,67 @@ public class p1t2
 		}
 	}
 
+	public void insert_new_customer() throws Exception
+	{
+		String[] info = get_customer_information();
+		String[] cc_info = new String[]{info[0], info[1], info[2], info[3]}; //cc#, firstname, lastname, expiration
+		String[] customer_info = new String[]{info[1], info[2], info[0], info[4], info[5], info[6]}; // firstname, lastname, cc#, address, email, password
+		
+		int cc_entry_sucess = add_cc_to_db(cc_info);
+		if(cc_entry_sucess > 0)
+		{
+			add_customer_to_db(customer_info);
+		}
+		else
+		{
+			System.out.println("Error: Credit card information entered is incorrect.");
+		}
+	}
+
+	public String[] get_customer_information()
+	{
+		String[] info = new String[7];
+		//info order: cc#, first name, last name, expiration, address, email, password;
+		System.out.print("Credit Card Number: ");
+		info[0] = System.console().readLine();
+		System.out.print("First Name: ");
+		info[1] = System.console().readLine();
+		System.out.print("Last Name: ");
+		info[2] = System.console().readLine();
+		System.out.print("Expiration Date: ");
+		info[3] = System.console().readLine();
+		System.out.print("Address: ");
+		info[4] = System.console().readLine();
+		System.out.print("Email: ");
+		info[5] = System.console().readLine();
+		System.out.print("Password: ");
+		info[6] = System.console().readLine();
+		System.out.println("");
+
+		return info;
+	}
+
+	public int add_cc_to_db(String[] cc_info) throws Exception
+	{
+		int insert_result = 0;
+		if("".equals(cc_info[0]))
+			cc_info[0] = null;
+		try
+		{
+			 insert_result = db.update("INSERT INTO creditcards VALUES (?,?,?,?)", cc_info);
+		}
+		catch(Exception ex){
+			//Just don't handle the exception.  If the update fails, it is becuase a value entered was not formatted correctly or 
+			//nothing was entered.  Either way, user will be informed that update failed and that the info was incorrect.
+		}
+
+		return insert_result;
+	}
+
+	public void add_customer_to_db(String[] customer_info) throws Exception
+	{
+		int insert_result = db.update("INSERT INTO customers(first_name, last_name, cc_id, address, email, password) VALUES (?,?,?,?,?,?)", customer_info);
+	}
 
 	/**
 		Converts string to integer
@@ -175,6 +237,7 @@ public class p1t2
 		String[] tokes = in.split(" ",2);
 		return tokes;
 	}
+
 	public String[] resolve_first_and_last_name(String[] tokes)
 	{
 		String[] names = new String[2];
@@ -188,6 +251,7 @@ public class p1t2
 			names[0] = "";
 			names[1] = tokes[0];
 		}
+
 		return names;
 	}
 }
