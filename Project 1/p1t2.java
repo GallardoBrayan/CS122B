@@ -42,6 +42,7 @@ public class p1t2
 			System.out.println("Select option, enter q when done:");
 			System.out.println("(1) Search movies by star name or ID number.");
 			System.out.println("(2) Insert new star into databse.");
+			System.out.println("(3) Insert customer into databse.");
 			System.out.print("> ");
 	}
 
@@ -75,8 +76,7 @@ public class p1t2
 	public void search_movie_by_star() throws Exception
 	{
 		System.out.print("Please enter name or ID number of star to search: ");
-		String user_input = System.console().readLine();
-		String[] tokes = user_input.split(" ");
+		String[] tokes = get_tokenized_input();
 		ResultSet movie_ids  = null;
 		ResultSet star_ids = null;
 
@@ -134,21 +134,21 @@ public class p1t2
 	public void insert_new_star() throws Exception
 	{
 		System.out.print("Enter name of star to be entered: ");
-		String in = System.console().readLine();
-		String[] tokes = in.split(" ");
+		String[] tokes = get_tokenized_input();
 		String first = "", last = "";
 		int result;
 		if(tokes.length > 1)
 		{
 			first = tokes[0];
 			last = tokes[1];
-			result = db.update("INSERT INTO stars (first_name, last_name) VALUES (\"" + first + "\", \"" + last + "\")");
 		}
 		else
 		{
 			last = tokes[0];
-			result = db.update("INSERT INTO stars (first_name, last_name) VALUES (" + "\"\"," + last + ")");
 		}
+		
+		result = db.update("INSERT INTO stars (first_name, last_name) VALUES (\"" + first + "\", \"" + last + "\")");
+
 		if(result > 0)
 		{
 			System.out.println("Inserted \"" + first + "\" \"" + last + "\" into stars ");
@@ -158,6 +158,7 @@ public class p1t2
 			System.out.println("Inserting star failed");
 		}
 	}
+
 
 	/**
 		Converts string to integer
@@ -176,5 +177,12 @@ public class p1t2
 			ret_val = -1;
 		}
 		return ret_val;
+	}
+
+	public String[] get_tokenized_input()
+	{
+		String in = System.console().readLine();
+		String[] tokes = in.split(" ");
+		return tokes;
 	}
 }
