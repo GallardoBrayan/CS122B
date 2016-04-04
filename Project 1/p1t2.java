@@ -16,7 +16,7 @@ public class p1t2
 
 	public void run_menu() throws Exception
 	{
-		db.make_connection("jdbc:mysql:///moviedb","root", "!Mussy1243**");
+		db.make_connection("jdbc:mysql:///moviedb","root", "root");
 		String in = "";
 		do
 		{
