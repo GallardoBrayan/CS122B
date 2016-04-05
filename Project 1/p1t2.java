@@ -19,7 +19,6 @@ public class p1t2
 					in = System.console().readLine();
 					int option = convert_string_to_int(in);
 
-
 					if(option == 7)
 					{
 						menu_exited = true;
@@ -27,7 +26,6 @@ public class p1t2
 					}
 				
 					run_chosen_option(option);
-
 					System.out.println("");
 				}
 				catch(Exception ex)
@@ -91,11 +89,11 @@ public class p1t2
 		}
 	}
 
-	public static Boolean login() throws Exception
+	public static void login() throws Exception
 	{
 		Boolean login_accepted = false;
-		do{
-			
+		while(!login_accepted)
+		{
 			System.out.println("=====FabFlix=====");
 			System.out.print("User: ");
 			String username = System.console().readLine();
@@ -111,9 +109,7 @@ public class p1t2
 			{
 				System.out.println("Can't connect to database....exiting");
 			}
-		}while(!login_accepted);
-
-		return login_accepted;
+		}
 	}
 	/**
 		Search the database for movies that a star has been in
