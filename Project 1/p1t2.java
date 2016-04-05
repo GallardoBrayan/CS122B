@@ -10,9 +10,10 @@ public class p1t2
 		while(true){
 			String in = "";
 			Boolean menu_exited = false;
+			login();
 			while(!menu_exited)
 			{
-				login();
+				
 				try
 				{
 					print_menu();
@@ -258,7 +259,7 @@ public class p1t2
 	{
 		String[] cc_info = new String[1];
 		System.out.print("Eneter Credit Card ID: ");
-		cc_info[0] = System.console().readLine();
+		cc_info[0] = System.console().readLine().trim();
 		System.out.println("");
 
 		int result = db.update("DELETE FROM customers WHERE cc_id = ?", cc_info);
