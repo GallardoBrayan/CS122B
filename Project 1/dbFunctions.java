@@ -1,13 +1,11 @@
-<<<<<<< Updated upstream
- 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-=======
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-import java.sql.*;
->>>>>>> Stashed changes
 
 public class dbFunctions
 {
@@ -25,17 +23,9 @@ public class dbFunctions
 		connection = DriverManager.getConnection(path, user_name, pass);
 	}
 
-	public String append_string_array(String str, String[] to_append)
+	public DatabaseMetaData get_metadata() throws Exception
 	{
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < to_append.length; ++i)
-		{
-   			sb.append(to_append[i]);
-    		if (i != to_append.length - 1)
-       			sb.append(",");
-       	}
-       	return str.concat(sb.toString());
-    
+		return connection.getMetaData();
 	}
 
 	public ResultSet select(String stmt) throws Exception
@@ -45,13 +35,23 @@ public class dbFunctions
 		return results;
 	}
 
-	public int update(String stmt) throws Exception
+	public ResultSet raw_select(String stmt) throws Exception
+	{
+		System.out.println(stmt);
+		Statement select = connection.createStatement();
+		ResultSet results = select.executeQuery(stmt);
+		//select.close();
+		return results;
+	}
+
+	public int raw_update(String stmt) throws Exception
 	{
 		Statement update = connection.createStatement();
 		int results = update.executeUpdate(stmt);
+		update.close();
 		return results;
-
 	}
+
 	public int update(String stmt, String[] args) throws Exception
 	{
 		PreparedStatement update = connection.prepareStatement(stmt);
@@ -59,17 +59,26 @@ public class dbFunctions
 		{
 			update.setObject(i, args[i-1]);
 		}
-		int results = update.executeUpdate();
+		int results = 0;
+
+		try{
+			results = update.executeUpdate();
+		}
+		catch(Exception ex){ 
+			//Skip handling exception.  Result will return that no rows were inserted
+		}
+		
+		update.close();
 		return results;
 
 	}
 	
-	public ArrayList< HashMap< String, Object > > selectUsing(String table, String columns, String values) throws SQLException
+	public ArrayList< Map< String, Object > > selectUsing(String table, String columns, String values) throws SQLException
 	{
 
 		String statementString = "SELECT * FROM " + table ;
-		ArrayList<String> listOfColums = (ArrayList<String>) Arrays.asList(columns.split(","));
-		ArrayList<String> listOfvalues = (ArrayList<String>) Arrays.asList(values.split(","));
+		List<String> listOfColums =  Arrays.asList(columns.split(","));
+		List<String> listOfvalues = Arrays.asList(values.split(","));
 		if(listOfColums.size() > 0)
 		{
 			statementString += " WHERE " + listOfColums.get(0) + "=" + listOfvalues.get(0);	
@@ -82,7 +91,7 @@ public class dbFunctions
 		statementString += ";";
 		PreparedStatement statement = connection.prepareStatement(statementString);
 		ResultSet results = statement.executeQuery();
-		ArrayList< HashMap< String, Object > > output = new ArrayList< HashMap< String, Object > >();
+		ArrayList< Map< String, Object > > output = new ArrayList< Map< String, Object > >();
 		ResultSetMetaData rsmd = results.getMetaData();
 		int numCol = rsmd.getColumnCount();
 		ArrayList<String> coulumNames = new  ArrayList<String>();
@@ -93,7 +102,7 @@ public class dbFunctions
 		while(results.next())
 		{
 			 
-			HashMap< String, Object >temp =new  HashMap< String, Object >();
+			Map< String, Object >temp =new TreeMap< String, Object >();
 			for(String currCol : coulumNames)
 			{
 				temp.put(currCol, results.getObject(currCol));
@@ -101,6 +110,8 @@ public class dbFunctions
 			output.add(temp);
 			
 		}
+		results.close();
+		statement.close();
 		return output;
 	}
 }
