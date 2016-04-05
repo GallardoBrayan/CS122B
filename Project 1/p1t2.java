@@ -7,38 +7,36 @@ public class p1t2
 	private static dbFunctions db = new dbFunctions();
 	public static void main(String[] args) throws Exception
 	{
-
-		try{
-			db.make_connection("jdbc:mysql:///moviedb","root", "root");
-		}
-		catch(Exception ex)
-		{
-			System.out.println("Can't connect to database....exiting");
-			return;
-		}
-
-		String in = "";
-		while(true)
-		{
-			try
+		while(true){
+			String in = "";
+			Boolean menu_exited = false;
+			while(!menu_exited)
 			{
-				print_menu();
-				in = System.console().readLine();
-				int option = convert_string_to_int(in);
+				login();
+				try
+				{
+					print_menu();
+					in = System.console().readLine();
+					int option = convert_string_to_int(in);
 
-			//If conversion succeeds, run the option user selected
-				if(option > 0)
+
+					if(option == 7)
+					{
+						menu_exited = true;
+						continue;
+					}
+				
 					run_chosen_option(option);
 
-				System.out.println("");
-			}
-			catch(Exception ex)
-			{
-				System.out.println("Error: something went wrong");
-				continue;
+					System.out.println("");
+				}
+				catch(Exception ex)
+				{
+					System.out.println("Error: something went wrong");
+					continue;
+				}
 			}
 		}
-
 	}
 
 	/**
@@ -88,14 +86,35 @@ public class p1t2
 			case 6:
 				exec_sql_statement();
 				break;
-			case 7:
-				System.exit(0);
-				break;
 			default:
 				System.out.println("Incorrect option number entered");
 		}
 	}
 
+	public static Boolean login() throws Exception
+	{
+		Boolean login_accepted = false;
+		do{
+			
+			System.out.println("=====FabFlix=====");
+			System.out.print("User: ");
+			String username = System.console().readLine();
+			System.out.print("Password: ");
+			String password = System.console().readLine();
+
+
+			try{
+				db.make_connection("jdbc:mysql:///moviedb",username, password);
+				login_accepted = true;
+			}
+			catch(Exception ex)
+			{
+				System.out.println("Can't connect to database....exiting");
+			}
+		}while(!login_accepted);
+
+		return login_accepted;
+	}
 	/**
 		Search the database for movies that a star has been in
 	*/
