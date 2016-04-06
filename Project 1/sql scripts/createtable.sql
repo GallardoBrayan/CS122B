@@ -1,7 +1,3 @@
-
-DROP DATABASE IF exists moviedb;
-create database moviedb;
-use moviedb;
 CREATE TABLE IF NOT EXISTS movies(
 	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
     title VARCHAR(100) NOT NULL,
