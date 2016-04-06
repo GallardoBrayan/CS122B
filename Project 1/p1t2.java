@@ -126,11 +126,13 @@ public class p1t2
 			}
 			
 			char input = '?';
+			String line;
 			System.out.println("Can't connect to database.");
 			while(input != 'y' && input != 'n')
 			{	
 				System.out.print("Want to try to again[Y/N]:");
-				input = in.nextLine().toLowerCase().charAt(0);
+				line = in.nextLine();
+				input = ("".equals(line) ? '?' :  line.toLowerCase().charAt(0));
 			}
 			if(input == 'n')
 				return 8;
@@ -187,7 +189,7 @@ public class p1t2
 	/**
 		Print the information for movies that a star has been featured int
 	*/
-	public static void print_movie_info( List<Map<String, Object>> results) throws Exception
+	public static void print_movie_info( List<Map<String, Object>> movies) throws Exception
 	{
 		if(movies.isEmpty())
 		{
