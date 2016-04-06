@@ -157,15 +157,22 @@ public class p1t2
 	public static void print_movie_info(ArrayList<Map<String, Object>> movies) throws Exception
 	{
 
-		for(Map<String, Object> curRow : movies)
+		if(movies.isEmpty())
 		{
-			System.out.println("ID: " + curRow.get("id"));
-			System.out.println("Title: " + curRow.get("title"));
-			System.out.println("Year: " + curRow.get("year"));
-			System.out.println("Director: " + curRow.get("director"));
-			System.out.println("Banner URL: " + curRow.get("banner_url"));
-			System.out.println("Trailer: " + curRow.get("trailer"));
-			System.out.println("");
+			System.out.println("No results found");
+		}
+		else
+		{
+			for(Map<String, Object> curRow : movies)
+			{
+				System.out.println("ID: " + curRow.get("id"));
+				System.out.println("Title: " + curRow.get("title"));
+				System.out.println("Year: " + curRow.get("year"));
+				System.out.println("Director: " + curRow.get("director"));
+				System.out.println("Banner URL: " + curRow.get("banner_url"));
+				System.out.println("Trailer: " + curRow.get("trailer"));
+				System.out.println("");
+			}
 		}
 	}
 

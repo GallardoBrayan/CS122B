@@ -66,6 +66,8 @@ public class dbFunctions
 		}
 		catch(Exception ex){ 
 			//Skip handling exception.  Result will return that no rows were inserted
+			//System.out.println("Exception: ");
+			//System.out.println(ex.getMessage());
 		}
 		
 		update.close();
