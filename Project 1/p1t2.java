@@ -1,40 +1,44 @@
 
 import java.util.*;
 import java.sql.*;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class p1t2
 {
 	private static dbFunctions db = new dbFunctions();
+	private static Scanner in = new Scanner(System.in);
+	
 	public static void main(String[] args) throws Exception
 	{
-		while(true){
-			String in = "";
-			Boolean menu_exited = false;
-			login();
-			while(!menu_exited)
-			{
-				
+		int option = 0;
+		
+		while(option != 8){
+			option = login();
+			while(option != 7 && option != 8 )
+			{	
 				try
 				{
 					print_menu();
-					in = System.console().readLine();
-					int option = convert_string_to_int(in);
-
-					if(option == 7)
+					option = convert_string_to_int(in.nextLine());
+					
+					if(option == 7|| option == 8)
 					{
-						menu_exited = true;
-						continue;
+						break;
 					}
-				
 					run_chosen_option(option);
 					System.out.println("");
 				}
+				
 				catch(Exception ex)
 				{
-					System.out.println("Error: something went wrong");
-					continue;
+					System.out.println("Well this is embarssing,something went wrong");
+					System.out.println("Let's start over");
+					
 				}
+				
 			}
+			db.close();
 		}
 	}
 
@@ -43,14 +47,15 @@ public class p1t2
 	*/
 	public static void print_menu()
 	{
-			System.out.println("Select option, enter q when done:");
+			System.out.println("Select option:");
 			System.out.println("(1) Search movies by star name or ID number.");
 			System.out.println("(2) Insert new star into databse.");
 			System.out.println("(3) Insert customer into databse.");
 			System.out.println("(4) Delete customer from databse.");
 			System.out.println("(5) Print databse metadata.");
 			System.out.println("(6) Insert valid SQL command.");
-			System.out.println("(7) Exit menu.");
+			System.out.println("(7) Exit menu(to log-in prompt).");
+			System.out.println("(8) Exit program.");
 			System.out.print(">");
 	}
 
@@ -61,7 +66,6 @@ public class p1t2
 
 	public static void run_chosen_option(int option_number) throws Exception
 	{
-
 		switch(option_number)
 		{
 			case -1:
@@ -90,26 +94,45 @@ public class p1t2
 		}
 	}
 
-	public static void login() throws Exception
+	public static int  login() throws Exception
 	{
-		Boolean login_accepted = false;
-		while(!login_accepted)
+		while(true)
 		{
 			System.out.println("=====FabFlix=====");
+			System.out.print("Server: ");
+			String server = in.nextLine();
 			System.out.print("User: ");
-			String username = System.console().readLine();
+			String username = in.nextLine();
 			System.out.print("Password: ");
-			String password = System.console().readLine();
-
+			String password = in.nextLine();
 
 			try{
-				db.make_connection("jdbc:mysql:///moviedb",username, password);
-				login_accepted = true;
+				db.make_connection("jdbc:mysql://"+server+"/moviedb",username, password);
+				return 0;
 			}
-			catch(Exception ex)
+			catch (SQLException ex)
 			{
-				System.out.println("Can't connect to database....exiting");
+				switch(ex.getErrorCode())
+				{
+				case 1045: 
+					System.out.println("Invaild username/password combination.");
+					break;
+				case 1046: 
+					System.out.println("Invaild database name.");
+					break;
+				}
 			}
+			
+			char input = '?';
+			System.out.println("Can't connect to database.");
+			while(input != 'y' && input != 'n')
+			{	
+				System.out.print("Want to try to again[Y/N]:");
+				input = in.nextLine().toLowerCase().charAt(0);
+			}
+			if(input == 'n')
+				return 8;
+			
 		}
 	}
 	/**
@@ -119,16 +142,16 @@ public class p1t2
 	{
 		System.out.println("(1) Search by name. ");
 		System.out.print("(2) Search by ID. ");
-		int option = convert_string_to_int(System.console().readLine());
-
+		int option =  convert_string_to_int(in.nextLine());
+		
 		ArrayList<Map<String, Object>> results = null;
 		if(option == 1)
 		{
 			String names[] = new String[2];
 			System.out.print("First Name: ");
-			names[0] = System.console().readLine();
+			names[0] = in.nextLine();
 			System.out.print("Last Name: ");
-			names[1] = System.console().readLine();
+			names[1] = in.nextLine();
 
 			if("".equals(names[0]))
 				results = db.selectUsing(" stars_in_movies as sim CROSS JOIN movies CROSS JOIN stars", "sim.movies_id,sim.star_id,stars.last_name", "movies.id,stars.id,\"" + names[1] + "\"");
@@ -139,7 +162,7 @@ public class p1t2
 		else if(option == 2)
 		{
 			System.out.print("ID number: ");
-			String id = System.console().readLine();
+			String id = in.nextLine();
 			results = db.selectUsing("stars_in_movies as sim CROSS JOIN movies", "sim.movies_id,sim.star_id", "movies.id," + id );
 		}
 		else
@@ -154,9 +177,8 @@ public class p1t2
 	/**
 		Print the information for movies that a star has been featured int
 	*/
-	public static void print_movie_info(ArrayList<Map<String, Object>> movies) throws Exception
+	public static void print_movie_info( List< Map<String, Object > > movies) throws Exception
 	{
-
 		for(Map<String, Object> curRow : movies)
 		{
 			System.out.println("ID: " + curRow.get("id"));
@@ -173,16 +195,16 @@ public class p1t2
 	{
 		String[] star_info = new String[4];
 		System.out.print("First Name: ");
-		star_info[0] = System.console().readLine().trim();
+		star_info[0] = in.nextLine().trim();
 		System.out.print("Last Name: ");
-		star_info[1] = System.console().readLine().trim();
-		System.out.print("Date of Birth: ");
-		star_info[2] = System.console().readLine().trim();
+		star_info[1] = in.nextLine().trim();
+		System.out.print("Date of Birth(yyyy/mm/dd): ");
+		star_info[2] = (in.nextLine().trim());
 		System.out.print("Banner Url: ");
-		star_info[3] = System.console().readLine().trim();
+		star_info[3] = in.nextLine().trim();
 		System.out.println("");
 
-		int result = db.update("INSERT INTO stars (first_name, last_name, dob, banner_url) VALUES (?,?,?,?)", star_info);
+		int result = db.update("INSERT INTO stars (first_name, last_name, dob, photo_url) VALUES (?,?,?,?)", star_info);
 		if(result > 0)
 		{
 			System.out.println("Inserted \"" + star_info[0] + "\" \"" + star_info[1] + "\" into stars ");
@@ -215,19 +237,19 @@ public class p1t2
 		String[] info = new String[7];
 		//info order: cc#, first name, last name, expiration, address, email, password;
 		System.out.print("Credit Card Number: ");
-		info[0] = System.console().readLine();
+		info[0] = in.nextLine();
 		System.out.print("First Name: ");
-		info[1] = System.console().readLine();
+		info[1] = in.nextLine();
 		System.out.print("Last Name: ");
-		info[2] = System.console().readLine();
-		System.out.print("Expiration Date: ");
-		info[3] = System.console().readLine();
+		info[2] = in.nextLine();
+		System.out.print("Expiration Date(yyyy/mm/dd): ");
+		info[3] = in.nextLine();
 		System.out.print("Address: ");
-		info[4] = System.console().readLine();
+		info[4] = in.nextLine();
 		System.out.print("Email: ");
-		info[5] = System.console().readLine();
+		info[5] = in.nextLine();
 		System.out.print("Password: ");
-		info[6] = System.console().readLine();
+		info[6] = in.nextLine();
 		System.out.println("");
 
 		return info;
@@ -252,14 +274,14 @@ public class p1t2
 
 	public static void add_customer_to_db(String[] customer_info) throws Exception
 	{
-		int insert_result = db.update("INSERT INTO customers(first_name, last_name, cc_id, address, email, password) VALUES (?,?,?,?,?,?)", customer_info);
+		db.update("INSERT INTO customers(first_name, last_name, cc_id, address, email, password) VALUES (?,?,?,?,?,?)", customer_info);
 	}
 
 	public static void delete_customer() throws Exception
 	{
 		String[] cc_info = new String[1];
 		System.out.print("Eneter Credit Card ID: ");
-		cc_info[0] = System.console().readLine().trim();
+		cc_info[0] = in.nextLine().trim();
 		System.out.println("");
 
 		int result = db.update("DELETE FROM customers WHERE cc_id = ?", cc_info);
@@ -301,7 +323,7 @@ public class p1t2
 	public static void exec_sql_statement() throws Exception
 	{
 		System.out.print("Enter SQL statement: ");
-		String input_statement = System.console().readLine().toLowerCase().trim(); //convert to lower to check for variations
+		String input_statement = in.nextLine().toLowerCase().trim(); //convert to lower to check for variations
 		String[] tokes = input_statement.split(" ", 2);  
 
 		ResultSet query_result = null;
@@ -358,8 +380,8 @@ public class p1t2
 
 	public static String[] get_tokenized_input()
 	{
-		String in = System.console().readLine().trim();
-		String[] tokes = in.split(" ",2);
+		String input = in.nextLine().trim();
+		String[] tokes = input.split(" ",2);
 		return tokes;
 	}
 

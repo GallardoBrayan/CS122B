@@ -62,9 +62,10 @@ public class dbFunctions
 		int results = 0;
 
 		try{
-			results = update.executeUpdate();
+			results  = update.executeUpdate();
 		}
 		catch(Exception ex){ 
+		
 			//Skip handling exception.  Result will return that no rows were inserted
 		}
 		
@@ -113,6 +114,17 @@ public class dbFunctions
 		results.close();
 		statement.close();
 		return output;
+	}
+	public void close()
+	{
+		try {
+			if(connection != null)
+			
+				connection.close();
+		} catch (SQLException e) 
+		{
+			System.out.println("Warning:The database connection was not closed properly.");
+		}
 	}
 }
 
