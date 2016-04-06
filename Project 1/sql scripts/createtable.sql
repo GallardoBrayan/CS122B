@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS movies(
 	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
     title VARCHAR(100) NOT NULL,
@@ -54,7 +53,7 @@ CREATE TABLE IF NOT EXISTS customers(
 	address VARCHAR(200) NOT NULL,
 	email VARCHAR(50) NOT NULL,
 	password VARCHAR(20) NOT NULL,
-	FOREIGN KEY (cc_id) REFERENCES creditcards(id)
+	FOREIGN KEY (cc_id) REFERENCES creditcards(id) ON DELETE CASCADE
 	);
 
 CREATE TABLE IF NOT EXISTS sales(
@@ -62,7 +61,7 @@ CREATE TABLE IF NOT EXISTS sales(
 	customer_id INT NOT NULL,
 	movies_id INT NOT NULL,
 	sale_date DATE NOT NULL,
-	FOREIGN KEY (customer_id) REFERENCES customers(id),
+	FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
 	FOREIGN KEY (movies_id) REFERENCES movies(id)
 	);
 
