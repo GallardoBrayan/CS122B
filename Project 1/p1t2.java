@@ -1,8 +1,11 @@
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Map;
 
-import java.util.*;
-import java.sql.*;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 public class p1t2
 {
@@ -144,10 +147,11 @@ public class p1t2
 		System.out.print("(2) Search by ID. ");
 		int option =  convert_string_to_int(in.nextLine());
 		
-		ArrayList<Map<String, Object>> results = null;
+		List<Map<String,Object>> results = null;
 		if(option == 1)
 		{
-			String names[] = new String[2];
+			String names[]
+					= new String[2];
 			System.out.print("First Name: ");
 			names[0] = in.nextLine();
 			System.out.print("Last Name: ");
@@ -174,12 +178,13 @@ public class p1t2
 	}
 
 
+	
 	/**
 		Print the information for movies that a star has been featured int
 	*/
-	public static void print_movie_info( List< Map<String, Object > > movies) throws Exception
+	public static void print_movie_info( List<Map<String, Object>> results) throws Exception
 	{
-		for(Map<String, Object> curRow : movies)
+		for(Map<String, Object> curRow : results)
 		{
 			System.out.println("ID: " + curRow.get("id"));
 			System.out.println("Title: " + curRow.get("title"));
