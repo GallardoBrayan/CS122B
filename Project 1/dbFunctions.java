@@ -37,7 +37,6 @@ public class dbFunctions
 
 	public ResultSet raw_select(String stmt) throws Exception
 	{
-		System.out.println(stmt);
 		Statement select = connection.createStatement();
 		ResultSet results = select.executeQuery(stmt);
 		//select.close();
@@ -62,9 +61,10 @@ public class dbFunctions
 		int results = 0;
 
 		try{
-			results = update.executeUpdate();
+			results  = update.executeUpdate();
 		}
 		catch(Exception ex){ 
+		
 			//Skip handling exception.  Result will return that no rows were inserted
 			//System.out.println("Exception: ");
 			//System.out.println(ex.getMessage());
@@ -115,6 +115,17 @@ public class dbFunctions
 		results.close();
 		statement.close();
 		return output;
+	}
+	public void close()
+	{
+		try {
+			if(connection != null)
+			
+				connection.close();
+		} catch (SQLException e) 
+		{
+			System.out.println("Warning:The database connection was not closed properly.");
+		}
 	}
 }
 
