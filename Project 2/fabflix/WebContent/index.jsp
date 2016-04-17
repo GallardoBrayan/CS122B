@@ -4,7 +4,12 @@
  javax.servlet.http.*,
  javax.servlet.*"
 %>
-
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Browse Movie Titles</title>
+<%@ include file="/header.jsp" %>
+</head>
 <h3>hello world</h3><br>
 <%
     Class.forName("com.mysql.jdbc.Driver").newInstance();

@@ -127,9 +127,14 @@ public class dbFunctions
 			System.out.println("Warning:The database connection was not closed properly.");
 		}
 	}
-	public ArrayList<Movie> getmovieByTilte(int start, int limit) throws SQLException
+	public ArrayList<Movie> getmovieByTilte(int start, int limit, String letterOfTitle) throws SQLException
 	{
-		String statementString = "SELECT * FROM movies ORDER BY title" ;
+		String statementString = "SELECT * FROM movies";
+		if(!"".equals(letterOfTitle))
+		{
+			statementString += " WHERE  title LIKE \'" + letterOfTitle + "%\' ";
+		}
+		statementString += " ORDER BY title " ;
 		if(limit > 0)
 		{
 			statementString += " LIMIT " + limit + " OFFSET " + (start> 0 ? start : 0);
@@ -154,6 +159,29 @@ public class dbFunctions
 		results.close();
 		statement.close();
 		return output;
+	}
+	
+	public User loginToFabFlix(String userName, String password) throws SQLException
+	{
+		User logged_in_user = null;
+		if(userName == null || password == null)
+			return null;
+		String statementString = "SELECT * FROM customers WHERE email=\'" + userName + "\' AND password=\'" + password + "\';";
+		PreparedStatement statement = connection.prepareStatement(statementString);
+		ResultSet results = statement.executeQuery();
+		if(results.next())
+		{
+			logged_in_user = new User(
+					results.getInt("id"),
+					results.getString("first_name"),
+					results.getString("last_name"),
+					results.getString("address"),
+					results.getString("email"));
+					
+		}
+		results.close();
+		statement.close();
+		return logged_in_user;
 	}
 }
 
