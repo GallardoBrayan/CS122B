@@ -127,6 +127,26 @@ public class dbFunctions
 			System.out.println("Warning:The database connection was not closed properly.");
 		}
 	}
+	public int countMovieByTilte(String letterOfTitle) throws SQLException
+	{
+		String statementString = "SELECT COUNT(*) FROM movies";
+		if(!"".equals(letterOfTitle))
+		{
+			statementString += " WHERE  title LIKE \'" + letterOfTitle + "%\' ";
+		}
+		statementString += ";";
+		PreparedStatement statement = connection.prepareStatement(statementString);
+		ResultSet results = statement.executeQuery();
+		int output = 0;
+		if(results.next())
+		{
+			output = results.getInt(1);
+		}
+		results.close();
+		statement.close();
+		return output;
+	}
+	
 	public ArrayList<Movie> getmovieByTilte(int start, int limit, String letterOfTitle) throws SQLException
 	{
 		String statementString = "SELECT * FROM movies";

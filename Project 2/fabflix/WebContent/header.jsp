@@ -4,22 +4,30 @@
 	dbFunctions dbConnection = new dbFunctions();
 	dbConnection.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
 %>
-<table>
-  <tr>
-    <th>FabFlix</th>
-    <th><a href="/fabflix/search.jsp">Search</a></th>
-    <th><a href="/fabflix/Browse.jsp">Browse</a></th>
+<div class="logo_area">
+<div style="float:left">
+
+<img src="/fabflix/resources/logo.png" height="42" width="42">
+    Fabflix
+  <a href="/fabflix/search.jsp">Search</a>
+<a href="/fabflix/Browse.jsp">Browse</a>
+</div>
+<div style="float:right">
+
     <%if(session.getAttribute("userToken") == null) 
     {%>
-    <th>Login</th>
+   <a href="/fabflix/login.jsp">Login</a>
     <% }
     else
     	{
     	User currentUser = (User) session.getAttribute("userToken");
     %>
-    <th><%out.print(currentUser.getFirst_name() + "  " + currentUser.getLast_name()); %>(Logout)</th>
-    <th>Cart</th>
+   <%out.print(currentUser.getFirst_name() + "  " + currentUser.getLast_name()); %> ( Logout )
+    Cart
     <%} %>
-  </tr>
-</table>
+
+</div>
+</div>
+
+<div style="clear: both;"></div>
 

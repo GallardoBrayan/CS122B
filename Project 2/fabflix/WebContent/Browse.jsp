@@ -5,70 +5,85 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Browse Movie Titles</title>
-<%@ include file="/header.jsp" %>
+<%@ include file="/header.jsp"%>
 </head>
 <body>
-	<div class="atoz-content">
-		<div class="atoz-letter">
-			<a href="/fabflix/Browse.jsp?title=0">0</a><a
-				href="/fabflix/Browse.jsp?title=1">1</a><a
-				href="/fabflix/Browse.jsp?title=2">2</a><a
-				href="/fabflix/Browse.jsp?title=3">3</a><a
-				href="/fabflix/Browse.jsp?title=4">4</a><a
-				href="/fabflix/Browse.jsp?title=5">5</a><a
-				href="/fabflix/Browse.jsp?title=6">6</a><a
-				href="/fabflix/Browse.jsp?title=7">7</a><a
-				href="/fabflix/Browse.jsp?title=8">8</a><a
-				href="/fabflix/Browse.jsp?title=9">9</a><a
-				href="/fabflix/Browse.jsp?title=A">A</a><a
-				href="/fabflix/Browse.jsp?title=B">B</a><a
-				href="/fabflix/Browse.jsp?title=C">C</a><a
-				href="/fabflix/Browse.jsp?title=D">D</a><a
-				href="/fabflix/Browse.jsp?title=E">E</a><a
-				href="/fabflix/Browse.jsp?title=F">F</a><a
-				href="/fabflix/Browse.jsp?title=G">G</a><a
-				href="/fabflix/Browse.jsp?title=H">H</a><a
-				href="/fabflix/Browse.jsp?title=I">I</a><a
-				href="/fabflix/Browse.jsp?title=J">J</a><a
-				href="/fabflix/Browse.jsp?title=K">K</a><a
-				href="/fabflix/Browse.jsp?title=L">L</a><a
-				href="/fabflix/Browse.jsp?title=M">M</a><a
-				href="/fabflix/Browse.jsp?title=N">N</a><a
-				href="/fabflix/Browse.jsp?title=O">O</a><a
-				href="/fabflix/Browse.jsp?title=P">P</a><a
-				href="/fabflix/Browse.jsp?title=Q">Q</a><a
-				href="/fabflix/Browse.jsp?title=R">R</a><a
-				href="/fabflix/Browse.jsp?title=S">S</a><a
-				href="/fabflix/Browse.jsp?title=T">T</a><a
-				href="/fabflix/Browse.jsp?title=U">U</a><a
-				href="/fabflix/Browse.jsp?title=V">V</a><a
-				href="/fabflix/Browse.jsp?title=W">W</a><a
-				href="/fabflix/Browse.jsp?title=X">X</a><a
-				href="/fabflix/Browse.jsp?title=Y">Y</a><a
-				href="/fabflix/Browse.jsp?title=Z">Z</a>
-		</div>
-	</div>
 	<%
 		Boolean sortByTitle = (Boolean) session.getAttribute("sortByTitle");
 		if (sortByTitle == null)
 			sortByTitle = true;
-		String letter = request.getParameter("title");
-		ArrayList<Movie> movieList = dbConnection.getmovieByTilte(0, 20,(letter != null ? letter :"A"));
+		String temp = request.getParameter("page");
+		Integer pageNumber = temp == null ? 0 : Integer.parseInt(temp);
+		Integer startNumber = pageNumber == null ? 0 : pageNumber * 20;
+		Integer numberOfMovies = 0;
+		ArrayList<Movie> movieList = null;
+
+		if (sortByTitle) {
 	%>
+	<p>
+	<div class="atoz-content">
+		<div class="atoz-letter">
+			<a href=${pageContext.request.requestURL}?title=0>0</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=1>1</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=2>2</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=3>3</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=4>4</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=5>5</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=6>6</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=7>7</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=8>8</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=9>9</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=A>A</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=B>B</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=C>C</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=D>D</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=E>E</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=F>F</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=G>G</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=H>H</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=I>I</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=J>J</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=K>K</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=L>L</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=M>M</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=N>N</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=O>O</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=P>P</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=Q>Q</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=R>R</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=S>S</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=T>T</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=U>U</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=V>V</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=W>W</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=X>X</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=Y>Y</a>&nbsp; <a
+				href=${pageContext.request.requestURL}?title=Z>Z</a>
+		</div>
+	</div>
+	<p>
+		<%
+			temp =request.getParameter("title") ;
+			String letter = temp == null ? "A" : temp;
+			movieList = dbConnection.getmovieByTilte(startNumber, 20, letter);
+			numberOfMovies = dbConnection.countMovieByTilte(letter);
+		%>
+	
 	<table class="movie_table" style="width: 100%">
 		<%
-			for (Movie currentMovie : movieList) {
+			for (Movie currentMovie : movieList) 
+			{
 		%>
 		<tr>
 			<td><img src="<%out.print(currentMovie.getBanner_url());%>"
 				height="42" width="42"></td>
 			<td><b> <%
-						out.print(currentMovie.getId());
-					%>
+ 	out.print(currentMovie.getId());
+ %>
 			</b></td>
 			<td><a href=<%out.print(currentMovie.getTrailer_url());%>> <%
-						out.print(currentMovie.getTitle());
-					%>
+ 	out.print(currentMovie.getTitle());
+ %>
 			</a>
 			<td>
 				<%
@@ -86,6 +101,22 @@
 	}
 %>
 	</table>
-</body>
-<%@ include file="/footer.jsp" %>
+	<p>
+		<div class="page_numbers-content">
+		<div class="page_numbers"><% 
+			int numberOfPages = numberOfMovies / 20 + 1;
+			for (int i = 0; i < numberOfPages; i++) {
+		%>
+		
+		<a href= ${pageContext.request.requestURL}? onclick="this.href=this.href+'title=<% out.print(letter);%>&page=<% out.print(i);%>'"><% out.print(i+1); %></a>&nbsp;
+		<%
+			}
+		}
+		%>
+
+	
+	</div>
+	</div>
+	</body>
+<%@ include file="/footer.jsp"%>
 </html>
