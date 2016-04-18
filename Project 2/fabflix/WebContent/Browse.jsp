@@ -8,11 +8,25 @@
 <%@ include file="/header.jsp"%>
 </head>
 <body>
+
 	<%
-		Boolean sortByTitle = (Boolean) session.getAttribute("sortByTitle");
+		String temp = request.getParameter("sortBy");
+		Boolean sortByTitle = Boolean.valueOf(temp == null ? "true" : temp );
 		if (sortByTitle == null)
 			sortByTitle = true;
-		String temp = request.getParameter("page");
+	%>
+	Browse by
+	<form action="Browse" method="get">
+	<select name="sortBy" id="sortBySelect" size="1" class="Selector"
+		style="width: 82px;" onchange="this.form.submit()"
+		>
+		<option value="true"<%if(sortByTitle) out.print("selected");%>>Title</option>
+		<option value="false"<%if(!sortByTitle) out.print("selected");%>>Genre</option>
+	</select>
+	</form>
+	
+	<% 
+		temp = request.getParameter("page");
 		Integer pageNumber = temp == null ? 0 : Integer.parseInt(temp);
 		Integer startNumber = pageNumber == null ? 0 : pageNumber * 20;
 		Integer numberOfMovies = 0;
@@ -102,21 +116,92 @@
 %>
 	</table>
 	<p>
-		<div class="page_numbers-content">
-		<div class="page_numbers"><% 
+	<div class="page_numbers-content">
+		<div class="page_numbers">
+			<% 
 			int numberOfPages = numberOfMovies / 20 + 1;
 			for (int i = 0; i < numberOfPages; i++) {
 		%>
-		
-		<a href= ${pageContext.request.requestURL}? onclick="this.href=this.href+'title=<% out.print(letter);%>&page=<% out.print(i);%>'"><% out.print(i+1); %></a>&nbsp;
+
+			<a href=${pageContext.request.requestURL}?
+				onclick="this.href=this.href+'title=<% out.print(letter);%>&page=<% out.print(i);%>'">
+				<% out.print(i+1); %>
+			</a>&nbsp;
+			<%
+			}
+		}
+		else{
+			
+	%>
+	<p>
+	<div class="genre_list-content">
+		<div class="genre_list">
+		<%ArrayList<String> genreList = dbConnection.getGenreList(); 
+		for(String currentGenre :genreList)
+			{%>
+			<a href=${pageContext.request.requestURL}?genre=<%out.print(currentGenre); %>><%out.print(currentGenre); %></a>&nbsp; 
+			<%} %>
+		</div>
+	</div>
+	<p>
 		<%
+			temp =request.getParameter("genre") ;
+			String genre = temp == null ? "" : temp;
+			movieList = dbConnection.getMovieByGenre(startNumber, 20, genre);
+			numberOfMovies = dbConnection.countMovieByTilte(genre);
+		%>
+	
+	<table class="movie_table" style="width: 100%">
+		<%
+			for (Movie currentMovie : movieList) 
+			{
+		%>
+		<tr>
+			<td><img src="<%out.print(currentMovie.getBanner_url());%>"
+				height="42" width="42"></td>
+			<td><b> <%
+ 	out.print(currentMovie.getId());
+ %>
+			</b></td>
+			<td><a href=<%out.print(currentMovie.getTrailer_url());%>> <%
+ 	out.print(currentMovie.getTitle());
+ %>
+			</a>
+			<td>
+				<%
+					out.print(currentMovie.getYear());
+				%>
+			</td>
+			<td>
+				<%
+					out.print(currentMovie.getDirector());
+				%>
+			</td>
+		</tr>
+
+		<%
+	}
+%>
+	</table>
+	<p>
+	<div class="page_numbers-content">
+		<div class="page_numbers">
+			<% 
+			int numberOfPages = numberOfMovies / 20 + 1;
+			for (int i = 0; i < numberOfPages; i++) {
+		%>
+
+			<a href=${pageContext.request.requestURL}?
+				onclick="this.href=this.href+'title=<% out.print(genre);%>&page=<% out.print(i);%>'">
+				<% out.print(i+1); %>
+			</a>&nbsp;
+			<%
 			}
 		}
 		%>
 
-	
+		</div>
 	</div>
-	</div>
-	</body>
+</body>
 <%@ include file="/footer.jsp"%>
 </html>

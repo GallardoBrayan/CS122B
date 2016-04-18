@@ -29,4 +29,14 @@
     <servlet-name>Login</servlet-name>
     <url-pattern>/Login</url-pattern>
   </servlet-mapping>
+    <servlet>
+    <description>Main Page</description>
+    <display-name>Main Page</display-name>
+    <servlet-name>MainPage</servlet-name>
+    <jsp-file>/MainPage.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MainPage</servlet-name>
+    <url-pattern>/MainPage</url-pattern>
+  </servlet-mapping>
 </web-app>

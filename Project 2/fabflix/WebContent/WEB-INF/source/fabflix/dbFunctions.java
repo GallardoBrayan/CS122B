@@ -147,12 +147,13 @@ public class dbFunctions
 		return output;
 	}
 	
-	public ArrayList<Movie> getmovieByTilte(int start, int limit, String letterOfTitle) throws SQLException
+	public ArrayList<MovieSearch> getMovieByGenre(int start, int limit, String Genre) throws SQLException
 	{
 		String statementString = "SELECT * FROM movies";
-		if(!"".equals(letterOfTitle))
+		if(!"".equals(Genre))
 		{
-			statementString += " WHERE  title LIKE \'" + letterOfTitle + "%\' ";
+			statementString += " WHERE  id IN (SELECT movies_id FROM genres_in_movies where genres_id IN " +
+								" (SELECT id FROM genres WHERE name=\'" + Genre + "\'))";
 		}
 		statementString += " ORDER BY title " ;
 		if(limit > 0)
@@ -163,10 +164,10 @@ public class dbFunctions
 		statementString += ";";
 		PreparedStatement statement = connection.prepareStatement(statementString);
 		ResultSet results = statement.executeQuery();
-		ArrayList< Movie > output = new ArrayList< Movie >();
+		ArrayList< MovieSearch > output = new ArrayList< MovieSearch >();
 		while(results.next())
 		{
-			Movie newMovie = new Movie();
+			MovieSearch newMovie = new MovieSearch();
 			newMovie.setTitle(results.getString("title"));
 			newMovie.setId(results.getInt("id"));
 			newMovie.setDirector(results.getString("director"));
@@ -175,6 +176,44 @@ public class dbFunctions
 			newMovie.setTrailer_url(results.getString("trailer"));
 			output.add(newMovie);
 			
+		}
+		results.close();
+		statement.close();
+		return output;
+	}
+	
+	public ArrayList<String> getGenreList() throws SQLException
+	{
+		String statementString = "SELECT name FROM genres;";
+
+		PreparedStatement statement = connection.prepareStatement(statementString);
+		ResultSet results = statement.executeQuery();
+		ArrayList< String > output = new ArrayList< String >();
+		while(results.next())
+		{
+			output.add(results.getString("name"));
+		}
+		
+		results.close();
+		statement.close();
+		return output;
+	}
+	public int countMovieByGenre(String Genre) throws SQLException
+	{
+		String statementString = "SELECT COUNT(*) FROM movies";
+		if(!"".equals(Genre))
+		{
+			statementString += " WHERE  id IN (SELECT movies_id FROM genres_in_movies where genres_id IN " +
+								" (SELECT id FROM genres WHERE name=\'" + Genre + "\'))";
+		}
+		statementString += " ORDER BY title ";
+		statementString += ";";
+		PreparedStatement statement = connection.prepareStatement(statementString);
+		ResultSet results = statement.executeQuery();
+		int output = 0;
+		if(results.next())
+		{
+			output = results.getInt(1);
 		}
 		results.close();
 		statement.close();
@@ -202,6 +241,40 @@ public class dbFunctions
 		results.close();
 		statement.close();
 		return logged_in_user;
+	}
+	
+	public ArrayList<MovieSearch> getmovieByTilte(int start, int limit, String letterOfTitle) throws SQLException
+	{
+		String statementString = "SELECT * FROM movies";
+		if(!"".equals(letterOfTitle))
+		{
+			statementString += " WHERE  title LIKE \'" + letterOfTitle + "%\' ";
+		}
+		statementString += " ORDER BY title " ;
+		if(limit > 0)
+		{
+			statementString += " LIMIT " + limit + " OFFSET " + (start> 0 ? start : 0);
+		}
+		
+		statementString += ";";
+		PreparedStatement statement = connection.prepareStatement(statementString);
+		ResultSet results = statement.executeQuery();
+		ArrayList< MovieSearch > output = new ArrayList< MovieSearch >();
+		while(results.next())
+		{
+			MovieSearch newMovie = new MovieSearch();
+			newMovie.setTitle(results.getString("title"));
+			newMovie.setId(results.getInt("id"));
+			newMovie.setDirector(results.getString("director"));
+			newMovie.setYear(results.getInt("year"));
+			newMovie.setBanner_url(results.getString("banner_url"));
+			newMovie.setTrailer_url(results.getString("trailer"));
+			output.add(newMovie);
+			
+		}
+		results.close();
+		statement.close();
+		return output;
 	}
 }
 
