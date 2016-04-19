@@ -1,5 +1,7 @@
 package fabflix;
 
+import java.util.HashSet;
+
 public class Movie 
 {
 	private int id;
@@ -8,6 +10,8 @@ public class Movie
 	private String director;
 	private String banner_url;
 	private String trailer_url;
+	private HashSet<String> genres;
+	private HashSet<String> stars;
 	
 	/**
 	 * @return the id
@@ -90,6 +94,42 @@ public class Movie
 	public void setTrailer_url(String trailer_url) 
 	{
 		this.trailer_url = trailer_url;
+	}
+	public HashSet<String> getGenres() {
+		return genres;
+	}
+	public void setGenres(HashSet<String> genres) {
+		this.genres = genres;
+	}
+	public HashSet<String> getStars() {
+		return stars;
+	}
+	public void setStars(HashSet<String> stars) {
+		this.stars = stars;
+	}
+	/**
+	 * @param id
+	 * @param title
+	 * @param year
+	 * @param director
+	 * @param banner_url
+	 * @param trailer_url
+	 * @param genres
+	 * @param stars
+	 */
+	public Movie(int id, String title, int year, String director, String banner_url, String trailer_url,
+			HashSet<String> genres, HashSet<String> stars) {
+		this.id = id;
+		this.title = title;
+		this.year = year;
+		this.director = director;
+		this.banner_url = banner_url;
+		this.trailer_url = trailer_url;
+		this.genres = genres;
+		this.stars = stars;
+	}
+	public Movie() {
+		// TODO Auto-generated constructor stub
 	}
 	
 

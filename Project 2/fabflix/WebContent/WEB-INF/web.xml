@@ -29,7 +29,7 @@
     <servlet-name>Login</servlet-name>
     <url-pattern>/Login</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <description>Main Page</description>
     <display-name>Main Page</display-name>
     <servlet-name>MainPage</servlet-name>
@@ -38,5 +38,33 @@
   <servlet-mapping>
     <servlet-name>MainPage</servlet-name>
     <url-pattern>/MainPage</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>search</display-name>
+    <servlet-name>search</servlet-name>
+    <jsp-file>/search.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>search</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>run_searchServlet</servlet-name>
+    <servlet-class>fabflix.run_search</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>run_searchServlet</servlet-name>
+    <url-pattern>/run_search</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>movie_list</display-name>
+    <servlet-name>movie_list</servlet-name>
+    <jsp-file>/movie_list.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>movie_list</servlet-name>
+    <url-pattern>/movie_list</url-pattern>
   </servlet-mapping>
 </web-app>

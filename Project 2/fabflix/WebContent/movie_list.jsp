@@ -1,9 +1,10 @@
 <%@page import="java.sql.*,
  javax.sql.*,
-  java.util.*,
+ java.util.*,
  java.io.IOException,
  javax.servlet.http.*,
- javax.servlet.*"
+ javax.servlet.*,
+ fabflix.*"
 %> 
 
 
@@ -15,15 +16,17 @@
 }
 </style>
 <html>
+<head>
+<title>Display Movie Titles</title>
+<%@ include file="/header.jsp"%>
+</head>
 <body>
+<h3>Movie_list</h3>
 <%
- ArrayList<String> display_rules = (ArrayList<String>)session.getAttribute("display_rules");
- int movies_per_page = Integer.parseInt(display_rules.get(0));
+	SearchParameters curSearch = (SearchParameters)session.getAttribute("curSearch");
 %>
-
-<center><h3>Movie_list</h3></center>
-Results shown per page: <%=movies_per_page%>
-<form action="servlet/run_search" method="get">
+Results shown per page: <%=curSearch.getMoviePerPage()%>
+<form action="run_search" method="get">
   Select Amount of results shown per page: <select name="movies_per_page">
   	<option selected="selected" disabled="disabled">Select a value</option>
     <option value="10">10</option>
@@ -37,52 +40,52 @@ Results shown per page: <%=movies_per_page%>
 
 <table border="1">
 <tr>
+<th></th>
 <th>Id</th>
-<th><a href="servlet/run_search?title_sort=title_sort">Title</a></th>
-<th><a href="servlet/run_search?year_sort=year_sort">Year</a></th>
+<th><a href="run_search?sort_type=title">Title</a></th>
+<th><a href="run_search?sort_type=year">Year</a></th>
 <th>Director</th>
 <th>Genres</th>
 <th>Stars</th>
 </tr>
 
-<% ArrayList<LinkedHashMap<String,ArrayList<String>>> movies = (ArrayList<LinkedHashMap<String,ArrayList<String>>>)session.getAttribute("movies"); 
-   int page_number = Integer.parseInt(display_rules.get(1));
-   int row_count = 0;
-%>
-<% for(Map.Entry<String, ArrayList<String>> movie_row : movies.get(0).entrySet()) { 
-		row_count = row_count + 1;
-		String id = movie_row.getKey();
-		ArrayList<String> movie_info = movie_row.getValue();
-		ArrayList<String> star_info = movies.get(1).get(id);
-		ArrayList<String> genre_info = movies.get(2).get(id);
+<% 
+LinkedHashMap<Integer, Movie> movie_list = (LinkedHashMap<Integer, Movie>)session.getAttribute("movie_list"); 
+ 
+for(Integer id: movie_list.keySet())
+{
+	Movie movie = movie_list.get(id);
 %>
 <tr>
+	<td><img height="42" width="42" src="<%=movie.getBanner_url()%>"></td>
 	<td><%=id%></td>
-	<td><%=movie_info.get(0)%></td>
-	<td><%=movie_info.get(1) %></td>
-	<td><%=movie_info.get(2) %></td>
-	<td><%=genre_info.toString().replace("[", "").replace("]","")%></td>
+	<td><%=movie.getTitle()%></td>
+	<td><%=movie.getYear() %></td>
+	<td><%=movie.getDirector()%></td>
 	<td><%
-			for(int i=0; i < star_info.size(); i = i + 1)
-			{
-				String name = star_info.get(i);
-				if(!(i + 1 == star_info.size()))
-					name = name + ",";
+		String outputString ="";
+		for(String genre : movie.getGenres())
+		{
+			outputString += genre + ", ";
+		}
+		outputString = outputString.substring(0,outputString.length() - 2);
+		out.print(outputString);
+	%></td>
+	<td><%
+		outputString ="";
+		for(String star : movie.getStars())
+		{
+			outputString += star + ", ";
+		}
+		outputString = outputString.substring(0,outputString.length() - 2);
+		out.print(outputString);
 			%>
-			<%=name%>
-		  <%}%>
 	</td>
 </tr>
 
 <% } %>
 </table>
-<p>Current Page :<%=page_number+1%><p></br>
-<%if(page_number > 0){%>
-<a href = "servlet/run_search?page_number=<%=page_number-1%>" >Prev</a>
-<% }%>
 
-<%if(!(row_count < movies_per_page)){%>
-<a href = "servlet/run_search?page_number=<%=page_number+1%>" >Next</a>
-<% } %>
 </body>
+<%@ include file="/footer.jsp"%>
 </html>
