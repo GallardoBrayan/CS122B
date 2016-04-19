@@ -16,11 +16,11 @@
 %>
 
   <form action="run_search" method="get">
-  Title: <input type="text" name="title"/></br>
-  Year: <input type="text" name="year"></input></br>
-  Director: <input type="text" name="director"></input></br>
-  First Name: <input type="text" name="first_name"></input></br>
-  Last Name: <input type="text" name="last_name"></input></br>
+  Title: <input type="text" name="title"/><br>
+  Year: <input type="text" name="year"></input><br>
+  Director: <input type="text" name="director"></input><br>
+  First Name: <input type="text" name="first_name"></input><br>
+  Last Name: <input type="text" name="last_name"></input><br>
   <input type="submit" name="submit">
   </form>
 </body>

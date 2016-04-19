@@ -19,12 +19,12 @@
 		<% for(int i= 0; i < 10 ; i++)
 			{
 		%>
-			<a href="run_search?title=<%= i %>"><%= i %></a>&nbsp; 
+			<a href="run_search?browse=1&title=<%= i %>"><%= i %></a>&nbsp; 
 		<%  } 
 		for(char i = 'A'; i <= 'Z' ; i++)
 		{
 		%>
-			<a href="run_search?title=<%= i %>"><%= i %></a>&nbsp; 
+			<a href="run_search?browse=1&title=<%= i %>"><%= i %></a>&nbsp; 
 			<% } %>
 		</div>
 	</div>
@@ -38,7 +38,7 @@
 		<%ArrayList<String> genreList = dbConnection.getGenreList(); 
 		for(String currentGenre : genreList)
 			{%>
-			<a href=${run_search}?genre=<%out.print(currentGenre); %>><%out.print(currentGenre); %></a>&nbsp; 
+			<a href="run_search?browse=1&genre=<%=currentGenre %>"><%=currentGenre %></a>&nbsp; 
 			<%} %>
 		</div>
 	</div>

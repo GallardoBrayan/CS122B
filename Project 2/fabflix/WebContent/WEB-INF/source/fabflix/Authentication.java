@@ -1,7 +1,5 @@
 package fabflix;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Authentication
 {

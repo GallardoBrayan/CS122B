@@ -57,32 +57,18 @@ public class dbFunctions
 		return output;
 	}
 
-	public ArrayList<Movie> getMovieByGenre(int start, int limit, String Genre) throws SQLException {
-		String statementString = "SELECT * FROM movies";
-		if (!"".equals(Genre)) {
-			statementString += " WHERE  id IN (SELECT movies_id FROM genres_in_movies where genres_id IN "
-					+ " (SELECT id FROM genres WHERE name=\'" + Genre + "\'))";
-		}
-		statementString += " ORDER BY title ";
-		if (limit > 0) {
-			statementString += " LIMIT " + limit + " OFFSET " + (start > 0 ? start : 0);
-		}
-
+	public LinkedHashMap<Integer, Movie> getMoviesByGenre(SearchParameters curParams) throws Exception  {
+		String statementString = "SELECT * FROM movies  WHERE  id IN (SELECT movies_id FROM genres_in_movies where genres_id IN "
+					+ " (SELECT id FROM genres WHERE name=\'" + curParams.getGenre() + "\'))";
+		int offset = Integer.parseInt(curParams.getMoviePerPage()) * Integer.parseInt(curParams.getCurrentPage());
+		statementString += (" ORDER BY " + curParams.getSortType() + " " + (curParams.getSortAccending() ? "ASC" : "DESC"));
+		statementString += (" LIMIT " + curParams.getMoviePerPage() + " OFFSET " + offset);
 		statementString += ";";
 		PreparedStatement statement = connection.prepareStatement(statementString);
 		ResultSet results = statement.executeQuery();
-		ArrayList<Movie> output = new ArrayList<Movie>();
-		while (results.next()) {
-			Movie newMovie = new Movie();
-			newMovie.setTitle(results.getString("title"));
-			newMovie.setId(results.getInt("id"));
-			newMovie.setDirector(results.getString("director"));
-			newMovie.setYear(results.getInt("year"));
-			newMovie.setBanner_url(results.getString("banner_url"));
-			newMovie.setTrailer_url(results.getString("trailer"));
-			output.add(newMovie);
+		LinkedHashMap<Integer, Movie> output = new LinkedHashMap<Integer, Movie>();
 
-		}
+		populate_list(output, results);
 		results.close();
 		statement.close();
 		return output;
@@ -200,8 +186,11 @@ public class dbFunctions
 		{
 			tempOutput.add(rs.getString(1));
 		}
+		rs.close();
+		ps.close();
 		return tempOutput;
 	}
+	
 	public HashSet<String> getStarFromMovieId(Integer id) throws SQLException 
 	{
 		String query = "select CONCAT(first_name, ' ', last_name) as name FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id"
@@ -213,6 +202,8 @@ public class dbFunctions
 		{
 			tempOutput.add(rs.getString(1));
 		}
+		rs.close();
+		ps.close();
 		return tempOutput;
 	}
 	
@@ -275,14 +266,15 @@ public class dbFunctions
 		add_ps_parameters(ps, curSearch);
 		ResultSet rs = ps.executeQuery();
 		populate_list(movie_list, rs);
-
+		rs.close();
+		ps.close();
 		return movie_list;
 	}
 
 	private void add_ps_parameters(PreparedStatement ps, SearchParameters curParams) throws SQLException {
 		int count = 1;
 		if (!"".equals(curParams.getTitle())) {
-			ps.setObject(count, "%" + curParams.getTitle() + "%");
+			ps.setObject(count, (curParams.getFromBrowse() ? "" : "%") + curParams.getTitle() +  "%");
 			++count;
 		}
 		if (!"".equals(curParams.getYear())) {

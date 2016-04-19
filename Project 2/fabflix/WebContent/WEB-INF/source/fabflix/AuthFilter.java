@@ -1,10 +1,7 @@
 package fabflix;
 
-// Import required java libraries
-import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.util.*;
 
 // Implements Filter class
 public class AuthFilter implements Filter  {

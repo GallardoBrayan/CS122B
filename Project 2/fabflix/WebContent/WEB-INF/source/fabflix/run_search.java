@@ -13,7 +13,8 @@ public class run_search extends HttpServlet
     {
     	HttpSession sess = request.getSession();
     	SearchParameters curSearch = (SearchParameters) sess.getAttribute("curSearch");
-    	if(curSearch == null)
+ 
+    	if(request.getParameter("browse") != null || curSearch == null)
     	{
     		curSearch = new SearchParameters();
     		curSearch.setTitle(request.getParameter("title"));
@@ -22,6 +23,12 @@ public class run_search extends HttpServlet
     		curSearch.setFirstName(request.getParameter("first_name"));
     		curSearch.setLastName(request.getParameter("last_name"));
     	}
+    	if(request.getParameter("browse") != null )
+    	{
+    		sess.setAttribute("movie_list", null);
+    		curSearch.setFromBrowse(true);
+    	}
+
     	if(sess.getAttribute("movie_list") == null)
     	{
     		curSearch.setSortType("title");
@@ -49,15 +56,31 @@ public class run_search extends HttpServlet
     		curSearch.setCurrentPage((String)request.getParameter("page_number"));
     	}
 
+    	if(request.getParameter("genre") != null )
+		{
+			curSearch.setByTitle(false);
+			curSearch.setGenre(request.getParameter("genre"));
+	
+		}
+    	
     	//If the user just changed a sorting, we can use the search critera that is already stored in session.
 	
   		dbFunctions movie_actions = new dbFunctions();
   		
   		LinkedHashMap<Integer,Movie> movie_list = new LinkedHashMap<Integer,Movie>();
+    		
     	try
     	{
     		movie_actions.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
-    		movie_list = movie_actions.search_movies(curSearch);
+    		if( curSearch.getFromBrowse() && ! curSearch.getByTitle())
+	    	{
+    			movie_list = movie_actions.getMoviesByGenre(curSearch);
+	    	}
+	    	else
+	    	{
+	    		
+	    		movie_list = movie_actions.search_movies(curSearch);
+	    	}
     	}
     	catch(Exception e)
     	{
