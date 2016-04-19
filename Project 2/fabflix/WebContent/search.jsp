@@ -12,6 +12,7 @@
 
 <% 
 	session.setAttribute("movie_list", null);
+	session.setAttribute("curSearch", null);
 %>
 
   <form action="run_search" method="get">

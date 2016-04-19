@@ -27,15 +27,13 @@
 %>
 Results shown per page: <%=curSearch.getMoviePerPage()%>
 <form action="run_search" method="get">
-  Select Amount of results shown per page: <select name="movies_per_page">
-  	<option selected="selected" disabled="disabled">Select a value</option>
+  Select Amount of results shown per page: <select name="movies_per_page" onchange="this.form.submit()">
+  	<option selected="selected" disabled="disabled" >Select a value</option>
     <option value="10">10</option>
     <option value="25">25</option>
     <option value="50">50</option>
     <option value="100">100</option>
   </select>
-  <br><br>
-  <input type="submit">
 </form>
 
 <table border="1">

@@ -2,7 +2,8 @@ package fabflix;
 
 import java.util.HashSet;
 
-public class Movie 
+@SuppressWarnings("serial")
+public class Movie implements java.io.Serializable
 {
 	private int id;
 	private String title;

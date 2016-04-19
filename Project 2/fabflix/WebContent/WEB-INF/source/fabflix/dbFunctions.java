@@ -2,14 +2,11 @@ package fabflix;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-public class dbFunctions {
+public class dbFunctions 
+{
 	private Connection connection;
 
 	/**
@@ -22,97 +19,21 @@ public class dbFunctions {
 	 * @param pass
 	 *            - mysql password
 	 */
-	public void make_connection(String path, String user_name, String pass) throws Exception {
+	public void make_connection(String path, String user_name, String pass) throws Exception 
+	{
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 		connection = DriverManager.getConnection(path, user_name, pass);
 	}
 
-	public DatabaseMetaData get_metadata() throws Exception {
+	public DatabaseMetaData get_metadata() throws Exception 
+	{
 		return connection.getMetaData();
 	}
 
-	public ResultSet select(String stmt) throws Exception {
-		Statement select = connection.createStatement();
-		ResultSet results = select.executeQuery(stmt);
-		return results;
-	}
-
-	public ResultSet raw_select(String stmt) throws Exception {
-		Statement select = connection.createStatement();
-		ResultSet results = select.executeQuery(stmt);
-		// select.close();
-		return results;
-	}
-
-	public int raw_update(String stmt) throws Exception {
-		Statement update = connection.createStatement();
-		int results = update.executeUpdate(stmt);
-		update.close();
-		return results;
-	}
-
-	public int update(String stmt, String[] args) throws Exception {
-		PreparedStatement update = connection.prepareStatement(stmt);
-		for (int i = 1; i <= args.length; ++i) {
-			update.setObject(i, args[i - 1]);
-		}
-		int results = 0;
-
-		try {
-			results = update.executeUpdate();
-		} catch (Exception ex) {
-
-			// Skip handling exception. Result will return that no rows were
-			// inserted
-			// System.out.println("Exception: ");
-			// System.out.println(ex.getMessage());
-		}
-
-		update.close();
-		return results;
-
-	}
-
-	public ArrayList<Map<String, Object>> selectUsing(String table, String columns, String values) throws SQLException {
-
-		String statementString = "SELECT * FROM " + table;
-		List<String> listOfColums = Arrays.asList(columns.split(","));
-		List<String> listOfvalues = Arrays.asList(values.split(","));
-		if (listOfColums.size() > 0) {
-			statementString += " WHERE " + listOfColums.get(0) + "=" + listOfvalues.get(0);
-			for (int i = 0; i < listOfColums.size(); i++) {
-
-				statementString += " AND " + listOfColums.get(i) + "=" + listOfvalues.get(i);
-			}
-		}
-		statementString += ";";
-		PreparedStatement statement = connection.prepareStatement(statementString);
-		ResultSet results = statement.executeQuery();
-		ArrayList<Map<String, Object>> output = new ArrayList<Map<String, Object>>();
-		ResultSetMetaData rsmd = results.getMetaData();
-		int numCol = rsmd.getColumnCount();
-		ArrayList<String> coulumNames = new ArrayList<String>();
-		for (int i = 1; i <= numCol; i++) {
-			coulumNames.add(rsmd.getColumnLabel(i));
-		}
-		while (results.next()) {
-
-			Map<String, Object> temp = new TreeMap<String, Object>();
-			for (String currCol : coulumNames) {
-				temp.put(currCol, results.getObject(currCol));
-			}
-			output.add(temp);
-
-		}
-		results.close();
-		statement.close();
-		return output;
-	}
-
-	public void close() {
+	public void close() 
+	{
 		try {
 			if (connection != null)
-
 				connection.close();
 		} catch (SQLException e) {
 			System.out.println("Warning:The database connection was not closed properly.");
@@ -249,22 +170,22 @@ public class dbFunctions {
 		return output;
 	}
 
-	public Boolean add_constraint(StringBuilder query, String column, String cond_operator, boolean is_first) {
+	private Boolean add_constraint(StringBuilder query, String column, String cond_operator, boolean is_first) {
 		if (!is_first) {
 			query.append(" " + cond_operator + " ");
-			is_first = false;
 		}
-		query.append(column + " = ?");
+		is_first = false;
+		query.append(column + " LIKE ?");
 		return is_first;
 	}
 
-	public Boolean add_constraint(StringBuilder query, String column, String cond_operator, String start_wrap, String end_wrap,
+	private Boolean add_constraint(StringBuilder query, String column, String cond_operator, String start_wrap, String end_wrap,
 			Boolean is_first) {
 		if (!is_first) {
 			query.append(" " + cond_operator + " ");
-			is_first = false;
 		}
-		query.append(start_wrap + column + " = ?" + end_wrap);
+		is_first = false;
+		query.append(start_wrap + column + " LIKE ?" + end_wrap);
 		return is_first;
 	}
 
@@ -295,7 +216,7 @@ public class dbFunctions {
 		return tempOutput;
 	}
 	
-	public void populate_list(LinkedHashMap<Integer, Movie> ret_movies, ResultSet rs) throws Exception {
+	private void populate_list(LinkedHashMap<Integer, Movie> ret_movies, ResultSet rs) throws Exception {
 		while (rs.next()) {
 			Integer movie_id = rs.getInt("id");
 
@@ -308,7 +229,7 @@ public class dbFunctions {
 
 	}
 
-	public void build_query(StringBuilder query, SearchParameters curParams) {
+	private void build_query(StringBuilder query, SearchParameters curParams) {
 		Boolean is_first = true;
 		if (!"".equals(curParams.getTitle())) {
 			is_first = add_constraint(query, "title", "AND", is_first);
@@ -361,34 +282,34 @@ public class dbFunctions {
 	private void add_ps_parameters(PreparedStatement ps, SearchParameters curParams) throws SQLException {
 		int count = 1;
 		if (!"".equals(curParams.getTitle())) {
-			ps.setObject(count, curParams.getTitle());
+			ps.setObject(count, "%" + curParams.getTitle() + "%");
 			++count;
 		}
 		if (!"".equals(curParams.getYear())) {
-			ps.setObject(count, curParams.getYear());
+			ps.setObject(count, "%" + curParams.getYear()+ "%");
 			++count;
 		}
 		if (!"".equals(curParams.getDirector())) {
-			ps.setObject(count, curParams.getDirector());
+			ps.setObject(count,"%" + curParams.getDirector()+ "%");
 			++count;
 
 		}
 		if (!"".equals(curParams.getFirstName())) {
 			if (!"".equals(curParams.getLastName())) {
-				ps.setObject(count, curParams.getFirstName());
+				ps.setObject(count, "%" +curParams.getFirstName()+ "%");
 				++count;
-				ps.setObject(count, curParams.getLastName());
+				ps.setObject(count,"%" + curParams.getLastName()+ "%");
 				++count;
 			} else {
-				ps.setObject(count, curParams.getFirstName());
+				ps.setObject(count,"%" + curParams.getFirstName()+ "%");
 				++count;
-				ps.setObject(count, curParams.getFirstName());
+				ps.setObject(count, "%" +curParams.getFirstName()+ "%");
 				++count;
 			}
 		} else if (!"".equals(curParams.getLastName())) {
-			ps.setObject(count, curParams.getLastName());
+			ps.setObject(count, "%" +curParams.getLastName()+ "%");
 			++count;
-			ps.setObject(count, curParams.getLastName());
+			ps.setObject(count,"%" + curParams.getLastName()+ "%");
 			++count;
 		}
 		

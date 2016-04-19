@@ -12,6 +12,7 @@ public class SearchParameters
 	private String moviePerPage = "";
 	private String currentPage= "";
 	private Boolean sortAccending = true;
+	
 	/**
 	 * @param title
 	 * @param year
@@ -48,7 +49,7 @@ public class SearchParameters
 	 * @param title the title to set
 	 */
 	public void setTitle(String title) {
-		this.title = title;
+		this.title = title == null ? "" : title;
 	}
 	/**
 	 * @return the year
@@ -60,7 +61,7 @@ public class SearchParameters
 	 * @param year the year to set
 	 */
 	public void setYear(String year) {
-		this.year = year;
+		this.year = year == null ? "" : year;
 	}
 	/**
 	 * @return the director
@@ -72,7 +73,7 @@ public class SearchParameters
 	 * @param director the director to set
 	 */
 	public void setDirector(String director) {
-		this.director = director;
+		this.director = director  == null ? "" : director;
 	}
 	/**
 	 * @return the fristName
@@ -84,7 +85,7 @@ public class SearchParameters
 	 * @param fristName the fristName to set
 	 */
 	public void setFirstName(String fristName) {
-		this.firstName = fristName;
+		this.firstName = fristName  == null ? "" : fristName;
 	}
 	/**
 	 * @return the lastName
@@ -96,7 +97,7 @@ public class SearchParameters
 	 * @param lastName the lastName to set
 	 */
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.lastName = lastName  == null ? "" : lastName;
 	}
 	/**
 	 * @return the sortType
@@ -108,7 +109,7 @@ public class SearchParameters
 	 * @param sortType the sortType to set
 	 */
 	public void setSortType(String sortType) {
-		this.sortType = sortType;
+		this.sortType = sortType  == null ? "" : sortType;
 	}
 	/**
 	 * @return the moviePerPage
@@ -120,7 +121,7 @@ public class SearchParameters
 	 * @param moviePerPage the moviePerPage to set
 	 */
 	public void setMoviePerPage(String moviePerPage) {
-		this.moviePerPage = moviePerPage;
+		this.moviePerPage = moviePerPage  == null ? "" : moviePerPage;
 	}
 	/**
 	 * @return the currentPage
@@ -132,7 +133,7 @@ public class SearchParameters
 	 * @param currentPage the currentPage to set
 	 */
 	public void setCurrentPage(String currentPage) {
-		this.currentPage = currentPage;
+		this.currentPage = currentPage  == null ? "" : currentPage;
 	}
 	/**
 	 * @return the sortAccending
@@ -144,6 +145,6 @@ public class SearchParameters
 	 * @param sortAccending the sortAccending to set
 	 */
 	public void setSortAccending(Boolean sortAccending) {
-		this.sortAccending = sortAccending;
+		this.sortAccending = sortAccending  == null ? true : sortAccending;
 	}
 }
