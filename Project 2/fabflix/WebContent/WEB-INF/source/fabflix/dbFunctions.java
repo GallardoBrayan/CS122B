@@ -40,6 +40,20 @@ public class dbFunctions
 		}
 	}
 
+	public Movie returnMovieFromID(Integer movie_id) throws SQLException 
+	{
+		Movie to_return = null;
+		String stmt = "SELECT * from movies WHERE id = " + movie_id.toString();
+		PreparedStatement ps = connection.prepareStatement(stmt);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next())
+		{
+			to_return  = new Movie(movie_id, rs.getString("title"), rs.getInt("year"), rs.getString("director"),
+						rs.getString("banner_url"), rs.getString("trailer"),  getGenreFromMovieId(movie_id),
+						getStarFromMovieId(movie_id));
+		}
+		return to_return;	
+	}
 	public int countMovieByTilte(String letterOfTitle) throws SQLException {
 		String statementString = "SELECT COUNT(*) FROM movies";
 		if (!"".equals(letterOfTitle)) {

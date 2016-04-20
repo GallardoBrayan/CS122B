@@ -57,6 +57,19 @@
     <servlet-name>run_searchServlet</servlet-name>
     <url-pattern>/run_search</url-pattern>
   </servlet-mapping>
+  
+  
+  
+  <servlet>
+    <servlet-name>CartServlet</servlet-name>
+    <servlet-class>fabflix.CartServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CartServlet</servlet-name>
+    <url-pattern>/CartServlet</url-pattern>
+  </servlet-mapping>
+  
+  
   <servlet>
     <description></description>
     <display-name>movie_list</display-name>
@@ -66,5 +79,15 @@
   <servlet-mapping>
     <servlet-name>movie_list</servlet-name>
     <url-pattern>/movie_list</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>cart</display-name>
+    <servlet-name>cart</servlet-name>
+    <jsp-file>/cart.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>cart</servlet-name>
+    <url-pattern>/cart</url-pattern>
   </servlet-mapping>
 </web-app>

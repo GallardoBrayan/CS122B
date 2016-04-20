@@ -124,6 +124,9 @@
 						out.print(outputString);
 				%>
 			</td>
+			<td>
+			<a href="/CartServlet?id=<%id%>">Add To Cart</a>
+			</td>
 		</tr>
 
 		<%
