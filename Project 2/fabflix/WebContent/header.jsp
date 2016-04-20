@@ -7,22 +7,22 @@
 <div class="logo_area">
 <div style="float:left">
 
-<img src="/fabflix/resources/logo.png" height="42" width="42">
+<img src="resources/logo.png" height="42" width="42">
     Fabflix
-  <a href="/fabflix/search.jsp">Search</a>
-<a href="/fabflix/Browse.jsp">Browse</a>
+  <a href="search">Search</a>
+<a href="Browse">Browse</a>
 </div>
 <div style="float:right">
 
     <%if(session.getAttribute("userToken") == null) 
     {%>
-   <a href="/fabflix/login.jsp">Login</a>
+   <a href="Login">Login</a>
     <% }
     else
     	{
     	User currentUser = (User) session.getAttribute("userToken");
     %>
-   <%out.print(currentUser.getFirst_name() + "  " + currentUser.getLast_name()); %> ( Logout )
+   <%=currentUser.getFirst_name() + "  " + currentUser.getLast_name()%> ( Logout )
     Cart
     <%} %>
 

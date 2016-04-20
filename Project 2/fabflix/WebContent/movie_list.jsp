@@ -21,6 +21,7 @@
 <body>
 	<h3>Movie_list</h3>
 	<%
+	 
 		SearchParameters curSearch = (SearchParameters) session.getAttribute("curSearch");
 		if (curSearch.getFromBrowse()) {
 			if (curSearch.getByTitle()) {
@@ -101,7 +102,7 @@
 		<tr>
 			<td><img height="42" width="42" src="<%=movie.getBanner_url()%>"></td>
 			<td><%=id%></td>
-			<td><%=movie.getTitle()%></td>
+			<td><a href="getMovie?movieid=<%=id %>"><%=movie.getTitle()%></a></td>
 			<td><%=movie.getYear()%></td>
 			<td><%=movie.getDirector()%></td>
 			<td>
@@ -135,6 +136,14 @@
 		%>
 	</table>
 
+<% int page_number = Integer.parseInt(curSearch.getCurrentPage());
+if(page_number > 0){%>
+<a href = "run_search?page_number=<%=page_number-1%>" >Prev</a>
+<% }%>
+<p>Current Page :<%=page_number+1%><p></br>
+<%if(movie_list.size() >= Integer.parseInt(curSearch.getMoviePerPage())){%>
+<a href = "run_search?page_number=<%=page_number+1%>" >Next</a>
+<% } %>
 </body>
 <%@ include file="/footer.jsp"%>
 </html>

@@ -1,12 +1,8 @@
 package fabflix;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import java.util.*;
 
 
-@SuppressWarnings("serial")
 public class Cart
 {
 	private HashMap<Integer, CartItem> basket = new HashMap<Integer, CartItem>();
