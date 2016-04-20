@@ -59,6 +59,7 @@ public class dbFunctions
 		}
 		return to_return;	
 	}
+	
 	public int countMovieByTilte(String letterOfTitle) throws SQLException {
 		String statementString = "SELECT COUNT(*) FROM movies";
 		if (!"".equals(letterOfTitle)) {
