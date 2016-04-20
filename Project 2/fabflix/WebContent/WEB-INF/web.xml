@@ -57,9 +57,6 @@
     <servlet-name>run_searchServlet</servlet-name>
     <url-pattern>/run_search</url-pattern>
   </servlet-mapping>
-  
-  
-  
   <servlet>
     <servlet-name>CartServlet</servlet-name>
     <servlet-class>fabflix.CartServlet</servlet-class>
@@ -68,8 +65,6 @@
     <servlet-name>CartServlet</servlet-name>
     <url-pattern>/CartServlet</url-pattern>
   </servlet-mapping>
-  
-  
   <servlet>
     <description></description>
     <display-name>movie_list</display-name>
