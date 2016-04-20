@@ -117,7 +117,8 @@
 			<td>
 				<%
 					outputString = "";
-						for (String star : movie.getStars()) {
+						for (String star : movie.getStars())
+						{
 							outputString += star + ", ";
 						}
 						outputString = outputString.substring(0, outputString.length() - 2);
@@ -125,7 +126,7 @@
 				%>
 			</td>
 			<td>
-			<a href="/CartServlet?id=<%id%>">Add To Cart</a>
+			<a href="CartServlet?movie_id=<%=id%>">Add To Cart</a>
 			</td>
 		</tr>
 

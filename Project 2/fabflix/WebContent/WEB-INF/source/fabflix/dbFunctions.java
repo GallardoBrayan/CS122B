@@ -30,6 +30,11 @@ public class dbFunctions
 		return connection.getMetaData();
 	}
 
+	public double getMoviePrice(Integer movie_id)
+	{
+		return 15.99;
+	}
+	
 	public void close() 
 	{
 		try {

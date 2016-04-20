@@ -24,18 +24,18 @@
 <td><%=item.getMovieTitle()%></td>
 <td><%=item.getPrice()%></td>
 <td>
-<form action="/cartServlet" name="cartOperation">
+<form action="CartServlet" name="cartOperation">
 <input type="hidden" name="movie_id" value="<%=item.getMovieID()%>"></input>
 <input type="text" value="<%=item.getQty()%>" name="qty"></input>
-<input type="submit" value="Update" name="update">
-<input type="submit" value="Remove" name="Remove">
+<input type="submit" value="Update" name="cartOp">
+<input type="submit" value="Remove" name="cartOp">
 </form>
 </td>
 </tr>
 <%} %>
 </table>
 
-
+<a href="#">Checkout </a><a href="CartServlet?cartOp=empty_cart">Empty Cart</a>
 </body>
 
 
