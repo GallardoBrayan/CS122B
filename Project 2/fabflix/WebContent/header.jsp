@@ -17,7 +17,13 @@
     <%if(session.getAttribute("userToken") == null) 
     {%>
    <a href="Login">Login</a>
-    <% }
+    <%
+    	String url = request.getRequestURL().toString();
+    	if(!url.toLowerCase().contains("login"))
+    	{
+    		response.sendRedirect("Login");
+    	}
+    }
     else
     	{
     	User currentUser = (User) session.getAttribute("userToken");

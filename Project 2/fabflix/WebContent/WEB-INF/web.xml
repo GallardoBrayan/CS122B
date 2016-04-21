@@ -62,6 +62,14 @@
     <url-pattern>/CartServlet</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>LoginHandler</servlet-name>
+    <servlet-class>fabflix.LoginHandler</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginHandler</servlet-name>
+    <url-pattern>/LoginHandler</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <description></description>
     <display-name>movie_list</display-name>
     <servlet-name>movie_list</servlet-name>
