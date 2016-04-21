@@ -29,7 +29,8 @@
     	User currentUser = (User) session.getAttribute("userToken");
     %>
    <%=currentUser.getFirst_name() + "  " + currentUser.getLast_name()%> ( <a href="LoginHandler?logout=1"> Logout </a> )
-    <a href="cart"> Cart</a>
+    <a href="cart"> Cart </a>
+    (<a href="Checkout">Checkout</a>)
     <%} %>
 
 </div>
