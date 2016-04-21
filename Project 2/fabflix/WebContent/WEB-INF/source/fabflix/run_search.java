@@ -13,9 +13,10 @@ public class run_search extends HttpServlet
     {
     	HttpSession sess = request.getSession();
     	SearchParameters curSearch = (SearchParameters) sess.getAttribute("curSearch");
- 
-    	if(request.getParameter("browse") != null || curSearch == null)
+    	String str = request.getParameter("submit");
+    	if(request.getParameter("submit") != null)
     	{
+    		sess.setAttribute("movie_list", null);
     		curSearch = new SearchParameters();
     		curSearch.setTitle(request.getParameter("title"));
     		curSearch.setYear(request.getParameter("year"));

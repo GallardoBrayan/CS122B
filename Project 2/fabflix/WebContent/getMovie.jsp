@@ -52,19 +52,25 @@
 		<tr>
 			<td>Stars:</td>
 			<td><%
-						String outputString = "";
-								for (String star : movieToDispay.getStars()) {
-									outputString += star + ", ";
-								}
-								if(outputString.contains(","))
-									outputString = outputString.substring(0, outputString.length() - 2);
-								out.print(outputString);
-					%></td>
+				
+						int i = 1;
+						for (String star : movieToDispay.getStars())
+						{
+							%>
+							<a href="getStar?movieid=<%=movieToDispay.getId()%>&star_name=<%=star%>"><%=star%></a>
+						<%
+							if(!(i == movieToDispay.getStars().size()))
+							{
+								out.print(", ");
+							}
+							++i;
+						}
+				%></td>
 		</tr>
 		<tr>
 			<td>Genre:</td>
 			<td><%
-						outputString = "";
+						String outputString = "";
 								for (String Genre : movieToDispay.getGenres()) {
 									outputString += Genre + ", ";
 								}
