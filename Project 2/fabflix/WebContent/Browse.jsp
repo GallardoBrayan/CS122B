@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Browse Movie Titles</title>
-<%@ include file="/header.jsp"%>
+<%@ include file="header.jsp"%>
 </head>
 <body>
 	<% 
@@ -40,5 +40,5 @@
 		</div>
 	</div>
 </body>
-<%@ include file="/footer.jsp"%>
+<%@ include file="footer.jsp"%>
 </html>

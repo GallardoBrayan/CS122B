@@ -11,18 +11,10 @@
 
 	<%
 		User userToLogin = (User) session.getAttribute("userToken");
-		if (userToLogin == null && request.getParameter("username") != null) {
-			userToLogin = dbConnection.loginToFabFlix(request.getParameter("username"),
-					request.getParameter("pass"));
-			response.addHeader("Refresh","0"); 
-		}
 		if (userToLogin == null) {
-			request.getSession().setAttribute("error", "loginError");
-			response.sendRedirect("login.jsp");
-			 
-		} else
-		{
-		request.getSession().setAttribute("userToken", userToLogin);
+			userToLogin = new User();
+			response.sendRedirect("Login");
+		}
 	%>
 	<div align="center">
 		<table>
@@ -34,7 +26,7 @@
 			<tr>
 				<th>
 					<div align="center">
-						Welcome to FablFlix <b><%=userToLogin.getFirst_name()%></b>
+						Hello <b><%=userToLogin.getFirst_name()%>!</b> <br>Welcome to FablFlix!
 					</div>
 				</th>
 			</tr>
@@ -64,6 +56,5 @@
 			</tr>
 		</table>
 	</div>
-<% } %>
 </body>
 </html>

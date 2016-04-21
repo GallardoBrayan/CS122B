@@ -27,7 +27,7 @@
 			}
 			if (movieToDispay != null) {
 	%>
-	<table border="2">
+	<table border="2" align="center">
 		<tr>
 			<td rowspan="7"><img src="<%=movieToDispay.getBanner_url()%>" alt="">
 			</td>
@@ -56,7 +56,8 @@
 								for (String star : movieToDispay.getStars()) {
 									outputString += star + ", ";
 								}
-								outputString = outputString.substring(0, outputString.length() - 2);
+								if(outputString.contains(","))
+									outputString = outputString.substring(0, outputString.length() - 2);
 								out.print(outputString);
 					%></td>
 		</tr>
@@ -67,12 +68,14 @@
 								for (String Genre : movieToDispay.getGenres()) {
 									outputString += Genre + ", ";
 								}
-								outputString = outputString.substring(0, outputString.length() - 2);
+								if(outputString.contains(","))
+									outputString = outputString.substring(0, outputString.length() - 2);
 								out.print(outputString);
 					%></td>
 		</tr>
 		<tr>
 			<td>Price:</td><td> $<%=dbConnection.getMoviePrice(movieid)%></td>
+			<td><a href="CartServlet?movie_id=<%=movieid%>">Add To Cart</a></td>
 		</tr>
 
 	</table>

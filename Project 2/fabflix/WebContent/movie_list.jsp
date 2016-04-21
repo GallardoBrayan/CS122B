@@ -111,7 +111,8 @@
 						for (String genre : movie.getGenres()) {
 							outputString += genre + ", ";
 						}
-						outputString = outputString.substring(0, outputString.length() - 2);
+						if(outputString.contains(","))
+							outputString = outputString.substring(0, outputString.length() - 2);
 						out.print(outputString);
 				%>
 			</td>
@@ -122,6 +123,7 @@
 						{
 							outputString += star + ", ";
 						}
+						if(outputString.contains(","))
 						outputString = outputString.substring(0, outputString.length() - 2);
 						out.print(outputString);
 				%>

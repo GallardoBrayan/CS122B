@@ -32,7 +32,7 @@
 			<legend>Existing Member Sign In:</legend>
 
 			<div id="form_div">
-				<form action="MainPage" method="post">
+				<form action="LoginHandler" method="post">
 					<table style="font-size: small">
 						<tr>
 							<td width="35">&nbsp;</td>
