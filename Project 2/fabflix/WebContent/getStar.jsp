@@ -25,9 +25,7 @@
 			String last_name = full_name.substring(full_name.indexOf(" ") + 1);
 
 			Star star = dbConnection.getStarFromMovieIdAndName(movieid, first_name, last_name);
-			
-			
-			
+			String star_full_name = star.getFirst_name() + " " + star.getLast_name();
 	%>
 	<table border="2">
 		<tr>
@@ -37,7 +35,8 @@
 
 		<tr>
 			<td>Name:</td>
-			<td><%=star.getFirst_name()+ " " + star.getLast_name()%></td>
+			<td><%=star_full_name%></td>
+		
 		</tr>
 		<tr>
 			<td>Date of Birth:</td>
@@ -52,7 +51,7 @@
 			<td><%
 								for (Map.Entry<Integer ,String> pair : star.getMovies().entrySet()) {
 				%>
-						<a href="getMoive?movie_id=<%=pair.getKey()%>"><%=pair.getValue()%></a>
+						<a href="getMovie?movieid=<%=pair.getKey()%>"><%=pair.getValue()%></a></br>
 				<%
 								}
 					%></td>

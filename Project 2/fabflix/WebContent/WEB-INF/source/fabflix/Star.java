@@ -13,7 +13,7 @@ public class Star implements java.io.Serializable
 	private String last_name;
 	private String photo_url;
 	private HashMap<Integer, String> movies;
-	public Star(Integer id, String dob, String first_name, String last_name, String photo_url, HashMap<Integer, String> movies)
+	public Star(Integer id,  String first_name, String last_name, String dob, String photo_url, HashMap<Integer, String> movies)
 	{
 		super();
 		this.id = id;
