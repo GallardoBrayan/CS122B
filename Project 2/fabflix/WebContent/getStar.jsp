@@ -5,21 +5,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>FabFlix > Movie Details</title>
-<%@ include file="/header.jsp"%>
+<%@ include file="header.jsp"%>
+
 </head>
 <body>
 	<%
 		Integer movieid = null;
 		String full_name = request.getParameter("star_name");
-		try{
+		try {
 			movieid = Integer.parseInt(request.getParameter("movieid"));
 
-		}catch (Exception e)
-		{
+		} catch (Exception e) {
 			movieid = null;
 			full_name = null;
 		}
-	
+
 		if (movieid != null && full_name != null) {
 			String first_name = full_name.substring(0, full_name.indexOf(" "));
 			String last_name = full_name.substring(full_name.indexOf(" ") + 1);
@@ -36,7 +36,7 @@
 		<tr>
 			<td>Name:</td>
 			<td><%=star_full_name%></td>
-		
+
 		</tr>
 		<tr>
 			<td>Date of Birth:</td>
@@ -48,26 +48,25 @@
 		</tr>
 		<tr>
 			<td>Starred In:</td>
-			<td><%
-								for (Map.Entry<Integer ,String> pair : star.getMovies().entrySet()) {
-				%>
-						<a href="getMovie?movieid=<%=pair.getKey()%>"><%=pair.getValue()%></a></br>
+			<td>
 				<%
-								}
-					%></td>
+					for (Map.Entry<Integer, String> pair : star.getMovies().entrySet()) {
+				%> <a href="getMovie?movieid=<%=pair.getKey()%>"><%=pair.getValue()%></a><br>
+				<%
+					}
+				%>
+			</td>
 		</tr>
 	</table>
 	<%
 		}
-		
-		else
-		{
-			%>
-	<h2>
-		No Star Found</h2>
-	<% 
+
+		else {
+	%>
+	<h2>No Star Found</h2>
+	<%
 		}
 	%>
 </body>
-<%@ include file="/footer.jsp"%>
+<%@ include file="footer.jsp"%>
 </html>

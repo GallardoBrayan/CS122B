@@ -1,13 +1,11 @@
 package fabflix;
 
 import java.sql.*;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.Calendar;
 
 public class dbFunctions 
 {

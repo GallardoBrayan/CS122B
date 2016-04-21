@@ -119,4 +119,14 @@
     <servlet-name>getStar</servlet-name>
     <url-pattern>/getStar</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>checkout</display-name>
+    <servlet-name>checkout</servlet-name>
+    <jsp-file>/checkout.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>checkout</servlet-name>
+    <url-pattern>/checkout</url-pattern>
+  </servlet-mapping>
 </web-app>

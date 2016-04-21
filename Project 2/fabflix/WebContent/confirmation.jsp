@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Search for a Movie</title>
-<%@ include file="/header.jsp" %>
+<%@ include file="header.jsp" %>
 </head>
 <body>
 <center><h3>Confirmation</h3></center>
@@ -13,10 +13,11 @@
 String message = (String)session.getAttribute("sale_success_message");
 		if(message == null)
 		{
-			response.sendRedirect("MainPage.jsp");
+			response.sendRedirect("MainPage");
 		}
 %>
 <h1><%=message%></h1>
 <a href="search" style="margin-right:10px;">Return to Search</a><a href="Browse">Return to Browse</a>
 </body>
+<%@ include file="footer.jsp" %>
 </html>

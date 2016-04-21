@@ -5,20 +5,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>FabFlix > Movie Details</title>
-<%@ include file="/header.jsp"%>
+<%@ include file="header.jsp"%>
+<%! @SuppressWarnings("unchecked") %>
 </head>
 <body>
 	<%
 		Integer movieid = null;
-		try{
+		try {
 			movieid = Integer.parseInt(request.getParameter("movieid"));
-		}catch (Exception e)
-		{
+		} catch (Exception e) {
 			movieid = null;
 		}
-	
+
 		if (movieid != null) {
-			LinkedHashMap<Integer, Movie> movie_list = (LinkedHashMap<Integer, Movie>) session.getAttribute("movie_list");
+			LinkedHashMap<Integer, Movie> movie_list = (LinkedHashMap<Integer, Movie>) session
+					.getAttribute("movie_list");
 			Movie movieToDispay;
 			if (movie_list != null && movie_list.containsKey(movieid)) {
 				movieToDispay = movie_list.get(movieid);
@@ -29,8 +30,8 @@
 	%>
 	<table border="2" align="center">
 		<tr>
-			<td rowspan="7"><img src="<%=movieToDispay.getBanner_url()%>" alt="">
-			</td>
+			<td rowspan="7"><img src="<%=movieToDispay.getBanner_url()%>"
+				alt=""></td>
 		</tr>
 
 		<tr>
@@ -51,58 +52,57 @@
 		</tr>
 		<tr>
 			<td>Stars:</td>
-			<td><%
-				
-						int i = 1;
-						for (String star : movieToDispay.getStars())
-						{
-							%>
-							<a href="getStar?movieid=<%=movieToDispay.getId()%>&star_name=<%=star%>"><%=star%></a>
-						<%
-							if(!(i == movieToDispay.getStars().size()))
-							{
-								out.print(", ");
+			<td>
+				<%
+					int i = 1;
+							for (String star : movieToDispay.getStars()) {
+				%> <a
+				href="getStar?movieid=<%=movieToDispay.getId()%>&amp;star_name=<%=star%>"><%=star%></a>
+				<%
+					if (!(i == movieToDispay.getStars().size())) {
+									out.print(", ");
+								}
+								++i;
 							}
-							++i;
-						}
-				%></td>
+				%>
+			</td>
 		</tr>
 		<tr>
 			<td>Genre:</td>
-			<td><%
-						String outputString = "";
-								for (String Genre : movieToDispay.getGenres()) {
-									outputString += Genre + ", ";
-								}
-								if(outputString.contains(","))
-									outputString = outputString.substring(0, outputString.length() - 2);
-								out.print(outputString);
-					%></td>
+			<td>
+				<%
+					String outputString = "";
+							for (String Genre : movieToDispay.getGenres()) {
+								outputString += Genre + ", ";
+							}
+							if (outputString.contains(","))
+								outputString = outputString.substring(0, outputString.length() - 2);
+							out.print(outputString);
+				%>
+			</td>
 		</tr>
 		<tr>
-			<td>Price:</td><td> $<%=dbConnection.getMoviePrice(movieid)%></td>
+			<td>Price:</td>
+			<td>$<%=dbConnection.getMoviePrice(movieid)%></td>
 			<td><a href="CartServlet?movie_id=<%=movieid%>">Add To Cart</a></td>
 		</tr>
 
 	</table>
 	<%
 		}
-		
-		else
-		{
-			%>
+
+			else {
+	%>
 	<h2>
-		No Movie To Display with id =<%=movieid %></h2>
-	<% 
+		No Movie To Display with id =<%=movieid%></h2>
+	<%
 		}
-	}
-		else
-		{
-			%>
-	<h2>No movieid provided</h2>
-	<% 
+		} else {
+	%>
+	<h2>No movie id provided</h2>
+	<%
 		}
 	%>
 </body>
-<%@ include file="/footer.jsp"%>
+<%@ include file="footer.jsp"%>
 </html>

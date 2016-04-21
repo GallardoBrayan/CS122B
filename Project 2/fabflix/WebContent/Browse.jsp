@@ -8,35 +8,40 @@
 <%@ include file="header.jsp"%>
 </head>
 <body>
-	<% 
-	session.setAttribute("movie_list", null);
-	session.setAttribute("curSearch", null);
-%>
-	<p>
+	<%
+		session.setAttribute("movie_list", null);
+		session.setAttribute("curSearch", null);
+	%>
+	<p></p>
 	<div class="atoz-content">
 		Browse by Title
 		<div class="atoz-letter">
-			<% for(int i= 0; i < 10 ; i++)
-			{
-		%>
-			<a href="run_search?browse=1&amp;title=<%= i %>"><%= i %></a>&nbsp;
-			<%  } 
-		for(char i = 'A'; i <= 'Z' ; i++)
-		{
-		%>
-			<a href="run_search?browse=1&amp;title=<%= i %>"><%= i %></a>&nbsp;
-			<% } %>
+			<%
+				for (int i = 0; i < 10; i++) {
+			%>
+			<a href="run_search?browse=1&amp;title=<%=i%>"><%=i%></a>&nbsp;
+			<%
+				}
+				for (char i = 'A'; i <= 'Z'; i++) {
+			%>
+			<a href="run_search?browse=1&amp;title=<%=i%>"><%=i%></a>&nbsp;
+			<%
+				}
+			%>
 		</div>
 	</div>
-	<p>
+	<p></p>
 	<div class="genre_list-content">
-	Browse by Genre
+		Browse by Genre
 		<div class="genre_list">
-			<%ArrayList<String> genreList = dbConnection.getGenreList(); 
-		for(String currentGenre : genreList)
-			{%>
-			<a href="run_search?browse=1&amp;genre=<%=currentGenre %>"><%=currentGenre %></a>&nbsp;
-			<%} %>
+			<%
+				ArrayList<String> genreList = dbConnection.getGenreList();
+				for (String currentGenre : genreList) {
+			%>
+			<a href="run_search?browse=1&amp;genre=<%=currentGenre%>"><%=currentGenre%></a>&nbsp;
+			<%
+				}
+			%>
 		</div>
 	</div>
 </body>

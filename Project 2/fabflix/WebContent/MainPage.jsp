@@ -25,7 +25,8 @@
 			<tr>
 				<th>
 					<div align="center">
-						Hello <b><%=userToLogin.getFirst_name()%>!</b> <br>Welcome to FablFlix!
+						Hello <b><%=userToLogin.getFirst_name()%>!</b> <br>Welcome to
+						FablFlix!
 					</div>
 				</th>
 			</tr>
@@ -56,4 +57,5 @@
 		</table>
 	</div>
 </body>
+<%@ include file="footer.jsp"%>
 </html>

@@ -3,8 +3,7 @@
  javax.sql.*,
  java.io.IOException,
  javax.servlet.http.*,
- javax.servlet.*"
- %>
+ javax.servlet.*"%>
 <style type="text/css">
 #form_div {
 	text-align: center;
@@ -14,7 +13,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>FabFlix</title>
-<%@ include file="/header.jsp"%>
+<%@ include file="header.jsp"%>
 </head>
 <body>
 	<h3>Fabflix Login</h3>
@@ -24,6 +23,11 @@
 			session.setAttribute("error", null);
 	%>
 	<h3>Invalid User name or password</h3>
+	<%
+		} else if ("mustLogin".equals(error)) {
+			session.setAttribute("error", null);
+	%>
+	<h3>You must login to access this site.</h3>
 	<%
 		}
 	%>
@@ -69,4 +73,5 @@
 		&nbsp;<br />
 	</div>
 </body>
+<%@ include file="footer.jsp"%>
 </html>

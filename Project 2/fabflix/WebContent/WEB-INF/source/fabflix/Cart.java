@@ -13,7 +13,6 @@ public class Cart
 	{
 		Double price = getMoviePrice(movie.getId());
 		add_to_basket(movie, price);
-		this.total += price;
 	}
 	
 	public Double getMoviePrice(Integer movie_id) throws Exception
