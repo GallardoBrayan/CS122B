@@ -9,6 +9,7 @@
 </head>
 <body>
 <center><h3>Cart</h3></center>
+<div class="form">
 <table>
 <tr>
 <th>Movie Title</th>
@@ -39,8 +40,13 @@
 </tr>
 <%} %>
 </table>
-
-<a href="checkout.jsp">Checkout </a><a href="CartServlet?cartOp=empty_cart">Empty Cart</a>
+<% 
+	NumberFormat formatter = new DecimalFormat("#0.00");
+	String tots = formatter.format(shopping_cart.get_total());
+%>
+<h3>Total: $<%=tots%></h3>
+</div>
+<a href="checkout.jsp" style="margin-right:10px;">Checkout </a><a href="CartServlet?cartOp=empty_cart">Empty Cart</a>
 </body>
 
 
