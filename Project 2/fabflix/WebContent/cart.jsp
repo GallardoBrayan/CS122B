@@ -17,6 +17,11 @@
 </tr>
 <%
 	Cart shopping_cart = (Cart)session.getAttribute("shopping_cart");
+	if(shopping_cart == null)
+	{
+		shopping_cart = new Cart();
+		session.setAttribute("shopping_cart",shopping_cart );
+	}
 	HashMap<Integer, CartItem> basket = shopping_cart.getBasket();
 %>
 <% for(CartItem item: basket.values()){%>

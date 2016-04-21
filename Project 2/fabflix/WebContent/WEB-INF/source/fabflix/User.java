@@ -1,11 +1,17 @@
 package fabflix;
 
 public class User {
-	private int id; 
-	private String first_name;  
-	private String last_name; 
-	private String  address;
-	private String email;
+	private int id = -1; 
+
+	private String first_name = "";  
+	private String last_name = ""; 
+	private String  address ="";
+	private String email= "";
+	/**
+	 * 
+	 */
+	public User() {
+	}
 	/**
 	 * @param id
 	 * @param first_name

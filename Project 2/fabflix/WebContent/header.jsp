@@ -7,8 +7,8 @@
 <div class="logo_area">
 <div style="float:left">
 
-<img src="resources/logo.png" height="42" width="42">
-    Fabflix
+<a href="MainPage"><img src="resources/logo.png" height="42" width="42">
+     Fabflix</a>
   <a href="search">Search</a>
 <a href="Browse">Browse</a>
 </div>
@@ -22,12 +22,12 @@
     	{
     	User currentUser = (User) session.getAttribute("userToken");
     %>
-   <%=currentUser.getFirst_name() + "  " + currentUser.getLast_name()%> ( Logout )
-    Cart
+   <%=currentUser.getFirst_name() + "  " + currentUser.getLast_name()%> ( <a href="LoginHandler?logout=1"> Logout </a> )
+    <a href="cart"> Cart</a>
     <%} %>
 
 </div>
 </div>
 
 <div style="clear: both;"></div>
-
+<hr>
