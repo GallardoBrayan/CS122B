@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class LoginHandler
  */
-@WebServlet(description = "New Method to handle logging in", urlPatterns = { "/LoginHandler" })
+
 public class LoginHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

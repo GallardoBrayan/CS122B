@@ -17,6 +17,6 @@ String message = (String)session.getAttribute("sale_success_message");
 		}
 %>
 <h1><%=message%></h1>
-<a href="cart.jsp" style="margin-right:10px">Return to Cart</a><a href="checkout.jsp">Return to Checkout</a>
+<a href="search" style="margin-right:10px">Return to Search</a><a href="Browse">Return to Browse</a>
 </body>
 </html>

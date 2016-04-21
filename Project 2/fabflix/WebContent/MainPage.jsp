@@ -13,7 +13,6 @@
 		User userToLogin = (User) session.getAttribute("userToken");
 		if (userToLogin == null) {
 			userToLogin = new User();
-			response.sendRedirect("Login");
 		}
 	%>
 	<div align="center">
