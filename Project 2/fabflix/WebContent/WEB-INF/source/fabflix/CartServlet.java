@@ -52,11 +52,18 @@ public class CartServlet extends HttpServlet
 			  sess.setAttribute("shopping_cart", new Cart());
 			  break;
 		  case "Update":
-			  int qty = Integer.parseInt(req.getParameter("qty"));
-			  Integer movie_id = Integer.parseInt(req.getParameter("movie_id"));
-			  Cart to_edit = (Cart)sess.getAttribute("shopping_cart");
-			  to_edit.setQty(movie_id, qty);
-			  sess.setAttribute("shopping_cart", to_edit);
+			  try{
+				  int qty = Integer.parseInt(req.getParameter("qty"));
+				  Integer movie_id = Integer.parseInt(req.getParameter("movie_id"));
+				  Cart to_edit = (Cart)sess.getAttribute("shopping_cart");
+				  to_edit.setQty(movie_id, qty);
+				  sess.setAttribute("shopping_cart", to_edit);
+			  }catch (Exception e)
+			  {
+				  //Had to throw this in so that way if user enters to large of a number
+				  //system won't crash
+			  }
+
 			  break;
 		  case "Remove":
 			  Integer moveid = Integer.parseInt(req.getParameter("movie_id"));
