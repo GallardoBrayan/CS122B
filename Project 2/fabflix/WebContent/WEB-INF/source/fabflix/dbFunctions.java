@@ -133,7 +133,7 @@ public class dbFunctions
 		Integer star_id = star_rs.getInt("id");
 		
 		PreparedStatement movie_ps = connection.prepareStatement(movies_info_stmt);
-		movie_ps.setObject(1, movie_id);
+		movie_ps.setObject(1, star_id);
 		ResultSet movie_rs = movie_ps.executeQuery();
 		HashMap<Integer, String> movies = new HashMap<Integer, String>();
 		

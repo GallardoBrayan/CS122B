@@ -11,6 +11,17 @@
 	<center>
 		<h3>Cart</h3>
 	</center>
+				<%
+				Cart shopping_cart = (Cart) session.getAttribute("shopping_cart");
+				if (shopping_cart == null || shopping_cart.get_item_count() == 0) {
+					shopping_cart = new Cart();
+				%>
+				<h3>No Items in Cart</h3>
+				<%
+					session.setAttribute("shopping_cart", shopping_cart);
+				}
+				else{
+				%>
 	<div class="form">
 		<table>
 			<tr>
@@ -19,14 +30,7 @@
 				<th>Qty</th>
 			</tr>
 			<%
-				Cart shopping_cart = (Cart) session.getAttribute("shopping_cart");
-				if (shopping_cart == null) {
-					shopping_cart = new Cart();
-					session.setAttribute("shopping_cart", shopping_cart);
-				}
-				HashMap<Integer, CartItem> basket = shopping_cart.getBasket();
-			%>
-			<%
+			    HashMap<Integer, CartItem> basket = shopping_cart.getBasket();
 				for (CartItem item : basket.values()) {
 			%>
 			<tr>
@@ -55,6 +59,7 @@
 	</div>
 	<a href="checkout.jsp" style="margin-right: 10px;">Checkout </a>
 	<a href="CartServlet?cartOp=empty_cart">Empty Cart</a>
+	<% }%>
 </body>
 
 
