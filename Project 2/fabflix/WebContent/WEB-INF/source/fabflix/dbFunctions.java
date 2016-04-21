@@ -1,9 +1,13 @@
 package fabflix;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Calendar;
 
 public class dbFunctions 
 {
@@ -45,6 +49,43 @@ public class dbFunctions
 		}
 	}
 
+	public void insert_sale(Cart cart, CustomerCheckout info) throws SQLException
+	{
+		String insert_stmt = "INSERT INTO sales (customer_id, movies_id, sale_date) VALUES (?,?,?)";
+		java.util.Date date = new java.util.Date();
+		PreparedStatement ps = connection.prepareStatement(insert_stmt);
+		
+		ps.setObject(1, info.getCustomer_id());
+		ps.setObject(3, new SimpleDateFormat("yyyy-MM-dd").format(date));
+		HashMap<Integer, CartItem> basket = cart.getBasket();
+		for(Integer movie_id: basket.keySet())
+		{
+			ps.setObject(2, movie_id);
+			ps.executeUpdate();
+		}
+
+	}
+	public boolean process_sale(Cart cart, CustomerCheckout info) throws SQLException
+	{
+		boolean success = false;
+		String stmt = "SELECT COUNT(id) FROM creditcards WHERE id = ? AND first_name = ? "
+				+ "AND last_name = ? AND expiration = ?";
+		PreparedStatement ps = connection.prepareStatement(stmt);
+		ps.setObject(1, info.getCc());
+		ps.setObject(2, info.getFirst_name());
+		ps.setObject(3, info.getLast_name());
+		ps.setObject(4, info.getExp_date());
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		if(rs.getInt(1) > 0) //Grab first column which is the count
+		{
+			success = true;
+			insert_sale(cart, info);
+		}
+		return success;
+		
+	}
 	public Movie returnMovieFromID(Integer movie_id) throws SQLException 
 	{
 		Movie to_return = null;
@@ -77,6 +118,38 @@ public class dbFunctions
 		return output;
 	}
 
+	public Star getStarFromMovieIdAndName(Integer movie_id, String first_name, String last_name) throws SQLException
+	{
+		String star_id_stmt = "SELECT stars.id, stars.dob, stars.photo_url FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id " +
+				"INNER JOIN movies ON movies.id = stars_in_movies.movies_id WHERE movies.id = ? AND stars.first_name = ? AND stars.last_name = ? LIMIT 1";
+		String movies_info_stmt = "SELECT movies.id, movies.title FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id "+
+			   "INNER JOIN movies ON movies.id = stars_in_movies.movies_id WHERE stars.id = ?";
+		
+		PreparedStatement star_ps = connection.prepareStatement(star_id_stmt);
+		star_ps.setObject(1, movie_id);
+		star_ps.setObject(2, first_name);
+		star_ps.setObject(3, last_name);
+		
+		ResultSet star_rs = star_ps.executeQuery(); 
+		star_rs.next();
+		Integer star_id = star_rs.getInt("id");
+		
+		PreparedStatement movie_ps = connection.prepareStatement(movies_info_stmt);
+		movie_ps.setObject(1, movie_id);
+		ResultSet movie_rs = movie_ps.executeQuery();
+		HashMap<Integer, String> movies = new HashMap<Integer, String>();
+		
+		while(movie_rs.next())
+		{
+			movies.put(movie_rs.getInt("id"), movie_rs.getString("title"));
+		}
+		Star star = new Star(star_id, first_name, last_name, star_rs.getString("dob"), 
+				star_rs.getString("photo_url"), movies);
+		
+		return star;
+	}
+	
+	
 	public LinkedHashMap<Integer, Movie> getMoviesByGenre(SearchParameters curParams) throws Exception  {
 		String statementString = "SELECT * FROM movies  WHERE  id IN (SELECT movies_id FROM genres_in_movies where genres_id IN "
 					+ " (SELECT id FROM genres WHERE name=\'" + curParams.getGenre() + "\'))";
@@ -226,6 +299,7 @@ public class dbFunctions
 		ps.close();
 		return tempOutput;
 	}
+	
 	
 	private void populate_list(LinkedHashMap<Integer, Movie> ret_movies, ResultSet rs) throws Exception {
 		while (rs.next()) {

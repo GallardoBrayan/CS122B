@@ -12,6 +12,12 @@ public class CartServlet extends HttpServlet
 		      throws ServletException, IOException
 	  {
 		  HttpSession sess = request.getSession();
+		  User user = (User)sess.getAttribute("userToken");
+		  if(sess.getAttribute("userToken") == null)
+			{
+				response.sendRedirect("login.jsp");
+				return;
+			}
 		  if(request.getParameter("cartOp") != null)
 		  {
 			  process_cart_op(sess, request);

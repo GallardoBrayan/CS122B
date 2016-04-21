@@ -35,7 +35,7 @@
 <%} %>
 </table>
 
-<a href="#">Checkout </a><a href="CartServlet?cartOp=empty_cart">Empty Cart</a>
+<a href="checkout.jsp">Checkout </a><a href="CartServlet?cartOp=empty_cart">Empty Cart</a>
 </body>
 
 

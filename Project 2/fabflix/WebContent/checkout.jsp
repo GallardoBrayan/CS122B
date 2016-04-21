@@ -11,7 +11,7 @@
 <center><h3>Checkout</h3></center>
 
 <h1>Enter Credit Card Information</h1>
-<form action="checkout" method="post">
+<form action="CheckoutServlet" method="post">
   First Name: <input type="text" name="first_name"></input><br>
   Last Name: <input type="text" name="last_name"></input><br>
   Credit Card Number: <input type="text" name="cc"/><br>

@@ -102,7 +102,7 @@
 		<tr>
 			<td><img height="42" width="42" src="<%=movie.getBanner_url()%>"></td>
 			<td><%=id%></td>
-			<td><a href="getMovie?movieid=<%=id %>"><%=movie.getTitle()%></a></td>
+			<td><a href="getMovie?movieid=<%=id%>"><%=movie.getTitle()%></a></td>
 			<td><%=movie.getYear()%></td>
 			<td><%=movie.getDirector()%></td>
 			<td>
@@ -118,12 +118,20 @@
 			<td>
 				<%
 					outputString = "";
+				
+						int i = 1;
 						for (String star : movie.getStars())
 						{
-							outputString += star + ", ";
+							%>
+							<a href="getStar?movieid=<%=id%>&star_name=<%=star%>"><%=star%></a>
+						<%
+							if(!(i == movie.getStars().size()))
+							{
+								out.print(", ");
+							}
+							++i;
 						}
-						outputString = outputString.substring(0, outputString.length() - 2);
-						out.print(outputString);
+
 				%>
 			</td>
 			<td>

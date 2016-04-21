@@ -91,4 +91,24 @@
     <servlet-name>getMovie</servlet-name>
     <url-pattern>/getMovie</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>confirmation</display-name>
+    <servlet-name>confirmation</servlet-name>
+    <jsp-file>/confirmation.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>confirmation</servlet-name>
+    <url-pattern>/confirmation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>getStar</display-name>
+    <servlet-name>getStar</servlet-name>
+    <jsp-file>/getStar.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>getStar</servlet-name>
+    <url-pattern>/getStar</url-pattern>
+  </servlet-mapping>
 </web-app>
