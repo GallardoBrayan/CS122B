@@ -34,6 +34,10 @@ public class LoginHandler extends HttpServlet {
 			
 			if (request.getParameter("username") != null) 
 			{
+				if(userToLogin != null)
+				{
+					request.getSession().invalidate();
+				}
 				userToLogin = dbConnection.loginToFabFlix(request.getParameter("username"),
 						request.getParameter("pass"));
 				
@@ -49,7 +53,7 @@ public class LoginHandler extends HttpServlet {
 			}
 			if (request.getParameter("logout") != null)
 			{
-				request.getSession().setAttribute("userToken", null);
+				request.getSession().invalidate();
 				response.sendRedirect("Login");
 			}
 			dbConnection.close();
