@@ -11,13 +11,20 @@
 <center><h3>Confirmation</h3></center>
 <%
 String message = (String)session.getAttribute("sale_success_message");
+String status = (String)session.getAttribute("sale_status");
 		if(message == null)
 		{
 			response.sendRedirect("MainPage");
 		}
 %>
 <h1><%=message%></h1>
-<a href="search" style="margin-right:10px;">Return to Search</a><a href="Browse">Return to Browse</a>
+<% 
+	if(status == "0"){
+%>
+	<a href="checkout"style="margin-right:10px;">Re-enter Card Information</a>
+<% }%>
+<a href="search" style="margin-right:10px;">Return to Search</a><a href="Browse">Return to Browse</a> 
+<% session.setAttribute("sale_success_message", null); %>
 </body>
 <%@ include file="footer.jsp" %>
 </html>

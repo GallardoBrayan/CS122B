@@ -45,10 +45,12 @@ public class CheckoutServlet extends HttpServlet {
 		if(sale_success)
 		{
 			sess.setAttribute("sale_success_message", "Your sale has been processed successfully");
+			sess.setAttribute("sale_status", "1");
 			sess.setAttribute("shopping_cart", new Cart());
 		}
 		else
 		{
+			sess.setAttribute("sale_status", "0");
 			sess.setAttribute("sale_success_message", "Your sale has not been processed.  Information entered is incorrect");
 		}
 		

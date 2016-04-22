@@ -17,6 +17,7 @@
 					shopping_cart = new Cart();
 				%>
 				<h3>No Items in Cart</h3>
+				<a href="search" style="margin-right:10px;">Return to Search</a><a href="Browse">Return to Browse</a>
 				<%
 					session.setAttribute("shopping_cart", shopping_cart);
 				}
