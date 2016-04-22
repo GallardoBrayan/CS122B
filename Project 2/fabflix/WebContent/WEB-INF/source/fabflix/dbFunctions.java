@@ -129,20 +129,29 @@ public class dbFunctions
 		star_ps.setObject(3, last_name);
 		
 		ResultSet star_rs = star_ps.executeQuery(); 
-		star_rs.next();
-		Integer star_id = star_rs.getInt("id");
-		
-		PreparedStatement movie_ps = connection.prepareStatement(movies_info_stmt);
-		movie_ps.setObject(1, star_id);
-		ResultSet movie_rs = movie_ps.executeQuery();
-		HashMap<Integer, String> movies = new HashMap<Integer, String>();
-		
-		while(movie_rs.next())
+		Integer star_id = -1;
+		Star star = null;
+		if(star_rs.next())
 		{
-			movies.put(movie_rs.getInt("id"), movie_rs.getString("title"));
+			star_id = star_rs.getInt("id");
+		
+			PreparedStatement movie_ps = connection.prepareStatement(movies_info_stmt);
+			movie_ps.setObject(1, star_id);
+			ResultSet movie_rs = movie_ps.executeQuery();
+			HashMap<Integer, String> movies = new HashMap<Integer, String>();
+			
+			while(movie_rs.next())
+			{
+				movies.put(movie_rs.getInt("id"), movie_rs.getString("title"));
+			}
+			star = new Star(star_id, first_name, last_name, star_rs.getString("dob"), 
+					star_rs.getString("photo_url"), movies);
 		}
-		Star star = new Star(star_id, first_name, last_name, star_rs.getString("dob"), 
-				star_rs.getString("photo_url"), movies);
+		else
+		{
+			star = new Star(star_id, first_name, last_name, "", 
+					"",  new HashMap<Integer, String>());
+		}
 		
 		return star;
 	}

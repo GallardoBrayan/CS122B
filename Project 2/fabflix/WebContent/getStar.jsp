@@ -25,6 +25,12 @@
 			String last_name = full_name.substring(full_name.indexOf(" ") + 1);
 
 			Star star = dbConnection.getStarFromMovieIdAndName(movieid, first_name, last_name);
+			if(star.getId() == -1 && last_name.trim().contains(" "))
+			{
+				first_name += " " + last_name.substring(0, full_name.indexOf(" "));
+				last_name = last_name.substring(last_name.indexOf(" ") + 1);
+				star = dbConnection.getStarFromMovieIdAndName(movieid, first_name, last_name);
+			}
 			String star_full_name = star.getFirst_name() + " " + star.getLast_name();
 	%>
 	<table border="2">
