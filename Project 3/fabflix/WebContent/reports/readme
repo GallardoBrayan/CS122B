@@ -1,0 +1,7 @@
+All source has beeen compiled using Eclipse and is ready for deployment. However, if it needs to be recompiled, It could also be compiled using the following commands :
+
+cd fabflix
+javac WEB-INF\source\fabflix\*.java -d WEB-INF\classes -cp ".;WEB-INF/classes/*;D:\Program Files (x86)\tomcat\lib\*" -target 1.7 -source 1.7
+jar -cvf ../fabflix.war *
+
+This will compile the classes then create a war for deployment. Please replace "D:\Program Files (x86)\tomcat" with the directory of a local tomcat installation. To deploy this, either place this file into the  var/lib/tomcat7/webapps/ folder or use the manager webapp.  
