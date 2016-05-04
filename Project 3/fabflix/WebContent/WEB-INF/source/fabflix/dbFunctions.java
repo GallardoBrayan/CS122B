@@ -291,6 +291,21 @@ public class dbFunctions
 		return tempOutput;
 	}
 	
+	public Integer getGenreIdFromName(String name)
+	{
+		String query = "Select * 	" + id;
+		PreparedStatement ps = connection.prepareStatement(query);
+		ResultSet rs = ps.executeQuery();
+		HashSet<String> tempOutput = new HashSet<String>();
+		while(rs.next())
+		{
+			tempOutput.add(rs.getString(1));
+		}
+		rs.close();
+		ps.close();
+		return tempOutput;
+	}
+	
 	public HashSet<String> getStarFromMovieId(Integer id) throws SQLException 
 	{
 		String query = "select CONCAT(first_name, ' ', last_name) as name FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id"
@@ -318,7 +333,6 @@ public class dbFunctions
 
 			ret_movies.put(movie_id, cMovie);
 		}
-
 	}
 
 	private void build_query(StringBuilder query, SearchParameters curParams) {
@@ -405,6 +419,5 @@ public class dbFunctions
 			ps.setObject(count,"%" + curParams.getLastName()+ "%");
 			++count;
 		}
-		
 	}
 }

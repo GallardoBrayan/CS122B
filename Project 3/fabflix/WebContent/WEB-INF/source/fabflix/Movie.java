@@ -102,6 +102,10 @@ public class Movie implements java.io.Serializable
 	public void setGenres(HashSet<String> genres) {
 		this.genres = genres;
 	}
+	public void addGenre(String genre)
+	{
+		this.genres.add(genre);
+	}
 	public HashSet<String> getStars() {
 		return stars;
 	}
