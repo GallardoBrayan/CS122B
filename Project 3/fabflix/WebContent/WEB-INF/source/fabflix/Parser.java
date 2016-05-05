@@ -24,7 +24,7 @@ public class Parser extends DefaultHandler{
 	LinkedHashMap<String, Integer>Title_to_Genre = new LinkedHashMap<String, Integer>();
 	LinkedHashMap<Integer, Integer>MovieID_GenreID = new LinkedHashMap<Integer, Integer>();
 	ArrayList<ResultSet> movie_ids;
-	ArrayList<String> movie_batch_values = new ArrayList<String>();
+	ArrayList<Movie> movie_batch_values = new ArrayList<Movie>();
 	ArrayList<String> genre_in_movie_batch_values = new ArrayList<String>();
 	String DirectorName;
 	String tempVal;
@@ -45,7 +45,10 @@ public class Parser extends DefaultHandler{
 		
 			//get a new instance of parser
 			SAXParser sp = spf.newSAXParser();
-			
+			try{
+				conn.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
+				}catch(Exception e)
+				{}
 			//parse the file and also register this class for call backs
 			sp.parse("mains243.xml", this);
 			
@@ -56,10 +59,7 @@ public class Parser extends DefaultHandler{
 		}catch (IOException ie) {
 			ie.printStackTrace();
 		}
-		try{
-		conn.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
-		}catch(Exception e)
-		{}
+
 	}
 
 	
@@ -93,7 +93,10 @@ public class Parser extends DefaultHandler{
 		}
 		else if (qName.equalsIgnoreCase("t"))
 		{
-			NewMovie.setTitle(tempVal);
+			String title = tempVal;
+			if("".equals(tempVal))
+				title = "No Title";
+			NewMovie.setTitle(title);
 		}
 		else if (qName.equalsIgnoreCase("year"))
 		{
@@ -121,7 +124,6 @@ public class Parser extends DefaultHandler{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			DirectorName = "";
 		}
 		else if(qName.equalsIgnoreCase("movies"))
 		{
@@ -142,9 +144,8 @@ public class Parser extends DefaultHandler{
 	}
 	public void add_movie_query()
 	{
-		String val= value_begin + NewMovie.getTitle() + "," + NewMovie.getYear() + "," + NewMovie.getDirector() +
-				value_end;
-		movie_batch_values.add(val);
+		//replace gets rid of single apostrophe which will throw sql statemnt of
+		movie_batch_values.add(NewMovie);
 	}
 	public void add_genre() throws Exception
 	{	
@@ -162,8 +163,8 @@ public class Parser extends DefaultHandler{
 	public void execute_batch_inserts() throws SQLException
 	{
 		//do batch for movie
-		String final_batch_query = get_final_movie_batch_query();
-		ResultSet rs = conn.movie_batch_insert(final_batch_query);
+		//String final_batch_query = get_final_movie_batch_query();
+		ResultSet rs = conn.movie_batch_insert(movie_batch_values);
 		
 		//do batch for genres_in_movies
 		make_movieID_genreID_map(rs);
@@ -198,25 +199,17 @@ public class Parser extends DefaultHandler{
 	
 	public void make_movieID_genreID_map(ResultSet rs) throws SQLException
 	{
+		int i = 0;
 		while(rs.next()){
-			Integer movie_id = rs.getInt("id");
-			String title = rs.getString("title");
-			MovieID_GenreID.put(Title_to_Genre.get(title), movie_id);
+			Integer movie_id = rs.getInt(1);
+			String title = movie_batch_values.get(i).getTitle();
+			++i;
+			Integer genre_id = Title_to_Genre.get(title);
+			//Have to check if the movie has any genres associated with it
+			//if it doesnt then it wont be in Title_to_Genre
+			if(genre_id != null)
+				MovieID_GenreID.put(genre_id, movie_id);
 		}
-	}
-	public String get_final_movie_batch_query()
-	{
-		String ret = "INSERT INTO movies (title, year, director) VALUES ";
-		int count = movie_batch_values.size();
-		for(int i = 0; i < count; ++i)
-		{
-			ret += movie_batch_values.get(i);
-			if(i != count - 1)
-			{
-				ret += ",";
-			}
-		}
-		return ret;
 	}
 	
 	public void error(SAXParseException e)

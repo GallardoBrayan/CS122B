@@ -335,17 +335,26 @@ public class dbFunctions
 		return rs.getInt(1);
 	}
 	
-	public ResultSet movie_batch_insert(String final_batch_query) throws SQLException
+	public ResultSet movie_batch_insert(ArrayList<Movie> values) throws SQLException
 	{
-		PreparedStatement ps = connection.prepareStatement(final_batch_query, Statement.RETURN_GENERATED_KEYS);
-		ps.executeUpdate();
+		String stmt = "INSERT INTO movies (title,year,director) VALUES (?,?,?)";
+		PreparedStatement ps = connection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+		for(Movie mov : values)
+		{
+			ps.setString(1, mov.getTitle());
+			ps.setInt(2, mov.getYear());
+			ps.setString(3, mov.getDirector());
+			ps.addBatch();
+			
+		}
+		ps.executeBatch();
 		return ps.getGeneratedKeys();
 	}
 	
 	public void gim_batch_insert(String final_genres_in_movies_query) throws SQLException
 	{
-		PreparedStatement ps = connection.prepareStatement(final_genres_in_movies_query);
-		ps.executeUpdate();
+		Statement stmt = connection.createStatement();
+		stmt.executeUpdate(final_genres_in_movies_query);
 		
 	}
 	
