@@ -9,9 +9,9 @@
 <body>
 
 	<%
-		User userToLogin = (User) session.getAttribute("userToken");
+		User userToLogin = (User) session.getAttribute("empToken");
 		if (userToLogin == null) {
-			response.sendRedirect("_dashboard");
+			response.sendRedirect( request.getContextPath()+ "/_dashboard");
 			userToLogin = new User();
 		}
 	%>
@@ -37,7 +37,7 @@
 			</tr>
 			<tr>
 				<th>
-					<form action="search">
+					<form action="insertstar">
 						<input type="submit" value="Search the movie Database">
 					</form>
 				</th>
@@ -49,8 +49,8 @@
 			</tr>
 			<tr>
 				<th>
-					<form action="Browse">
-						<input type="submit" value="Browse the movie Database">
+					<form action="Providing the metadata of the database">
+						<input type="submit" value="Providing the metadata of the database">
 					</form>
 				</th>
 			</tr>

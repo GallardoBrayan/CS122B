@@ -156,4 +156,32 @@
     <servlet-name>_dashboard</servlet-name>
     <url-pattern>/_dashboard</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>dashboardMain</display-name>
+    <servlet-name>dashboardMain</servlet-name>
+    <jsp-file>/Dashboard/dashboardMain.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dashboardMain</servlet-name>
+    <url-pattern>/_dashboard/Main</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>insertstar</display-name>
+    <servlet-name>insertstar</servlet-name>
+    <jsp-file>/Dashboard/insertstar.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>insertstar</servlet-name>
+    <url-pattern>/_dashboard/insertstar</url-pattern>
+  </servlet-mapping>
+    <servlet>
+    <servlet-name>DashboardFunctions</servlet-name>
+    <servlet-class>fabflix.DashboardFunctions</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DashboardFunctions</servlet-name>
+    <url-pattern>/_dashboard/DashboardFunctions</url-pattern>
+  </servlet-mapping>
 </web-app>

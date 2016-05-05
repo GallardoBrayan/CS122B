@@ -62,7 +62,7 @@ public class EmployeeLoginHandler extends HttpServlet {
 				}else
 				{
 					request.getSession().setAttribute("empToken", userToLogin);
-					response.sendRedirect("MainPage");
+					response.sendRedirect( request.getContextPath() + "/_dashboard/Main");
 				}
 			}
 			
