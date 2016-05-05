@@ -63,6 +63,7 @@ public class dbFunctions
 		}
 
 	}
+	
 	public boolean process_sale(Cart cart, CustomerCheckout info) throws SQLException
 	{
 		boolean success = false;
@@ -84,6 +85,7 @@ public class dbFunctions
 		return success;
 		
 	}
+	
 	public Movie returnMovieFromID(Integer movie_id) throws SQLException 
 	{
 		Movie to_return = null;
@@ -156,7 +158,6 @@ public class dbFunctions
 		return star;
 	}
 	
-	
 	public LinkedHashMap<Integer, Movie> getMoviesByGenre(SearchParameters curParams) throws Exception  {
 		String statementString = "SELECT * FROM movies  WHERE  id IN (SELECT movies_id FROM genres_in_movies where genres_id IN "
 					+ " (SELECT id FROM genres WHERE name=\'" + curParams.getGenre() + "\'))";
@@ -219,6 +220,23 @@ public class dbFunctions
 		if (results.next()) {
 			logged_in_user = new User(results.getInt("id"), results.getString("first_name"),
 					results.getString("last_name"), results.getString("address"), results.getString("email"));
+
+		}
+		results.close();
+		statement.close();
+		return logged_in_user;
+	}
+	
+	public User employeeLogin(String userName, String password) throws SQLException {
+		User logged_in_user = null;
+		if (userName == null || password == null)
+			return null;
+		String statementString = "SELECT * FROM employees WHERE email=\'" + userName + "\' AND password=\'" + password
+				+ "\';";
+		PreparedStatement statement = connection.prepareStatement(statementString);
+		ResultSet results = statement.executeQuery();
+		if (results.next()) {
+			logged_in_user = new User(0, results.getString("fullname"),"", "Empolyee", results.getString("email"));
 
 		}
 		results.close();
@@ -345,6 +363,7 @@ public class dbFunctions
 		connection.setAutoCommit(true);
 		
 	}
+	
 	public HashSet<String> getStarFromMovieId(Integer id) throws SQLException 
 	{
 		String query = "select CONCAT(first_name, ' ', last_name) as name FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id"
@@ -360,7 +379,6 @@ public class dbFunctions
 		ps.close();
 		return tempOutput;
 	}
-	
 	
 	private void populate_list(LinkedHashMap<Integer, Movie> ret_movies, ResultSet rs) throws Exception {
 		while (rs.next()) {
