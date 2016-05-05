@@ -34,6 +34,7 @@ public class Parser extends DefaultHandler{
 	dbFunctions conn;
 	
 	public static void main(String[] args){
+		System.out.println("test");
 		Parser parse = new Parser();
 	}
 	private void parseDocument() {
