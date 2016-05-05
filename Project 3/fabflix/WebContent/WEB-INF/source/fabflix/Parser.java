@@ -22,7 +22,7 @@ public class Parser extends DefaultHandler{
 	Movie NewMovie;
 	Star NewStar;
 	LinkedHashMap<String, Integer>Title_to_Genre = new LinkedHashMap<String, Integer>();
-	LinkedHashMap<Integer, Integer>MovieID_GenreID = new LinkedHashMap<Integer, Integer>();
+	LinkedHashMap<Integer, ArrayList<Integer>>MovieID_GenreID = new LinkedHashMap<Integer, ArrayList<Integer>>();
 	ArrayList<ResultSet> movie_ids;
 	ArrayList<Movie> movie_batch_values = new ArrayList<Movie>();
 	ArrayList<String> genre_in_movie_batch_values = new ArrayList<String>();
@@ -190,10 +190,13 @@ public class Parser extends DefaultHandler{
 	public void build_genres_in_movies_values()
 	{
 		String val;
-		for(Map.Entry<Integer, Integer> c : MovieID_GenreID.entrySet())
+		for(Map.Entry<Integer, ArrayList<Integer>> c : MovieID_GenreID.entrySet())
 		{
-			val = value_begin + c.getKey() + "," + c.getValue() + value_end;
-			genre_in_movie_batch_values.add(val);
+			for(Integer movie_id: c.getValue())
+			{
+				val = value_begin + c.getKey() + "," + movie_id + value_end;
+				genre_in_movie_batch_values.add(val);
+			}
 		}
 	}
 	
@@ -208,7 +211,16 @@ public class Parser extends DefaultHandler{
 			//Have to check if the movie has any genres associated with it
 			//if it doesnt then it wont be in Title_to_Genre
 			if(genre_id != null)
-				MovieID_GenreID.put(genre_id, movie_id);
+			{
+				if(MovieID_GenreID.containsKey(genre_id))
+					MovieID_GenreID.get(genre_id).add(movie_id);
+				else
+				{
+					ArrayList<Integer> mIDList = new ArrayList<Integer>();
+					mIDList.add(movie_id);
+					MovieID_GenreID.put(genre_id, mIDList);
+				}
+			}
 		}
 	}
 	
