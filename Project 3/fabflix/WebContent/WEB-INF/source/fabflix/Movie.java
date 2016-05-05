@@ -11,7 +11,7 @@ public class Movie implements java.io.Serializable
 	private String director;
 	private String banner_url;
 	private String trailer_url;
-	private HashSet<String> genres;
+	private HashSet<String> genres = new HashSet<String>();
 	private HashSet<String> stars;
 	
 	/**

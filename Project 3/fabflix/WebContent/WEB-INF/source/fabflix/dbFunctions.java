@@ -308,11 +308,12 @@ public class dbFunctions
 	public Integer insert_genre(String genre) throws SQLException
 	{
 		Integer id;
-		String query = "INSERST INTO genres (name) VALS (?)";
+		String query = "INSERT INTO genres (name) VALUES (?)";
 		PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		ps.setObject(1, genre);
 		ps.executeUpdate();
 		ResultSet rs = ps.getGeneratedKeys();
+		rs.next();
 		return rs.getInt(1);
 	}
 	

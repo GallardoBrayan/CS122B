@@ -13,6 +13,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
  
 
@@ -23,20 +24,19 @@ public class Parser extends DefaultHandler{
 	LinkedHashMap<String, Integer>Title_to_Genre = new LinkedHashMap<String, Integer>();
 	LinkedHashMap<Integer, Integer>MovieID_GenreID = new LinkedHashMap<Integer, Integer>();
 	ArrayList<ResultSet> movie_ids;
-	ArrayList<String> movie_batch_values;
-	ArrayList<String> genre_in_movie_batch_values;
+	ArrayList<String> movie_batch_values = new ArrayList<String>();
+	ArrayList<String> genre_in_movie_batch_values = new ArrayList<String>();
 	String DirectorName;
 	String tempVal;
-	String genre_batch_query = "INSERT INTO genres (name) VALUES ";
-	String genre_in_moves_batch_query = "INSERT INTO genres_in_movies (genres_id, movies_id) VALUES ";
 	String value_begin = "(";
 	String value_end = ")";
-	dbFunctions conn;
+	dbFunctions conn = new dbFunctions();
 	
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		Parser parse = new Parser();
+		parse.parseDocument();
 	}
-	private void parseDocument() {
+	private void parseDocument(){
 		
 		//get a factory
 		SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -46,7 +46,7 @@ public class Parser extends DefaultHandler{
 			SAXParser sp = spf.newSAXParser();
 			
 			//parse the file and also register this class for call backs
-			sp.parse("main234.xml", this);
+			sp.parse("mains243.xml", this);
 			
 		}catch(SAXException se) {
 			se.printStackTrace();
@@ -55,6 +55,10 @@ public class Parser extends DefaultHandler{
 		}catch (IOException ie) {
 			ie.printStackTrace();
 		}
+		try{
+		conn.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
+		}catch(Exception e)
+		{}
 	}
 
 	
@@ -64,7 +68,10 @@ public class Parser extends DefaultHandler{
 		//reset
 		tempVal = "";
 		if(qName.equalsIgnoreCase("film"))
+		{
 			NewMovie = new Movie();
+			NewMovie.setDirector(DirectorName);
+		}
 
 	}
 	
@@ -72,6 +79,8 @@ public class Parser extends DefaultHandler{
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		tempVal = new String(ch,start,length);
 	}
+	
+	
 	
 	public void endElement(String uri, String localName, String qName) throws SAXException
 	{
@@ -87,10 +96,20 @@ public class Parser extends DefaultHandler{
 		}
 		else if (qName.equalsIgnoreCase("year"))
 		{
-			NewMovie.setYear(Integer.parseInt(tempVal));
+			Integer year = 0;
+			try
+			{
+				year = Integer.parseInt(tempVal);
+			}catch(Exception e)
+			{
+				//Do Nothin;
+				//User year zero if it fails
+			}
+				NewMovie.setYear(year);
 		}
 		else if (qName.equalsIgnoreCase("cat"))
 		{
+			//System.out.println("");
 			NewMovie.addGenre(tempVal);
 		}
 		else if (qName.equalsIgnoreCase("film"))
@@ -127,9 +146,7 @@ public class Parser extends DefaultHandler{
 		movie_batch_values.add(val);
 	}
 	public void add_genre() throws Exception
-	{
-		conn.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
-		
+	{	
 		for(String genre: NewMovie.getGenres())
 		{
 			Integer genre_id = conn.getGenreIdFromName(genre);
@@ -201,6 +218,10 @@ public class Parser extends DefaultHandler{
 		return ret;
 	}
 	
+	public void error(SAXParseException e)
+	{
+		e.getMessage();
+	}
 
 	
 }
