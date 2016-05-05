@@ -291,21 +291,44 @@ public class dbFunctions
 		return tempOutput;
 	}
 	
-	public Integer getGenreIdFromName(String name)
+	public Integer getGenreIdFromName(String name) throws SQLException
 	{
-		String query = "Select * 	" + id;
+		Integer id = -1;
+		String query = "Select id FROM genres WHERE name= ? LIMIT 1";
 		PreparedStatement ps = connection.prepareStatement(query);
+		ps.setObject(1, name);
 		ResultSet rs = ps.executeQuery();
-		HashSet<String> tempOutput = new HashSet<String>();
-		while(rs.next())
+		if(rs.next())
 		{
-			tempOutput.add(rs.getString(1));
+			id = rs.getInt("id");
 		}
-		rs.close();
-		ps.close();
-		return tempOutput;
+		return id;
 	}
 	
+	public Integer insert_genre(String genre) throws SQLException
+	{
+		Integer id;
+		String query = "INSERST INTO genres (name) VALS (?)";
+		PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		ps.setObject(1, genre);
+		ps.executeUpdate();
+		ResultSet rs = ps.getGeneratedKeys();
+		return rs.getInt(1);
+	}
+	
+	public ResultSet movie_batch_insert(String final_batch_query) throws SQLException
+	{
+		PreparedStatement ps = connection.prepareStatement(final_batch_query, Statement.RETURN_GENERATED_KEYS);
+		ps.executeUpdate();
+		return ps.getGeneratedKeys();
+	}
+	
+	public void gim_batch_insert(String final_genres_in_movies_query) throws SQLException
+	{
+		PreparedStatement ps = connection.prepareStatement(final_genres_in_movies_query);
+		ps.executeUpdate();
+		
+	}
 	public HashSet<String> getStarFromMovieId(Integer id) throws SQLException 
 	{
 		String query = "select CONCAT(first_name, ' ', last_name) as name FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id"
