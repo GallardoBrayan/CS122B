@@ -32,6 +32,7 @@ public class Parser extends DefaultHandler{
 	String value_end = ")";
 	dbFunctions conn = new dbFunctions();
 	
+
 	public static void main(String[] args) {
 		Parser parse = new Parser();
 		parse.parseDocument();
