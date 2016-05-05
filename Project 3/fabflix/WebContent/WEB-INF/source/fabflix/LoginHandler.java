@@ -9,12 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.net.ssl.HttpsURLConnection;
-
-import sun.net.www.protocol.https.HttpsURLConnectionImpl;
 
 /**
  * Servlet implementation class LoginHandler
@@ -22,6 +21,7 @@ import sun.net.www.protocol.https.HttpsURLConnectionImpl;
 
 public class LoginHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	public static final String SECRET_KEY = "6LdKZB4TAAAAAPPBbVoef6umTlbOU5Of1bRrvWGr";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,34 +41,38 @@ public class LoginHandler extends HttpServlet {
 			dbConnection.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
 			
 			User userToLogin = (User) request.getSession().getAttribute("userToken");
-			String lala = request.getParameter("g-recaptcha-response");
-			verifyRecaptcha(lala);
-			if(true)
+			String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+			boolean notABot = verifyRecaptcha(gRecaptchaResponse);
+			
+			if (request.getParameter("logout") != null)
 			{
-				if (request.getParameter("username") != null) 
-				{
-					if(userToLogin != null)
-					{
-						request.getSession().invalidate();
-					}
-					userToLogin = dbConnection.loginToFabFlix(request.getParameter("username"),
-							request.getParameter("pass"));
-					if (userToLogin == null) {
-						request.getSession().setAttribute("error", "loginError");
-						response.sendRedirect("Login");
-
-					}else
-					{
-						request.getSession().setAttribute("userToken", userToLogin);
-						response.sendRedirect("MainPage");
-					}
-				}
-				if (request.getParameter("logout") != null)
+				request.getSession().invalidate();
+				response.sendRedirect("Login");
+			}
+			else if(!notABot)
+			{
+				request.getSession().setAttribute("error", "reCAPTHAFailed");
+				response.sendRedirect("Login");
+			}
+			else if (request.getParameter("username") != null) 
+			{
+				if(userToLogin != null)
 				{
 					request.getSession().invalidate();
+				}
+				userToLogin = dbConnection.loginToFabFlix(request.getParameter("username"),
+						request.getParameter("pass"));
+				if (userToLogin == null) {
+					request.getSession().setAttribute("error", "loginError");
 					response.sendRedirect("Login");
+
+				}else
+				{
+					request.getSession().setAttribute("userToken", userToLogin);
+					response.sendRedirect("MainPage");
 				}
 			}
+			
 			dbConnection.close();
 			
 		}catch (Exception ex)
@@ -91,7 +95,6 @@ public class LoginHandler extends HttpServlet {
 	
 	public boolean verifyRecaptcha(String captchaResponse)
 	{
-		String SECRET_KEY = "6LdKZB4TAAAAAPPBbVoef6umTlbOU5Of1bRrvWGr";
 		if (captchaResponse == null || captchaResponse.length() == 0) {
             return false;
         }
@@ -125,7 +128,7 @@ public class LoginHandler extends HttpServlet {
  
             // Response code return from server.
             int responseCode = conn.getResponseCode();
-           
+            System.out.println("responseCode=" + responseCode);           
  
   
             // Get the InputStream from Connection to read data sent from the server.

@@ -30,6 +30,11 @@
 	%>
 	<h3>You must login to access this site.</h3>
 	<%
+		} else if ("reCAPTHAFailed".equals(error)) {
+			session.setAttribute("error", null);
+	%>
+	<h3>You must verify that you are not a robot to login..</h3>
+	<%
 		}
 	%>
 	<div align="center">
@@ -66,9 +71,30 @@
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 						</tr>
+						<tr>
+							<td width="35"><div class="tinyspacer">&nbsp;</div></td>
+							<td width="100"><div class="tinyspacer">&nbsp;</div></td>
+							<td><div class="tinyspacer">&nbsp;</div></td>
+						</tr>
+						<tr>
+							<td width="35">&nbsp;</td>
+							<td><div class="g-recaptcha"
+									data-sitekey="6LdKZB4TAAAAAH5T35loD6-ljrbujqHPYYgzZMwz"></div>
+								</td>
+								<td></td>
+						</tr>
+						<tr>
+							<td width="35">&nbsp;</td>
+							<td><input type="submit" name="Login" value="Login">
+								</td>
+								<td></td>
+						</tr>
+						<tr>
+							<td width="35"><div class="tinyspacer">&nbsp;</div></td>
+							<td width="100"><div class="tinyspacer">&nbsp;</div></td>
+							<td><div class="tinyspacer">&nbsp;</div></td>
+						</tr>
 					</table>
-					<div class="g-recaptcha" data-sitekey="6LdKZB4TAAAAAH5T35loD6-ljrbujqHPYYgzZMwz"></div>
-					<input type="submit" name="Login" value="Login">
 				</form>
 			</div>
 		</fieldset>
