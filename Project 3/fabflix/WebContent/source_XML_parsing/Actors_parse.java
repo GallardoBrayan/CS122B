@@ -21,7 +21,7 @@ public class Actors_parse extends DefaultHandler{
 	String tempVal;
 	Star NewStar;
 	ArrayList<String> star_full_name = new ArrayList<String>();
-	LinkedHashMap<String, ArrayList<Integer>> star_name_to_id = new LinkedHashMap<String, ArrayList<Integer>>();
+	LinkedHashMap<String, Integer> star_name_to_id = new LinkedHashMap<String, Integer>();
 	ArrayList<Star>star_batch_values = new ArrayList<Star>();
 	String value_begin = "(";
 	String value_end = ")";
@@ -54,6 +54,7 @@ public class Actors_parse extends DefaultHandler{
 		}catch (IOException ie) {
 			ie.printStackTrace();
 		}
+		conn.close();
 
 	}
 
@@ -138,18 +139,12 @@ public class Actors_parse extends DefaultHandler{
 			++i;
 			//Have to check if the movie has any genres associated with it
 			//if it doesnt then it wont be in Title_to_Genre
-			if(full_name != null)
-			{
-				if(star_name_to_id.containsKey(full_name))
-					star_name_to_id.get(full_name).add(star_id);
-				else
-				{
-					ArrayList<Integer> mIDList = new ArrayList<Integer>();
-					mIDList.add(star_id);
-					star_name_to_id.put(full_name, mIDList);
-				}
-			}
+			star_name_to_id.put(full_name, star_id);
 		}
+	}
+	public LinkedHashMap<String, Integer> get_star_id_map()
+	{
+		return star_name_to_id;
 	}
 	
 	public void error(SAXParseException e)

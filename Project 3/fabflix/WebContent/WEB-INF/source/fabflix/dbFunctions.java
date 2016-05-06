@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class dbFunctions 
 {
@@ -361,7 +362,7 @@ public class dbFunctions
 		for(Star star : values)
 		{
 			ps.setString(1, star.getFirst_name());
-			ps.setInt(2, star.getLast_name());
+			ps.setString(2, star.getLast_name());
 			ps.setString(3, star.getDob());
 			ps.addBatch();
 			
@@ -370,6 +371,21 @@ public class dbFunctions
 		connection.commit();
 		connection.setAutoCommit(true);
 		return ps.getGeneratedKeys();
+	}
+	
+	public void starid_movieid_batch(LinkedHashMap<Integer, Integer>starid_movieid) throws SQLException 
+	{
+		String query = "INSERT INTO stars_in_movies (star_id, movie_id) VALUES (?,?";
+		PreparedStatement ps = connection.prepareStatement(query);
+		for(Map.Entry<Integer, Integer> c : starid_movieid.entrySet())
+		{
+			ps.setInt(1, c.getKey());
+			ps.setInt(2, c.getValue());
+			ps.addBatch();
+		}
+		ps.executeUpdate();
+
+		
 	}
 	
 	public void gim_batch_insert(String final_genres_in_movies_query) throws SQLException

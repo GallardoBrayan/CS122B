@@ -22,7 +22,8 @@ public class Parser extends DefaultHandler{
 	Star NewStar;
 	LinkedHashMap<String, Integer>Title_to_Genre = new LinkedHashMap<String, Integer>();
 	LinkedHashMap<Integer, ArrayList<Integer>>MovieID_GenreID = new LinkedHashMap<Integer, ArrayList<Integer>>();
-	ArrayList<ResultSet> movie_ids;
+	LinkedHashMap<String, Integer>fid_movieid = new	LinkedHashMap<String, Integer>();
+	ArrayList<String> fids;
 	ArrayList<Movie> movie_batch_values = new ArrayList<Movie>();
 	ArrayList<String> genre_in_movie_batch_values = new ArrayList<String>();
 	String DirectorName;
@@ -59,6 +60,7 @@ public class Parser extends DefaultHandler{
 			ie.printStackTrace();
 		}
 
+		conn.close();
 	}
 
 	
@@ -80,8 +82,6 @@ public class Parser extends DefaultHandler{
 		tempVal = new String(ch,start,length);
 	}
 	
-	
-	
 	public void endElement(String uri, String localName, String qName) throws SAXException
 	{
 		if(qName.equalsIgnoreCase("Dirname"))
@@ -94,6 +94,10 @@ public class Parser extends DefaultHandler{
 			if("".equals(tempVal))
 				title = "No Title";
 			NewMovie.setTitle(title);
+		}
+		else if (qName.equalsIgnoreCase("fid"))
+		{
+			fids.add(tempVal);
 		}
 		else if (qName.equalsIgnoreCase("year"))
 		{
@@ -207,6 +211,9 @@ public class Parser extends DefaultHandler{
 			Integer genre_id = Title_to_Genre.get(title);
 			//Have to check if the movie has any genres associated with it
 			//if it doesnt then it wont be in Title_to_Genre
+			
+			fid_movieid.put(fids.get(i), movie_id);
+			
 			if(genre_id != null)
 			{
 				if(MovieID_GenreID.containsKey(genre_id))
@@ -217,8 +224,14 @@ public class Parser extends DefaultHandler{
 					mIDList.add(movie_id);
 					MovieID_GenreID.put(genre_id, mIDList);
 				}
+				
 			}
 		}
+	}
+	
+	public LinkedHashMap<String, Integer> fid_mid()
+	{
+		return fid_movieid;
 	}
 	
 	public void error(SAXParseException e)
