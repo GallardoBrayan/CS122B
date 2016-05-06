@@ -1,3 +1,5 @@
+package ya;
+
 import fabflix.*;
 import java.io.IOException;
 import java.sql.*;
@@ -25,8 +27,6 @@ public class Cast_parser extends DefaultHandler{
 	private LinkedHashMap<String, Integer> name_starid;
 	private String fid;
 	private String movie_star;
-	private String value_begin = "(";
-	private String value_end = ")";
 	private dbFunctions conn = new dbFunctions();
 	
 	public void parseDocument(LinkedHashMap<String, Integer> fid_movie, LinkedHashMap<String, Integer> name_id){
@@ -96,8 +96,6 @@ public class Cast_parser extends DefaultHandler{
 			execute_batch();
 		}
 	}
-	
-	
 	
 	public void error(SAXParseException e)
 	{

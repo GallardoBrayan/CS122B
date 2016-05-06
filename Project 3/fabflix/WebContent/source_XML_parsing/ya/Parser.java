@@ -1,3 +1,5 @@
+package ya;
+
 import fabflix.*;
 import java.io.IOException;
 import java.sql.*;
@@ -23,21 +25,18 @@ public class Parser extends DefaultHandler{
 	LinkedHashMap<String, Integer>Title_to_Genre = new LinkedHashMap<String, Integer>();
 	LinkedHashMap<Integer, ArrayList<Integer>>MovieID_GenreID = new LinkedHashMap<Integer, ArrayList<Integer>>();
 	LinkedHashMap<String, Integer>fid_movieid = new	LinkedHashMap<String, Integer>();
-	ArrayList<String> fids;
+	ArrayList<String> fids = new ArrayList<String>();
 	ArrayList<Movie> movie_batch_values = new ArrayList<Movie>();
 	ArrayList<String> genre_in_movie_batch_values = new ArrayList<String>();
 	String DirectorName;
+	Boolean hasFid = false;
 	String tempVal;
 	String value_begin = "(";
 	String value_end = ")";
 	dbFunctions conn = new dbFunctions();
 	
 
-	public static void main(String[] args) {
-		Parser parse = new Parser();
-		parse.parseDocument();
-	}
-	private void parseDocument(){
+	public void parseDocument(){
 		
 		//get a factory
 		SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -97,7 +96,11 @@ public class Parser extends DefaultHandler{
 		}
 		else if (qName.equalsIgnoreCase("fid"))
 		{
-			fids.add(tempVal);
+			if(!"".equals(tempVal))
+			{
+				fids.add(tempVal);
+				hasFid = true;
+			}
 		}
 		else if (qName.equalsIgnoreCase("year"))
 		{
@@ -115,12 +118,16 @@ public class Parser extends DefaultHandler{
 		else if (qName.equalsIgnoreCase("cat"))
 		{
 			//System.out.println("");
+			
 			NewMovie.addGenre(tempVal);
 		}
 		else if (qName.equalsIgnoreCase("film"))
 		{
 			try {
-				append_to_queries();
+				if(hasFid){
+					append_to_queries();
+					hasFid = false;
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -207,12 +214,12 @@ public class Parser extends DefaultHandler{
 		while(rs.next()){
 			Integer movie_id = rs.getInt(1);
 			String title = movie_batch_values.get(i).getTitle();
-			++i;
 			Integer genre_id = Title_to_Genre.get(title);
 			//Have to check if the movie has any genres associated with it
 			//if it doesnt then it wont be in Title_to_Genre
 			
 			fid_movieid.put(fids.get(i), movie_id);
+			++i;
 			
 			if(genre_id != null)
 			{
@@ -224,7 +231,6 @@ public class Parser extends DefaultHandler{
 					mIDList.add(movie_id);
 					MovieID_GenreID.put(genre_id, mIDList);
 				}
-				
 			}
 		}
 	}

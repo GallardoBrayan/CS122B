@@ -1,3 +1,5 @@
+package ya;
+
 import fabflix.*;
 import java.io.IOException;
 import java.sql.*;
@@ -27,12 +29,7 @@ public class Actors_parse extends DefaultHandler{
 	String value_end = ")";
 	dbFunctions conn = new dbFunctions();
 	
-
-	public static void main(String[] args) {
-		Actors_parse parse = new Actors_parse();
-		parse.parseDocument();
-	}
-	private void parseDocument(){
+	public void parseDocument(){
 		
 		//get a factory
 		SAXParserFactory spf = SAXParserFactory.newInstance();
