@@ -27,7 +27,7 @@
 			</tr>
 			<tr>
 				<td>Year(required):</td>
-				<td><input type="text" name="year" required><br></td>
+				<td><input type="number" name="year" required><br></td>
 			</tr>
 			<tr>
 				<td>Trailer URL:</td>
