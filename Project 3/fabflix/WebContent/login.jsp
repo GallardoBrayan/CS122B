@@ -80,14 +80,14 @@
 							<td width="35">&nbsp;</td>
 							<td><div class="g-recaptcha"
 									data-sitekey="6LdKZB4TAAAAAH5T35loD6-ljrbujqHPYYgzZMwz"></div>
-								</td>
-								<td></td>
+							</td>
+							<td></td>
 						</tr>
 						<tr>
 							<td width="35">&nbsp;</td>
 							<td><input type="submit" name="Login" value="Login">
-								</td>
-								<td></td>
+							</td>
+							<td></td>
 						</tr>
 						<tr>
 							<td width="35"><div class="tinyspacer">&nbsp;</div></td>

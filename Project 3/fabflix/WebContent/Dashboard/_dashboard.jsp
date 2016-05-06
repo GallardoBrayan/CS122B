@@ -45,8 +45,8 @@
 						</tr>
 						<tr>
 							<td width="35">&nbsp;</td>
-							<td width="100">Employee name(email address): <input type="text"
-								name="username" /></td>
+							<td width="100">Employee name(email address): <input
+								type="text" name="username" /></td>
 						</tr>
 						<tr>
 							<td width="35"><div class="tinyspacer">&nbsp;</div></td>
@@ -73,8 +73,8 @@
 						<tr>
 							<td width="35">&nbsp;</td>
 							<td><input type="submit" name="Login" value="Login">
-								</td>
-								<td></td>
+							</td>
+							<td></td>
 						</tr>
 						<tr>
 							<td width="35"><div class="tinyspacer">&nbsp;</div></td>
