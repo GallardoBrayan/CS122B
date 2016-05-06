@@ -158,12 +158,15 @@ public class Parser extends DefaultHandler{
 	{	
 		for(String genre: NewMovie.getGenres())
 		{
-			Integer genre_id = conn.getGenreIdFromName(genre);
-			if(genre_id < 0)
+			if(genre != null  && "".equals(genre))
 			{
-				genre_id = conn.insert_genre(genre);
-			}
+				Integer genre_id = conn.getGenreIdFromName(genre);
+				if(genre_id < 0)
+				{
+					genre_id = conn.insert_genre(genre);
+				}
 			Title_to_Genre.put(NewMovie.getTitle(), genre_id);
+			}
 		}
 	}
 	
