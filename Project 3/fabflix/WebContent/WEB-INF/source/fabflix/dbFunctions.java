@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class dbFunctions 
 {
@@ -27,9 +28,28 @@ public class dbFunctions
 		connection = DriverManager.getConnection(path, user_name, pass);
 	}
 
-	public DatabaseMetaData get_metadata() throws Exception 
+	public Map<String,Map<String,String>> get_metadata() throws Exception 
 	{
-		return connection.getMetaData();
+		DatabaseMetaData dbmd = connection.getMetaData();
+		Map<String,Map<String,String>> output = new HashMap<String,Map<String,String>>();
+		
+		ResultSet tables = dbmd.getTables(null,null,null,null);
+
+		while(tables.next())
+		{
+			String table_name = tables.getString(3);
+			HashMap<String, String> currentTable = new HashMap<String, String>();
+			output.put(table_name, currentTable);
+			ResultSet cols = dbmd.getColumns(null,null,table_name, null);
+
+			while(cols.next())
+			{
+				currentTable.put(cols.getString("COLUMN_NAME"),cols.getString("TYPE_NAME"));
+			}
+			System.out.println("");
+		}
+		tables.close();
+		return output;
 	}
 
 	public double getMoviePrice(Integer movie_id)
@@ -470,5 +490,47 @@ public class dbFunctions
 			ps.setObject(count,"%" + curParams.getLastName()+ "%");
 			++count;
 		}
+	}
+	
+	public Boolean insertStar(Star newStar) throws SQLException
+	{
+		PreparedStatement update = connection.prepareStatement("INSERT INTO stars (first_name, last_name, dob, photo_url) VALUES (?,?,?,?)");
+		update.setObject(1,newStar.getFirst_name().trim());
+		update.setObject(2, newStar.getLast_name().trim());
+		update.setObject(3, newStar.getDob().trim());
+		update.setObject(4, newStar.getPhotoUrl().trim());
+		
+		int results = 0;
+
+		try{
+			results  = update.executeUpdate();
+		}
+		catch(Exception ex){ 
+		
+			return false;
+		}
+		update.close();
+		return (results > 0 ? true : false);
+	}
+	
+	public String addMovieViaStoredProceduce(Movie newMovie, Star starInMovie, String genre) throws SQLException
+	{
+		CallableStatement cs = connection.prepareCall("{call add_movie(?,?,?,?,?,?,?,?,?,?,?)}");
+		cs.setString("title", newMovie.getTitle().trim());
+		cs.setInt("year", newMovie.getYear());
+		cs.setString("director",newMovie.getDirector().trim());
+		cs.setString("banner_url", newMovie.getBanner_url().trim());
+		cs.setString("trailer", newMovie.getTrailer_url().trim());
+		cs.setString("star_first_name",starInMovie.getFirst_name().trim());
+		cs.setString("star_last_name",starInMovie.getLast_name().trim());
+		cs.setString("star_dob",starInMovie.getDob().trim());
+		cs.setString("star_photo_url",starInMovie.getPhotoUrl().trim());
+		cs.setString("genre",genre.trim());
+		cs.registerOutParameter(11, Types.VARCHAR);
+		cs.execute();
+		String out = "";
+		out = cs.getString(11);
+		return out;
+		
 	}
 }
