@@ -1,4 +1,3 @@
-package ya;
 
 import fabflix.*;
 import java.io.IOException;
