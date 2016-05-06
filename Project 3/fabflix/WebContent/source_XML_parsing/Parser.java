@@ -1,5 +1,4 @@
-package fabflix;
-
+import fabflix.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -85,8 +84,6 @@ public class Parser extends DefaultHandler{
 	
 	public void endElement(String uri, String localName, String qName) throws SAXException
 	{
-
-		
 		if(qName.equalsIgnoreCase("Dirname"))
 		{
 			DirectorName = tempVal;
@@ -138,7 +135,7 @@ public class Parser extends DefaultHandler{
 	
 	public void append_to_queries() throws Exception
 	{
-		//Make Movie querry
+		//Make Movie query
 		add_movie_query();
 		add_genre();
 	}

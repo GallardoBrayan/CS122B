@@ -353,6 +353,24 @@ public class dbFunctions
 		connection.setAutoCommit(true);
 		return ps.getGeneratedKeys();
 	}
+	public ResultSet star_batch_insert(ArrayList<Star> values) throws SQLException
+	{
+		connection.setAutoCommit(false);
+		String stmt = "INSERT INTO stars (first_name,last_name,dob) VALUES (?,?,?)";
+		PreparedStatement ps = connection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+		for(Star star : values)
+		{
+			ps.setString(1, star.getFirst_name());
+			ps.setInt(2, star.getLast_name());
+			ps.setString(3, star.getDob());
+			ps.addBatch();
+			
+		}
+		ps.executeBatch();
+		connection.commit();
+		connection.setAutoCommit(true);
+		return ps.getGeneratedKeys();
+	}
 	
 	public void gim_batch_insert(String final_genres_in_movies_query) throws SQLException
 	{
