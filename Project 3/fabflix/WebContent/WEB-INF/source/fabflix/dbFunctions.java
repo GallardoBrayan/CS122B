@@ -357,6 +357,7 @@ public class dbFunctions
 	
 	public ResultSet movie_batch_insert(ArrayList<Movie> values) throws SQLException
 	{
+		connection.setAutoCommit(false);
 		String stmt = "INSERT INTO movies (title,year,director) VALUES (?,?,?)";
 		PreparedStatement ps = connection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
 		for(Movie mov : values)
@@ -368,13 +369,51 @@ public class dbFunctions
 			
 		}
 		ps.executeBatch();
+		connection.commit();
+		connection.setAutoCommit(true);
 		return ps.getGeneratedKeys();
+	}
+	public ResultSet star_batch_insert(ArrayList<Star> values) throws SQLException
+	{
+		connection.setAutoCommit(false);
+		String stmt = "INSERT INTO stars (first_name,last_name,dob) VALUES (?,?,?)";
+		PreparedStatement ps = connection.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);
+		for(Star star : values)
+		{
+			ps.setString(1, star.getFirst_name());
+			ps.setString(2, star.getLast_name());
+			ps.setString(3, star.getDob());
+			ps.addBatch();
+			
+		}
+		ps.executeBatch();
+		connection.commit();
+		connection.setAutoCommit(true);
+		return ps.getGeneratedKeys();
+	}
+	
+	public void starid_movieid_batch(LinkedHashMap<Integer, Integer>starid_movieid) throws SQLException 
+	{
+		String query = "INSERT INTO stars_in_movies (star_id, movie_id) VALUES (?,?";
+		PreparedStatement ps = connection.prepareStatement(query);
+		for(Map.Entry<Integer, Integer> c : starid_movieid.entrySet())
+		{
+			ps.setInt(1, c.getKey());
+			ps.setInt(2, c.getValue());
+			ps.addBatch();
+		}
+		ps.executeUpdate();
+
+		
 	}
 	
 	public void gim_batch_insert(String final_genres_in_movies_query) throws SQLException
 	{
+		connection.setAutoCommit(false);
 		Statement stmt = connection.createStatement();
 		stmt.executeUpdate(final_genres_in_movies_query);
+		connection.commit();
+		connection.setAutoCommit(true);
 		
 	}
 	

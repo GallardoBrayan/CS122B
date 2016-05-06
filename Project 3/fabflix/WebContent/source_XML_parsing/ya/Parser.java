@@ -1,5 +1,6 @@
-package fabflix;
+package ya;
 
+import fabflix.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,22 +23,20 @@ public class Parser extends DefaultHandler{
 	Movie NewMovie;
 	Star NewStar;
 	LinkedHashMap<String, Integer>Title_to_Genre = new LinkedHashMap<String, Integer>();
-	LinkedHashMap<Integer, Integer>MovieID_GenreID = new LinkedHashMap<Integer, Integer>();
-	ArrayList<ResultSet> movie_ids;
+	LinkedHashMap<Integer, ArrayList<Integer>>MovieID_GenreID = new LinkedHashMap<Integer, ArrayList<Integer>>();
+	LinkedHashMap<String, Integer>fid_movieid = new	LinkedHashMap<String, Integer>();
+	ArrayList<String> fids = new ArrayList<String>();
 	ArrayList<Movie> movie_batch_values = new ArrayList<Movie>();
 	ArrayList<String> genre_in_movie_batch_values = new ArrayList<String>();
 	String DirectorName;
+	Boolean hasFid = false;
 	String tempVal;
 	String value_begin = "(";
 	String value_end = ")";
 	dbFunctions conn = new dbFunctions();
 	
 
-	public static void main(String[] args) {
-		Parser parse = new Parser();
-		parse.parseDocument();
-	}
-	private void parseDocument(){
+	public void parseDocument(){
 		
 		//get a factory
 		SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -60,6 +59,7 @@ public class Parser extends DefaultHandler{
 			ie.printStackTrace();
 		}
 
+		conn.close();
 	}
 
 	
@@ -81,12 +81,8 @@ public class Parser extends DefaultHandler{
 		tempVal = new String(ch,start,length);
 	}
 	
-	
-	
 	public void endElement(String uri, String localName, String qName) throws SAXException
 	{
-
-		
 		if(qName.equalsIgnoreCase("Dirname"))
 		{
 			DirectorName = tempVal;
@@ -97,6 +93,14 @@ public class Parser extends DefaultHandler{
 			if("".equals(tempVal))
 				title = "No Title";
 			NewMovie.setTitle(title);
+		}
+		else if (qName.equalsIgnoreCase("fid"))
+		{
+			if(!"".equals(tempVal))
+			{
+				fids.add(tempVal);
+				hasFid = true;
+			}
 		}
 		else if (qName.equalsIgnoreCase("year"))
 		{
@@ -114,12 +118,16 @@ public class Parser extends DefaultHandler{
 		else if (qName.equalsIgnoreCase("cat"))
 		{
 			//System.out.println("");
+			
 			NewMovie.addGenre(tempVal);
 		}
 		else if (qName.equalsIgnoreCase("film"))
 		{
 			try {
-				append_to_queries();
+				if(hasFid){
+					append_to_queries();
+					hasFid = false;
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -138,7 +146,7 @@ public class Parser extends DefaultHandler{
 	
 	public void append_to_queries() throws Exception
 	{
-		//Make Movie querry
+		//Make Movie query
 		add_movie_query();
 		add_genre();
 	}
@@ -190,10 +198,13 @@ public class Parser extends DefaultHandler{
 	public void build_genres_in_movies_values()
 	{
 		String val;
-		for(Map.Entry<Integer, Integer> c : MovieID_GenreID.entrySet())
+		for(Map.Entry<Integer, ArrayList<Integer>> c : MovieID_GenreID.entrySet())
 		{
-			val = value_begin + c.getKey() + "," + c.getValue() + value_end;
-			genre_in_movie_batch_values.add(val);
+			for(Integer movie_id: c.getValue())
+			{
+				val = value_begin + c.getKey() + "," + movie_id + value_end;
+				genre_in_movie_batch_values.add(val);
+			}
 		}
 	}
 	
@@ -203,13 +214,30 @@ public class Parser extends DefaultHandler{
 		while(rs.next()){
 			Integer movie_id = rs.getInt(1);
 			String title = movie_batch_values.get(i).getTitle();
-			++i;
 			Integer genre_id = Title_to_Genre.get(title);
 			//Have to check if the movie has any genres associated with it
 			//if it doesnt then it wont be in Title_to_Genre
+			
+			fid_movieid.put(fids.get(i), movie_id);
+			++i;
+			
 			if(genre_id != null)
-				MovieID_GenreID.put(genre_id, movie_id);
+			{
+				if(MovieID_GenreID.containsKey(genre_id))
+					MovieID_GenreID.get(genre_id).add(movie_id);
+				else
+				{
+					ArrayList<Integer> mIDList = new ArrayList<Integer>();
+					mIDList.add(movie_id);
+					MovieID_GenreID.put(genre_id, mIDList);
+				}
+			}
 		}
+	}
+	
+	public LinkedHashMap<String, Integer> fid_mid()
+	{
+		return fid_movieid;
 	}
 	
 	public void error(SAXParseException e)
