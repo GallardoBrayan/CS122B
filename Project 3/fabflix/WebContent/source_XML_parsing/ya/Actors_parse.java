@@ -106,7 +106,7 @@ public class Actors_parse extends DefaultHandler{
 			{}
 			
 			if(!"".equals(tempVal) && is_int ){
-				String d = tempVal + "/00/00";
+				String d = tempVal + "/01/01";
 				NewStar.setDob(d);
 			}
 		}

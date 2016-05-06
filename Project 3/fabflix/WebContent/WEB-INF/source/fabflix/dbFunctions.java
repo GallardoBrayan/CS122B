@@ -382,7 +382,7 @@ public class dbFunctions
 		{
 			ps.setString(1, star.getFirst_name());
 			ps.setString(2, star.getLast_name());
-			ps.setString(3, star.getDob());
+			ps.setObject(3, star.getDob());
 			ps.addBatch();
 			
 		}
@@ -403,7 +403,7 @@ public class dbFunctions
 			ps.setInt(2, c.getValue());
 			ps.addBatch();
 		}
-		ps.executeUpdate();
+		ps.executeBatch();
 
 		
 	}
