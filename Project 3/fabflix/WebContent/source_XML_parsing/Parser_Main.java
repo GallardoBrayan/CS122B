@@ -1,5 +1,3 @@
-
-
 import java.util.LinkedHashMap;
 
 public class Parser_Main

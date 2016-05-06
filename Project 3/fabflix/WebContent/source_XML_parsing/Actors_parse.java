@@ -37,6 +37,7 @@ public class Actors_parse extends DefaultHandler{
 			//get a new instance of parser
 			SAXParser sp = spf.newSAXParser();
 			try{
+				//conn.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
 				conn.make_connection("jdbc:mysql://localhost:3306/moviedb_project3_grading", "classta", "classta");
 				}catch(Exception e)
 				{}

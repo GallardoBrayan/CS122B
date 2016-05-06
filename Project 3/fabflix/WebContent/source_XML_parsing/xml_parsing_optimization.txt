@@ -1,6 +1,0 @@
-For Parsing and entering batch date we preformed the following optimizations:
-Batch inserts:  Rather than submitting and committing one record at a time, we perform batch inserts. This saves us preprocessing time on the database. This optimization was implemented from the start, therefore It was not possible to  get the actual time improvements over not using batch inserts.
-
-Auto commit off:  With auto commit turned off, we were able to reduce the overhead that the database introduces when writing to the disk with each insert.
-
-Caching:  The new values inserted the database - such as movies, stars, and genres - all contained  values, such as the generated unique ID's,  that were needed in further execution of the code.  Rather then querying the databse for these values, we returned them upon insertion and were able to keep them local for later reference.

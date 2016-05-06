@@ -44,6 +44,7 @@ public class Parser extends DefaultHandler{
 			//get a new instance of parser
 			SAXParser sp = spf.newSAXParser();
 			try{
+				//conn.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
 				conn.make_connection("jdbc:mysql://localhost:3306/moviedb_project3_grading", "classta", "classta");
 				}catch(Exception e)
 				{}
@@ -58,7 +59,7 @@ public class Parser extends DefaultHandler{
 			ie.printStackTrace();
 		}
 
-		conn.close();
+	
 	}
 
 	
@@ -158,7 +159,7 @@ public class Parser extends DefaultHandler{
 	{	
 		for(String genre: NewMovie.getGenres())
 		{
-			if(genre != null  && "".equals(genre))
+			if(genre != null  && !"".equals(genre))
 			{
 				Integer genre_id = conn.getGenreIdFromName(genre);
 				if(genre_id < 0)
