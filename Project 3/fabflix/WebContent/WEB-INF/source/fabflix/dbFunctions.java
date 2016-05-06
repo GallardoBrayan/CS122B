@@ -375,8 +375,9 @@ public class dbFunctions
 	
 	public void starid_movieid_batch(LinkedHashMap<Integer, Integer>starid_movieid) throws SQLException 
 	{
-		String query = "INSERT INTO stars_in_movies (star_id, movie_id) VALUES (?,?";
+		String query = "INSERT INTO stars_in_movies (star_id, movies_id) VALUES (?,?)";
 		PreparedStatement ps = connection.prepareStatement(query);
+		
 		for(Map.Entry<Integer, Integer> c : starid_movieid.entrySet())
 		{
 			ps.setInt(1, c.getKey());

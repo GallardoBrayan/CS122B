@@ -24,7 +24,7 @@ public class Star implements java.io.Serializable
 	
 	public Star()
 	{
-		this.dob ="0000/00/00";
+		this.dob = null;
 		this.first_name = "";
 		this.last_name = "";
 	}

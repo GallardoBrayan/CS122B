@@ -65,8 +65,6 @@ public class Actors_parse extends DefaultHandler{
 		{
 			NewStar = new Star();
 		}
-
-
 	}
 	
 
@@ -100,7 +98,17 @@ public class Actors_parse extends DefaultHandler{
 		}
 		else if(qName.equalsIgnoreCase("dob"))
 		{
-			NewStar.setDob(tempVal);
+			Boolean is_int = false;
+			try{
+				Integer.parseInt(tempVal);
+				is_int = true;
+			}catch(Exception e)
+			{}
+			
+			if(!"".equals(tempVal) && is_int ){
+				String d = tempVal + "/00/00";
+				NewStar.setDob(d);
+			}
 		}
 		else if(qName.equalsIgnoreCase("actor"))
 		{

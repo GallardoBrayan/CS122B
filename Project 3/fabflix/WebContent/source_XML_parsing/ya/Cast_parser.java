@@ -22,9 +22,9 @@ public class Cast_parser extends DefaultHandler{
 
 	private String tempVal;
 	
-	private LinkedHashMap<String, Integer> fid_movie;
-	private LinkedHashMap<Integer, Integer> starid_movieid;
-	private LinkedHashMap<String, Integer> name_starid;
+	private LinkedHashMap<String, Integer> fid_movie = new LinkedHashMap<String, Integer>();
+	private LinkedHashMap<Integer, Integer> starid_movieid = new LinkedHashMap<Integer, Integer>();
+	private LinkedHashMap<String, Integer> name_starid = new LinkedHashMap<String, Integer>();
 	private String fid;
 	private String movie_star;
 	private dbFunctions conn = new dbFunctions();
@@ -43,7 +43,7 @@ public class Cast_parser extends DefaultHandler{
 				}catch(Exception e)
 				{}
 			//parse the file and also register this class for call backs
-			sp.parse("actors63.xml", this);
+			sp.parse("casts124.xml", this);
 			
 		}catch(SAXException se) {
 			se.printStackTrace();
@@ -65,15 +65,7 @@ public class Cast_parser extends DefaultHandler{
 	}
 
 	
-	public void execute_batch()
-	{
-		try {
-			conn.starid_movieid_batch(starid_movieid);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		tempVal = new String(ch,start,length);
 	}
@@ -89,11 +81,26 @@ public class Cast_parser extends DefaultHandler{
 			movie_star = tempVal;
 			Integer starid = name_starid.get(movie_star);
 			Integer movieid = fid_movie.get(fid);
-			starid_movieid.put(starid, movieid);
+
+			if(starid != null && movieid != null)
+			{
+				starid_movieid.put(starid, movieid);
+			}
+			movie_star = "";
+			fid = "";
 		}
 		else if(qName.equals("casts"))
 		{
 			execute_batch();
+		}
+	}
+	public void execute_batch()
+	{
+		try {
+			conn.starid_movieid_batch(starid_movieid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
