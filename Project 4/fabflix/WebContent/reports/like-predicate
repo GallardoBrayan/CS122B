@@ -1,0 +1,17 @@
+Shaun McThomas
+Thomas Hart
+Project 2
+LIKE predicate report
+
+
+
+When searching for which to include in our movie list we surrounded every field in our query’s where clause with the percent sign (‘%’). This will lead to queries that look like this 
+
+SELECT DISTINCT movies.id,title,year,director,banner_url,trailer 
+FROM stars 
+INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id 
+INNER JOIN movies ON movies.id = stars_in_movies.movies_id 
+INNER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id                       
+WHERE title LIKE %term% AND year LIKE %9% ORDER BY title ASC LIMIT 10 OFFSET 0
+
+This query will return all movies in our database that have a “term” anywhere in the title and the digit 9 anywhere in the year. We follow this Pattern for other search fields as well. For searching via title we drop the first % forcing our queries to start with the letter rather then just containing it. 
