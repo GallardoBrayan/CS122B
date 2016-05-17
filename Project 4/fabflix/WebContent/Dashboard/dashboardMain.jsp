@@ -121,7 +121,7 @@
 		if(metaData != null)
 			{
 		%>
-		<h3>Databse Metadata</h3>
+		<h3>Database Metadata</h3>
 		<%
 		for(String tableName : metaData.keySet())
 		{

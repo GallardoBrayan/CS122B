@@ -73,7 +73,7 @@ public class EmployeeLoginHandler extends HttpServlet {
 			ex.printStackTrace();
 			request.getSession().setAttribute("error", "loginError");
 			request.getSession().setAttribute("empToken", null);
-			response.sendRedirect("Login");
+			response.sendRedirect("_dashboard");
 		}
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}

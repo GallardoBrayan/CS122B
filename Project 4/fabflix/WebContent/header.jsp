@@ -42,9 +42,10 @@
 <br>
 
 <div class="search_bar_area" style="float: right">
-<form name="search_bar_form">
-	Search: <input id="topSearchBar" type="text"  onkeyup="ajaxFunction();"></input>
-	 <div id="suggestions">
+<form name="search_bar_form" action="run_search" method="get">
+	Search:<input id="topSearchBar" type="text"  onkeyup="ajaxFunction();" autocomplete="off" name="title"></input>
+	<input type="submit" name="submit"	value="Search">
+	 <div id="suggestions" class="suggestions">
 	</div><!--suggestions-->
 </form>
 </div>

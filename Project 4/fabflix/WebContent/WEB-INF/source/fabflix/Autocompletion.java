@@ -2,7 +2,8 @@ package fabflix;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,14 +27,27 @@ public class Autocompletion extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Calendar c = Calendar.getInstance ();
-
-
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
+		dbFunctions conn = new dbFunctions();
+		List<String> tiles = new ArrayList<String>();
+		try {
+			conn.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
+			String fromBar = (String)request.getParameter("search");
+			tiles =  conn.getTtiles(fromBar);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    response.setContentType("text/html");
-
 	    PrintWriter out = response.getWriter();
-	    out.println(c.get(Calendar.HOUR) + "\n" + c.get(Calendar.MINUTE) + "\n" + c.get(Calendar.SECOND));
+	    
+	    for(String title:tiles )
+	    {
+	    
+	    	out.println(title +"\n");
+	    }
+	    conn.close();
 	}
 
 	/**

@@ -23,9 +23,8 @@ function ajaxFunction(){
 	}
 	if (ajaxRequest.readyState == 4 || ajaxRequest.readyState == 0) {
 		var str = escape(document.getElementById('topSearchBar').value);
-		ajaxRequest.open("GET", 'Autocompletion?search=' + str, true);
+		ajaxRequest.open("GET", '/fabflix/Autocompletion?search=' + str, true);
 		ajaxRequest.onreadystatechange = handleSearchSuggest; 
-		ajaxRequest.send(null);
 	}
 	
 	function handleSearchSuggest() {
@@ -33,6 +32,14 @@ function ajaxFunction(){
 			var ss = document.getElementById('suggestions')
 			ss.innerHTML = '';
 			var str = ajaxRequest.responseText.split("\n");
+			if( str.length == 1)
+			{
+				document.getElementById("suggestions").style.display='none';
+			}
+			else
+			{
+				document.getElementById("suggestions").style.display='block';
+			}
 			for(i=0; i < str.length - 1; i++) {
 				//Build our element string.  This is cleaner using the DOM, but
 				//IE doesn't support dynamically added attributes.
@@ -45,7 +52,6 @@ function ajaxFunction(){
 		}
 	}
 	
-	ajaxRequest.open("GET", "Autocompletion", true);
 	ajaxRequest.send(null); 
 }
 
@@ -61,5 +67,7 @@ function suggestOut(div_value) {
 //Click function
 function setSearch(value) {
 	document.getElementById('topSearchBar').value = value;
-	document.getElementById('search_suggest').innerHTML = '';
+	document.getElementById('suggestions').innerHTML = '';
+	document.getElementById("suggestions").style.display='none';
+	
 }

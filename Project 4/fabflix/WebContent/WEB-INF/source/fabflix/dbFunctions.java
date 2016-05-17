@@ -482,8 +482,8 @@ public class dbFunctions
 
 	public LinkedHashMap<Integer, Movie> search_movies(SearchParameters curSearch) throws Exception {
 		StringBuilder query = new StringBuilder("SELECT DISTINCT movies.id,title,year,director,banner_url,trailer FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id "
-				+ "INNER JOIN movies ON movies.id = stars_in_movies.movies_id "
-				+ "INNER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
+				+ "LEFT OUTER JOIN movies ON movies.id = stars_in_movies.movies_id "
+				+ "LEFT OUTER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
 
 		build_query(query, curSearch);
 
@@ -575,11 +575,45 @@ public class dbFunctions
 		
 	}
 	
-	public List<String> getTtiles(String search)
+	public List<String> getTtiles(String search) throws SQLException
 	{
+		if(search == null || "".equals(search))
+			return new ArrayList<String>();
+		
 		ArrayList<String> tokens = new ArrayList<String>(Arrays.asList(search.split(" ")));
-		String query = "SELECT title FROM movies WHERE title LIKE ";
-		return null;
+		String query = "SELECT DISTINCT title FROM movies WHERE ";
+		
+		int i = tokens.size();
+		while(i --> 0)
+		{
+			if(i > 0)
+				query += "title LIKE ? AND ";
+			else
+				query += "title LIKE ? LIMIT 10;";
+		}
+		PreparedStatement ps = connection.prepareStatement( query );
+		
+		while( ++i < tokens.size())
+		{
+			ps.setString(i+1, "%" + tokens.get(i) + "%");
+		}
+		
+		ResultSet rs = ps.executeQuery();
+		List<String> output = new ArrayList<String>();
+		while(rs.next())
+		{
+			output.add(rs.getString(1));
+		}
+		if(rs != null)
+		{
+			rs.close();
+		}
+		if(ps!= null)
+		{
+			ps.close();
+		}
+		
+		return output;
 		
 	}
 }
