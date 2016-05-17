@@ -121,7 +121,11 @@
 		if(metaData != null)
 			{
 		%>
+<<<<<<< HEAD
 		<h3>Databse Metadata</h3>
+=======
+		<h3>Database Metadata</h3>
+>>>>>>> 38470b03ffecaccfc12e777a0e955e10c9af1d1c
 		<%
 		for(String tableName : metaData.keySet())
 		{
