@@ -194,12 +194,20 @@
     <servlet-name>insertmovie</servlet-name>
     <url-pattern>/_dashboard/insertmovie</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <servlet-name>Autocompletion</servlet-name>
     <servlet-class>fabflix.Autocompletion</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Autocompletion</servlet-name>
     <url-pattern>/Autocompletion</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>PopupWindow</servlet-name>
+    <servlet-class>fabflix.PopupWindow</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PopupWindow</servlet-name>
+    <url-pattern>/PopupWindow</url-pattern>
   </servlet-mapping>
 </web-app>

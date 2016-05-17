@@ -612,8 +612,6 @@ public class dbFunctions
 		{
 			ps.close();
 		}
-		
-		return output;
-		
+		return output;	
 	}
 }

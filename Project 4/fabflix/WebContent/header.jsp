@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="fabflix.*, java.util.*, java.text.*"%>
 <%
@@ -45,7 +46,7 @@
 
 <div class="search_bar_area" style="float: right">
 <form name="search_bar_form" action="run_search" method="get">
-	Search:<input id="topSearchBar" type="text"  onkeyup="ajaxFunction();" autocomplete="off" name="title"></input>
+	Search:<input id="topSearchBar" type="text"  onkeyup="getSuggests();" autocomplete="off" name="title"></input>
 	<input type="submit" name="submit"	value="Search">
 	 <div id="suggestions" class="suggestions">
 	</div><!--suggestions-->

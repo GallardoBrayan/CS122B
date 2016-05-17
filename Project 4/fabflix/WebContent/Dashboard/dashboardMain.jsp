@@ -101,6 +101,7 @@
 				<td>&nbsp;</td>
 			</tr>
 			<%
+				@SuppressWarnings("unchecked") 
 				Map<String,Map<String,String>> metaData = (Map<String,Map<String,String>> )session.getAttribute("metaData");
 			if(metaData == null)
 			{
