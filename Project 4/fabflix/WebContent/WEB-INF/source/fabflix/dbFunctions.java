@@ -482,14 +482,11 @@ public class dbFunctions
 	}
 
 	public LinkedHashMap<Integer, Movie> search_movies(SearchParameters curSearch) throws Exception {
-		StringBuilder query = new StringBuilder("SELECT DISTINCT movies.id,title,year,director,banner_url,trailer FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id "
-
-				+ "LEFT OUTER JOIN movies ON movies.id = stars_in_movies.movies_id "
-				+ "LEFT OUTER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
-
-
+		StringBuilder query = new StringBuilder("SELECT DISTINCT movies.id,title,year,director,banner_url,trailer "+""
+				+ "FROM movies LEFT OUTER JOIN stars_in_movies ON movies.id = stars_in_movies.movies_id "
+				+ "LEFT OUTER JOIN  stars ON stars.id = stars_in_movies.star_id "
+				+ " LEFT OUTER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
 		build_query(query, curSearch);
-
 		LinkedHashMap<Integer, Movie> movie_list = new LinkedHashMap<Integer, Movie>();
 
 		PreparedStatement ps = connection.prepareStatement(query.toString());
