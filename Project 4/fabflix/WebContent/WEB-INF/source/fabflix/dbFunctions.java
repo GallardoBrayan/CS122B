@@ -3,17 +3,12 @@ package fabflix;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-<<<<<<< HEAD
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-=======
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
->>>>>>> 38470b03ffecaccfc12e777a0e955e10c9af1d1c
 import java.util.Map;
 
 public class dbFunctions 
@@ -488,13 +483,10 @@ public class dbFunctions
 
 	public LinkedHashMap<Integer, Movie> search_movies(SearchParameters curSearch) throws Exception {
 		StringBuilder query = new StringBuilder("SELECT DISTINCT movies.id,title,year,director,banner_url,trailer FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id "
-<<<<<<< HEAD
-				+ "INNER JOIN movies ON movies.id = stars_in_movies.movies_id "
-				+ "INNER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
-=======
+
 				+ "LEFT OUTER JOIN movies ON movies.id = stars_in_movies.movies_id "
 				+ "LEFT OUTER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
->>>>>>> 38470b03ffecaccfc12e777a0e955e10c9af1d1c
+
 
 		build_query(query, curSearch);
 
@@ -585,9 +577,7 @@ public class dbFunctions
 		return out;
 		
 	}
-<<<<<<< HEAD
-=======
-	
+
 	public List<String> getTtiles(String search) throws SQLException
 	{
 		if(search == null || "".equals(search))
@@ -629,5 +619,4 @@ public class dbFunctions
 		return output;
 		
 	}
->>>>>>> 38470b03ffecaccfc12e777a0e955e10c9af1d1c
 }

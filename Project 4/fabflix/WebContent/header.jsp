@@ -4,22 +4,16 @@
 	dbFunctions dbConnection = new dbFunctions();
 	dbConnection.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
 %>
-<<<<<<< HEAD
-=======
+
 
 <script type="text/javascript" src="js/ajaxStuff.js"></script>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-
->>>>>>> 38470b03ffecaccfc12e777a0e955e10c9af1d1c
 <div class="logo_area">
 	<div style="float: left">
 
 		<a href="MainPage"><img src="resources/logo.png" height="42"
-<<<<<<< HEAD
-			width="42" alt=""> Fabflix</a> <a href="search">Search</a> <a
-=======
 			width="42" alt=""> Fabflix</a> <a href="search">Advanced Search</a> <a
->>>>>>> 38470b03ffecaccfc12e777a0e955e10c9af1d1c
+
 			href="Browse">Browse</a>
 	</div>
 	<div style="float: right">
@@ -46,8 +40,7 @@
 
 	</div>
 </div>
-<<<<<<< HEAD
-=======
+
 <br>
 
 <div class="search_bar_area" style="float: right">
@@ -58,7 +51,6 @@
 	</div><!--suggestions-->
 </form>
 </div>
->>>>>>> 38470b03ffecaccfc12e777a0e955e10c9af1d1c
 
 <div style="clear: both;"></div>
 <hr>
