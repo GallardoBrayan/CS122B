@@ -44,7 +44,6 @@ public class Autocompletion extends HttpServlet {
 	    
 	    for(String title:tiles )
 	    {
-	    
 	    	out.println(title +"\n");
 	    }
 	    conn.close();

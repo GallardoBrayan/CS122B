@@ -104,18 +104,26 @@ function popUpDetails(ctrl){
 			var ss = document.getElementById('movie_pop_up' + ctrl)
 			ss.innerHTML = '';
 			var str = ajaxRequest.responseText;
-			if( str.length == "")
-			{
-				document.getElementById("movie_pop_up" + ctrl).classList.add('show');
-			}
-			else
-			{
-				document.getElementById("movie_pop_up" + ctrl).classList.add('show');
-			}
-
-				ss.innerHTML += str;
+			ss.classList.add('show');
+			ss.innerHTML += str;
 		}
 	}
 	
 	ajaxRequest.send(null); 
+	event.stopPropagation();
+}
+
+//Mouse out function
+function popOutOff(div_value) {
+	document.getElementById("movie_pop_up" + div_value).classList.remove('show');
+	event.stopPropagation();
+}
+
+//Mouse out function
+function popOutOffAll() {
+	var ss =	document.getElementsByClassName("show");
+	for( i =0; i < ss.length; i++) 
+	{
+		ss[i].classList.remove('show');
+	}
 }

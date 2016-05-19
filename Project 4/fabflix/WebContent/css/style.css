@@ -33,14 +33,29 @@ body {
 	
 .movie_pop_up{
     border: 1px solid black;
-    background-color: #FFFFFF;
+    background-color: #ff8080;
     position: absolute; 
     z-index: 100;
     display: none;
+}
+.movie_pop_up_rc{
+	border: 1px solid black;
 }
 
 .show
 {
 	display: block;
 }
+
+#form_div 
+{
+	text-align: center;
+}
 	
+.movie_table
+{
+	text-align:center;
+	margin-left:auto; 
+    margin-right:auto;
+    border: 2px solid black;
+}

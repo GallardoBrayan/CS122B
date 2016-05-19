@@ -93,6 +93,7 @@
 				<th><a href="run_search?sort_type=title">Title</a></th>
 				<th>Director</th>
 				<th>Genres</th>
+				<th>Cart</th>
 			</tr>
 
 		<%
@@ -107,9 +108,12 @@
 		%>
 				<tr>
 					<td><%=id%></td>
-					<td><a href="getMovie?movieid=<%=id%>"
-						onmouseover="popUpDetails(<%=id%>);"><%=movie.getTitle()%></a>
-						<div id="movie_pop_up<%=id%>" class="movie_pop_up"></div></td>
+					<td>
+						<div id="movie_pop_up_area<%=id%>"  onmouseout="popOutOff(<%=id%>);" >
+							<a href="getMovie?movieid=<%=id%>" onmouseover="popUpDetails(<%=id%>);"><%=movie.getTitle()%></a>
+								<div id="movie_pop_up<%=id%>" class="movie_pop_up"  onmouseout="popOutOff(<%=id%>);" ></div>
+						</div>
+					</td>
 					<td><%=movie.getDirector()%></td>
 					<td>
 						<%
@@ -124,6 +128,7 @@
 					</td>
 					<td><a href="CartServlet?movie_id=<%=id%>">Add To Cart</a></td>
 				</tr>
+
 		<%
 			}
 		%>
