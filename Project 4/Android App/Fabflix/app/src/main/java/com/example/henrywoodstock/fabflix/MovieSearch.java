@@ -57,7 +57,7 @@ public class MovieSearch extends AppCompatActivity {
             JSONObject json = null;
             try {
                 String query = URLEncoder.encode(mTitle, "utf-8");
-                URL url = new URL("http://shroompc.shaunmcthomas.me:8080/fabflix/AndroidMovieSearch?title="+query);
+                URL url = new URL("http://fabflix.xyz:8080/fabflix2//AndroidMovieSearch?title="+query);
                 // Simulate network access.
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");

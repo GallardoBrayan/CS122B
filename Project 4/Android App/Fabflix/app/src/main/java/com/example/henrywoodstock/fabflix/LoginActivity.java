@@ -317,7 +317,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
 
-                URL url = new URL("http://shroompc.shaunmcthomas.me:8080/fabflix/AndroidLogin?email="+mEmail+"&pass="+mPassword);
+                URL url = new URL("http://fabflix.xyz:8080/fabflix2/AndroidLogin?email="+mEmail+"&pass="+mPassword);
                 // Simulate network access.
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");

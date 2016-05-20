@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         try {
 
 
-            URL url = new URL("http://192.168.56.101:8080/fabflix/AndroidLogin");
+            URL url = new URL("http://fabflix.xyz:8080/fabflix2/AndroidLogin");
             new LoginRequest().execute(url);
 
         } catch (Exception e) {
