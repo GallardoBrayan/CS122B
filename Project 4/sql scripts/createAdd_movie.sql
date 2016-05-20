@@ -69,4 +69,4 @@ BEGIN
 	END;
     SET responseMsg = @responseMsg;
 END //
-DELIMITER ;
+DELIMITER ;DROP SCHEMA IF EXISTS moviedb;
