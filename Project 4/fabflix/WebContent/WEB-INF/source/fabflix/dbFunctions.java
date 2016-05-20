@@ -586,13 +586,13 @@ public class dbFunctions
 			return new ArrayList<String>();
 		
 		ArrayList<String> tokens = new ArrayList<String>(Arrays.asList(search.split(" ")));
-		String query = "SELECT DISTINCT title FROM movies WHERE MATCH(title) AGAINST( ? WITH QUERY EXPANSION ) LIMIT ?; ";
+		String query = "SELECT DISTINCT title FROM movies WHERE MATCH(title) AGAINST( ? IN BOOLEAN MODE ) LIMIT ?; ";
 		
 		int i = tokens.size();
 		String cvTokens = "";
 		while(i --> 0)
 		{
-			cvTokens += "+" + tokens.get(i);
+			cvTokens += "+" + tokens.get(i) + "*";
 			if(i > 0)
 				cvTokens += " ";
 			
