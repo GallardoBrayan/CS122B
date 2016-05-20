@@ -30,11 +30,11 @@ public class Autocompletion extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		dbFunctions conn = new dbFunctions();
-		List<String> tiles = new ArrayList<String>();
+		List<String> titles = new ArrayList<String>();
 		try {
 			conn.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
 			String fromBar = (String)request.getParameter("search");
-			tiles =  conn.getTtiles(fromBar);
+			titles =  conn.getTtiles(fromBar);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,10 +42,9 @@ public class Autocompletion extends HttpServlet {
 	    response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
 	    
-	    for(String title:tiles )
+	    for(String title:titles )
 	    {
-	    
-	    	out.println(title +"\n");
+	    	out.println(title + "\n");
 	    }
 	    conn.close();
 	}

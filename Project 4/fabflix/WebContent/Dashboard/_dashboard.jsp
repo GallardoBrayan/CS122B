@@ -4,11 +4,6 @@
  java.io.IOException,
  javax.servlet.http.*,
  javax.servlet.*"%>
-<style type="text/css">
-#form_div {
-	text-align: center;
-}
-</style>
 <html>
 <head>
 <script src='https://www.google.com/recaptcha/api.js'></script>

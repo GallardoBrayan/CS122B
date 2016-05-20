@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	pageEncoding="ISO-8859-1" import="java.awt.Image,java.net.URL,javax.swing.ImageIcon"%>
+<!DOCTYPE html">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -28,31 +28,48 @@
 			}
 			if (movieToDispay != null) {
 	%>
-	<table border="2" align="center">
-		<tr>
-			<td rowspan="7"><img src="<%=movieToDispay.getBanner_url()%>"
+	<table class="movie_table" >
+		<tr class="movie_table">
+		<td class="movie_table" rowspan="7"><img src="<%
+		if(movieToDispay.getBanner_url() != null )
+	    {
+		    try{
+		      Image image = new ImageIcon(new URL(movieToDispay.getBanner_url())).getImage();
+		      if(image.getWidth(null) != -1)
+		      {
+		    	  out.print(movieToDispay.getBanner_url()) ;
+		      }
+		    }catch(Exception e)
+		    {
+		    	e.printStackTrace();
+		    }
+	    }else
+	    {
+	    	out.print("resources/letters/" + movieToDispay.getTitle().toUpperCase().charAt(0) +".jpg");
+	    }
+	    %>"
 				alt=""></td>
 		</tr>
 
-		<tr>
-			<td>Title:</td>
-			<td><%=movieToDispay.getTitle()%></td>
+		<tr class="movie_table">
+			<td class="movie_table">Title:</td>
+			<td class="movie_table"><%=movieToDispay.getTitle()%></td>
 		</tr>
-		<tr>
-			<td>Year:</td>
-			<td><%=movieToDispay.getYear()%></td>
+		<tr class="movie_table">
+			<td class="movie_table">Year:</td>
+			<td class="movie_table"><%=movieToDispay.getYear()%></td>
 		</tr>
-		<tr>
-			<td>Director:</td>
-			<td><%=movieToDispay.getDirector()%></td>
+		<tr class="movie_table">
+			<td class="movie_table">Director:</td>
+			<td class="movie_table"><%=movieToDispay.getDirector()%></td>
 		</tr>
-		<tr>
-			<td>ID:</td>
-			<td><%=movieid%></td>
+		<tr class="movie_table">
+			<td class="movie_table">ID:</td>
+			<td class="movie_table"><%=movieid%></td>
 		</tr>
-		<tr>
-			<td>Stars:</td>
-			<td>
+		<tr class="movie_table">
+			<td class="movie_table">Stars:</td>
+			<td class="movie_table">
 				<%
 					int i = 1;
 							for (String star : movieToDispay.getStars()) {
@@ -67,9 +84,9 @@
 				%>
 			</td>
 		</tr>
-		<tr>
-			<td>Genre:</td>
-			<td>
+		<tr class="movie_table">
+			<td class="movie_table">Genre:</td>
+			<td class="movie_table">
 				<%
 					String outputString = "";
 							for (String Genre : movieToDispay.getGenres()) {
@@ -81,10 +98,10 @@
 				%>
 			</td>
 		</tr>
-		<tr>
-			<td>Price:</td>
-			<td>$<%=dbConnection.getMoviePrice(movieid)%></td>
-			<td><a href="CartServlet?movie_id=<%=movieid%>">Add To Cart</a></td>
+		<tr class="movie_table">
+			<td class="movie_table">Price:</td>
+			<td class="movie_table">$<%=dbConnection.getMoviePrice(movieid)%></td>
+			<td class="movie_table"><a href="CartServlet?movie_id=<%=movieid%>">Add To Cart</a></td>
 		</tr>
 
 	</table>

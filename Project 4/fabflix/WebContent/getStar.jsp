@@ -21,7 +21,7 @@
 		}
 
 		if (movieid != null && full_name != null) {
-			String first_name = full_name.substring(0, full_name.indexOf(" "));
+			String first_name = full_name.substring(0, full_name.indexOf(" ")> 0 ?full_name.indexOf(" "):0);
 			String last_name = full_name.substring(full_name.indexOf(" ") + 1);
 
 			Star star = dbConnection.getStarFromMovieIdAndName(movieid, first_name, last_name);
