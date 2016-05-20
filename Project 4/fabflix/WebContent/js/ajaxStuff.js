@@ -23,7 +23,7 @@ function getSuggests(){
 	}
 	if (ajaxRequest.readyState == 4 || ajaxRequest.readyState == 0) {
 		var str = escape(document.getElementById('topSearchBar').value);
-		ajaxRequest.open("GET", '/fabflix/Autocompletion?search=' + str, true);
+		ajaxRequest.open("GET", 'Autocompletion?search=' + str, true);
 		ajaxRequest.onreadystatechange = handleSearchSuggest; 
 	}
 	
@@ -95,7 +95,7 @@ function popUpDetails(ctrl){
 	var str;
 	if (ajaxRequest.readyState == 4 || ajaxRequest.readyState == 0) {
 		str = escape(ctrl);
-		ajaxRequest.open("GET", '/fabflix/PopupWindow?movie_id=' + str, true);
+		ajaxRequest.open("GET", 'PopupWindow?movie_id=' + str, true);
 		ajaxRequest.onreadystatechange = handlePopupWindow; 
 	}
 	
