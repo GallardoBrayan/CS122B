@@ -250,6 +250,13 @@ public class dbFunctions
 		return logged_in_user;
 	}
 	
+	public boolean auth_creditionals(String email, String pass) throws SQLException
+	{
+		User u = loginToFabFlix(email, pass);
+		if(u != null)
+			return true;
+		return false;
+	}
 	public User employeeLogin(String userName, String password) throws SQLException {
 		User logged_in_user = null;
 		if (userName == null || password == null)
@@ -270,7 +277,7 @@ public class dbFunctions
 	public ArrayList<Movie> getmovieByTilte(int start, int limit, String letterOfTitle) throws SQLException {
 		String statementString = "SELECT * FROM movies";
 		if (!"".equals(letterOfTitle)) {
-			statementString += " WHERE  title LIKE \'" + letterOfTitle + "%\' ";
+			statementString += " WHERE  title LIKE \'%" + letterOfTitle + "%\' ";
 		}
 		statementString += " ORDER BY title ";
 		if (limit > 0) {
@@ -297,6 +304,8 @@ public class dbFunctions
 		return output;
 	}
 
+	
+	
 	private Boolean add_constraint(StringBuilder query, String column, String cond_operator, boolean is_first) {
 		if (!is_first) {
 			query.append(" " + cond_operator + " ");
@@ -482,11 +491,14 @@ public class dbFunctions
 	}
 
 	public LinkedHashMap<Integer, Movie> search_movies(SearchParameters curSearch) throws Exception {
-		StringBuilder query = new StringBuilder("SELECT DISTINCT movies.id,title,year,director,banner_url,trailer "+""
-				+ "FROM movies LEFT OUTER JOIN stars_in_movies ON movies.id = stars_in_movies.movies_id "
-				+ "LEFT OUTER JOIN  stars ON stars.id = stars_in_movies.star_id "
-				+ " LEFT OUTER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
+		StringBuilder query = new StringBuilder("SELECT DISTINCT movies.id,title,year,director,banner_url,trailer FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id "
+
+				+ "LEFT OUTER JOIN movies ON movies.id = stars_in_movies.movies_id "
+				+ "LEFT OUTER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
+
+
 		build_query(query, curSearch);
+
 		LinkedHashMap<Integer, Movie> movie_list = new LinkedHashMap<Integer, Movie>();
 
 		PreparedStatement ps = connection.prepareStatement(query.toString());
@@ -577,29 +589,26 @@ public class dbFunctions
 
 	public List<String> getTtiles(String search) throws SQLException
 	{
-		return getTtiles(search, 10);
-		
-	}
-	public List<String> getTtiles(String search, int numResults) throws SQLException
-	{
 		if(search == null || "".equals(search))
 			return new ArrayList<String>();
 		
 		ArrayList<String> tokens = new ArrayList<String>(Arrays.asList(search.split(" ")));
-		String query = "SELECT DISTINCT title FROM movies WHERE MATCH(title) AGAINST( ? WITH QUERY EXPANSION ) LIMIT ?; ";
+		String query = "SELECT DISTINCT title FROM movies WHERE ";
 		
 		int i = tokens.size();
-		String cvTokens = "";
 		while(i --> 0)
 		{
-			cvTokens += "+" + tokens.get(i);
 			if(i > 0)
-				cvTokens += " ";
-			
+				query += "title LIKE ? AND ";
+			else
+				query += "title LIKE ? LIMIT 10;";
 		}
 		PreparedStatement ps = connection.prepareStatement( query );
-		ps.setString(1,cvTokens);
-		ps.setInt(2,numResults);
+		
+		while( ++i < tokens.size())
+		{
+			ps.setString(i+1, "%" + tokens.get(i) + "%");
+		}
 		
 		ResultSet rs = ps.executeQuery();
 		List<String> output = new ArrayList<String>();
@@ -615,6 +624,8 @@ public class dbFunctions
 		{
 			ps.close();
 		}
-		return output;	
+		
+		return output;
+		
 	}
 }
