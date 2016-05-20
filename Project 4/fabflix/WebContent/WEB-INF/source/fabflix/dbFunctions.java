@@ -586,37 +586,31 @@ public class dbFunctions
 		return out;
 		
 	}
-
 	public List<String> getTtiles(String search) throws SQLException
+	{
+		return getTtiles(search, 10);
+	}
+
+	public List<String> getTtiles(String search, int numReturn) throws SQLException
 	{
 		if(search == null || "".equals(search))
 			return new ArrayList<String>();
 		
 		ArrayList<String> tokens = new ArrayList<String>(Arrays.asList(search.split(" ")));
-<<<<<<< HEAD
-		String query = "SELECT DISTINCT title FROM movies WHERE ";
-=======
+
 		String query = "SELECT DISTINCT title FROM movies WHERE MATCH(title) AGAINST( ? IN BOOLEAN MODE ) LIMIT ?; ";
->>>>>>> 4daeb83f21d2a10b724ba44bddf89eac9e699429
+
 		
 		int i = tokens.size();
+		String cvTokens ="";
 		while(i --> 0)
 		{
-<<<<<<< HEAD
-=======
-			cvTokens += "+" + tokens.get(i) + "*";
->>>>>>> 4daeb83f21d2a10b724ba44bddf89eac9e699429
-			if(i > 0)
-				query += "title LIKE ? AND ";
-			else
-				query += "title LIKE ? LIMIT 10;";
+			cvTokens += "+" + tokens.get(i) + "* ";
 		}
 		PreparedStatement ps = connection.prepareStatement( query );
 		
-		while( ++i < tokens.size())
-		{
-			ps.setString(i+1, "%" + tokens.get(i) + "%");
-		}
+		ps.setString(1, cvTokens);
+		ps.setInt(2, numReturn);
 		
 		ResultSet rs = ps.executeQuery();
 		List<String> output = new ArrayList<String>();
