@@ -593,19 +593,15 @@ public class dbFunctions
 			return new ArrayList<String>();
 		
 		ArrayList<String> tokens = new ArrayList<String>(Arrays.asList(search.split(" ")));
-<<<<<<< HEAD
-		String query = "SELECT DISTINCT title FROM movies WHERE ";
-=======
+
 		String query = "SELECT DISTINCT title FROM movies WHERE MATCH(title) AGAINST( ? IN BOOLEAN MODE ) LIMIT ?; ";
->>>>>>> 4daeb83f21d2a10b724ba44bddf89eac9e699429
+
 		
 		int i = tokens.size();
 		while(i --> 0)
 		{
-<<<<<<< HEAD
-=======
 			cvTokens += "+" + tokens.get(i) + "*";
->>>>>>> 4daeb83f21d2a10b724ba44bddf89eac9e699429
+
 			if(i > 0)
 				query += "title LIKE ? AND ";
 			else
