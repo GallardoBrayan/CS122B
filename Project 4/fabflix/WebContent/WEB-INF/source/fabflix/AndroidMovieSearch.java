@@ -20,14 +20,15 @@ public class AndroidMovieSearch extends HttpServlet
 		SearchParameters curSearch = new SearchParameters();
 
 		JSONObject json = new JSONObject();
-		ArrayList<Movie> search_res = movie_search.getmovieByTilte(0, 1000, request.getParameter("title"));
+		//ArrayList<Movie> search_res = movie_search.getmovieByTilte(0, 1000, request.getParameter("title"));
 		Integer counter= 0;
+		List<String> search_res = movie_search.getTtiles(request.getParameter("title"), 1000);
 		String key = null;
-		for(Movie mov: search_res)
+		for(String mov: search_res)
 		{
 			
 			key = "movie" + counter.toString();
-			json.put(key, mov.getTitle());
+			json.put(key, mov);
 			++counter;
 		}
 		response.setContentType("application/json");

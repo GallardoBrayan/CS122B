@@ -5,15 +5,6 @@
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>HTTPSOnly</web-resource-name>
-      <url-pattern>/*</url-pattern>
-    </web-resource-collection>
-    <user-data-constraint>
-      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-    </user-data-constraint>
-  </security-constraint>
   <servlet>
     <description>Browse The Fabflix Collection</description>
     <display-name>Browse</display-name>
@@ -176,6 +167,7 @@
     <servlet-name>insertstar</servlet-name>
     <url-pattern>/_dashboard/insertstar</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>DashboardFunctions</servlet-name>
     <servlet-class>fabflix.DashboardFunctions</servlet-class>
@@ -202,7 +194,26 @@
     <servlet-name>Autocompletion</servlet-name>
     <url-pattern>/Autocompletion</url-pattern>
   </servlet-mapping>
+
+  
   <servlet>
+    <servlet-name>AndroidLogin</servlet-name>
+    <servlet-class>fabflix.AndroidLogin</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidLogin</servlet-name>
+    <url-pattern>/AndroidLogin</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AndroidMovieSearch</servlet-name>
+    <servlet-class>fabflix.AndroidMovieSearch</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidMovieSearch</servlet-name>
+    <url-pattern>/AndroidMovieSearch</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  
     <servlet-name>PopupWindow</servlet-name>
     <servlet-class>fabflix.PopupWindow</servlet-class>
   </servlet>
