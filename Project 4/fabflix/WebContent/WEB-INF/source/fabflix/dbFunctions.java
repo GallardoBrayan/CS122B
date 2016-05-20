@@ -593,6 +593,7 @@ public class dbFunctions
 
 	public List<String> getTtiles(String search, int numReturn) throws SQLException
 	{
+		search = search.trim();
 		if(search == null || "".equals(search))
 			return new ArrayList<String>();
 		
@@ -605,7 +606,7 @@ public class dbFunctions
 		String cvTokens ="";
 		while(i --> 0)
 		{
-			cvTokens += "+" + tokens.get(i) + "*";
+			cvTokens += "+" + tokens.get(i).trim() + "*";
 		}
 		PreparedStatement ps = connection.prepareStatement( query );
 		

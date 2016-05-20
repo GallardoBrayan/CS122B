@@ -2,6 +2,13 @@ DROP SCHEMA IF EXISTS moviedb;
 CREATE SCHEMA moviedb;
 USE moviedb;
 
+# Define a correctly formatted user stopword table
+CREATE  TABLE IF NOT EXISTS user_stopword(
+	value varchar(30)
+    ) engine = innodb;
+# Point to this stopword table with "db name/table name"
+SET GLOBAL innodb_ft_server_stopword_table = "moviedb/user_stopword";
+
 CREATE TABLE IF NOT EXISTS movies(
 	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
     title VARCHAR(100) NOT NULL,
