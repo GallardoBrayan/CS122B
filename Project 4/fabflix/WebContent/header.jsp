@@ -5,6 +5,7 @@
 	dbFunctions dbConnection = new dbFunctions();
 	dbConnection.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
 %>
+<base href="<%=request.getContextPath()%>/">
 
 
 <script type="text/javascript" src="js/ajaxStuff.js"></script>

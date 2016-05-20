@@ -586,8 +586,12 @@ public class dbFunctions
 		return out;
 		
 	}
-
 	public List<String> getTtiles(String search) throws SQLException
+	{
+		return getTtiles(search, 10);
+	}
+
+	public List<String> getTtiles(String search, int numReturn) throws SQLException
 	{
 		if(search == null || "".equals(search))
 			return new ArrayList<String>();
@@ -598,21 +602,15 @@ public class dbFunctions
 
 		
 		int i = tokens.size();
+		String cvTokens ="";
 		while(i --> 0)
 		{
 			cvTokens += "+" + tokens.get(i) + "*";
-
-			if(i > 0)
-				query += "title LIKE ? AND ";
-			else
-				query += "title LIKE ? LIMIT 10;";
 		}
 		PreparedStatement ps = connection.prepareStatement( query );
 		
-		while( ++i < tokens.size())
-		{
-			ps.setString(i+1, "%" + tokens.get(i) + "%");
-		}
+		ps.setString(1, cvTokens);
+		ps.setInt(2, numReturn);
 		
 		ResultSet rs = ps.executeQuery();
 		List<String> output = new ArrayList<String>();
