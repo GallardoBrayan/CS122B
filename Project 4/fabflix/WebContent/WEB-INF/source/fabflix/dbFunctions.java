@@ -11,6 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 public class dbFunctions 
 {
 	private Connection connection;
@@ -27,8 +31,10 @@ public class dbFunctions
 	 */
 	public void make_connection(String path, String user_name, String pass) throws Exception 
 	{
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		connection = DriverManager.getConnection(path, user_name, pass);
+		Context initContext = new InitialContext();
+		Context envContext = (Context)initContext.lookup("java:comp/env");
+		DataSource ds = (DataSource)envContext.lookup("jdbc/MovieDB");
+		connection = ds.getConnection();
 	}
 
 	public Map<String,Map<String,String>> get_metadata() throws Exception 
