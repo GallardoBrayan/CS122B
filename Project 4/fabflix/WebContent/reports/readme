@@ -1,3 +1,9 @@
+Public IP Addresses:
+Original Instance - 54.193.44.119
+Master Instance - 54.153.27.95
+Slave Instance - 54.183.177.128
+
+
 All source has been compiled using Eclipse and is ready for deployment. However, if it needs to be recompiled, It could also be compiled using the following commands :
 
 cd fabflix
@@ -6,5 +12,4 @@ javac ./WEB-INF/source/fabflix/*.java -d WEB-INF\classes -cp ".;WEB-INF/lib/*;WE
 jar -cvf ../fabflix.war *
 
 This will compile the classes then create a war for deployment. Please replace "D:\Program Files (x86)\tomcat" with the directory of a local tomcat installation. To deploy this, either place this file into the  var/lib/tomcat7/webapps/ folder or use the manager webapp.  If ran a linux machine replace the “;” with “:”
-
 
