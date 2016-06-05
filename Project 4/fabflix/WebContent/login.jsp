@@ -29,7 +29,7 @@
 		} else if ("reCAPTHAFailed".equals(error)) {
 			session.setAttribute("error", null);
 	%>
-	<h3>You must verify that you are not a robot to login...</h3>
+	<h3>You must verify that you are not a robot to login..</h3>
 	<%
 		}
 	%>

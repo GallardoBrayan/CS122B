@@ -11,13 +11,14 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class AndroidMovieSearch extends HttpServlet 
 {
-  @SuppressWarnings("unchecked")
-public void doGet(HttpServletRequest request, HttpServletResponse response)
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
     {
 	  dbFunctions movie_search = new dbFunctions();
 	  try {
 		movie_search.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
+		SearchParameters curSearch = new SearchParameters();
+
 		JSONObject json = new JSONObject();
 		//ArrayList<Movie> search_res = movie_search.getmovieByTilte(0, 1000, request.getParameter("title"));
 		Integer counter= 0;
