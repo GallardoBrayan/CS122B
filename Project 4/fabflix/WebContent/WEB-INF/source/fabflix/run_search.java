@@ -106,6 +106,6 @@ public class run_search extends HttpServlet
     	String fileName = "jMeterlog ";
     	if(request.getParameter("jmeter") != null)
     		fileName += request.getParameter("jmeter") + "  :\t";
-    	System.out.println(fileName + TJ + "," + TS );
+    	System.out.println("\n" + fileName + TJ + "," + TS + "\n" );
     }
 }
