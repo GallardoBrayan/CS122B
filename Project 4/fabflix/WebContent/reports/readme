@@ -13,3 +13,7 @@ jar -cvf ../fabflix.war *
 
 This will compile the classes then create a war for deployment. Please replace "D:\Program Files (x86)\tomcat" with the directory of a local tomcat installation. To deploy this, either place this file into the  var/lib/tomcat7/webapps/ folder or use the manager webapp.  If ran a linux machine replace the “;” with “:”
 
+To run the Python Script type the following into the command prompt (python 3.5):
+
+Python ScripttoParseLogs.py mylog.log mylogServer1.log mylogServer2.log
+
