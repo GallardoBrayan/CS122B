@@ -36,6 +36,12 @@ public class dbFunctions
 		DataSource ds = (DataSource)envContext.lookup("jdbc/MovieDB");
 		connection = ds.getConnection();
 	}
+	
+	public void make_connection_without_pooling(String path, String user_name, String pass) throws Exception 
+	{
+		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		connection = DriverManager.getConnection(path, user_name, pass);
+	}
 
 	public Map<String,Map<String,String>> get_metadata() throws Exception 
 	{
@@ -424,7 +430,6 @@ public class dbFunctions
 
 		
 	}
-
 	public HashSet<String> getStarFromMovieId(Integer id) throws SQLException 
 	{
 		String query = "select CONCAT(first_name, ' ', last_name) as name FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id"
@@ -488,7 +493,6 @@ public class dbFunctions
 
 	public LinkedHashMap<Integer, Movie> search_movies(SearchParameters curSearch) throws Exception {
 		StringBuilder query = new StringBuilder("SELECT DISTINCT movies.id,title,year,director,banner_url,trailer FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id "
-
 				+ "LEFT OUTER JOIN movies ON movies.id = stars_in_movies.movies_id "
 				+ "LEFT OUTER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
 
@@ -627,4 +631,29 @@ public class dbFunctions
 		return output;
 		
 	}
+	public LinkedHashMap<Integer, Movie> search_movies_without_PS(SearchParameters curSearch) throws Exception {
+		StringBuilder query = new StringBuilder("SELECT DISTINCT movies.id,title,year,director,banner_url,trailer FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id "
+				+ "LEFT OUTER JOIN movies ON movies.id = stars_in_movies.movies_id "
+				+ "LEFT OUTER JOIN genres_in_movies ON genres_in_movies.movies_id = movies.id WHERE ");
+
+		if (!"".equals(curSearch.getTitle())) {
+			query.append("title LIKE " +  "\'%" + curSearch.getTitle() +  "%\'");
+		}
+
+		// add ORDER BY, LIMIT, OFFSET
+		int offset = Integer.parseInt(curSearch.getMoviePerPage()) * Integer.parseInt(curSearch.getCurrentPage());
+		query.append(" ORDER BY " + curSearch.getSortType() + " " + (curSearch.getSortAccending() ? "ASC" : "DESC"));
+		query.append(" LIMIT " + curSearch.getMoviePerPage() + " OFFSET " + offset);
+
+		LinkedHashMap<Integer, Movie> movie_list = new LinkedHashMap<Integer, Movie>();
+
+		Statement ps = connection.createStatement();
+		
+		ResultSet rs = ps.executeQuery(query.toString());
+		populate_list(movie_list, rs);
+		rs.close();
+		ps.close();
+		return movie_list;
+	}
 }
+
