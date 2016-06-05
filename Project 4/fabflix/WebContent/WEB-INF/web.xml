@@ -223,7 +223,7 @@
   </servlet-mapping>
   
   <resource-ref>
-<description>Pooling Thing</description>
+<description>Pooling</description>
 <res-ref-name>jdbc/MovieDB</res-ref-name>
 <res-type>javax.sql.DataSource</res-type>
 <res-auth>Container</res-auth>

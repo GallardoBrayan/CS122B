@@ -1,0 +1,36 @@
+The first step in getting connection pooling to work with tomcat is to make the necessary additions in the 
+META_INF/context.xml file.  In this file, we define the JDNI/JDBC reource with the proper connection pooling
+attributes.  Here is the lines added to the file:
+
+ <Context docBase="fabflix" path="/fabflix" reloadable="true" source="org.eclipse.jst.jee.server:fabflix">
+
+        <Resource name="jdbc/MovieDB"
+        auth="Container"
+        type="javax.sql.DataSource"
+        username="root"
+        password="root"
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://localhost:3306/moviedb"
+         maxActive="15"
+         maxIdle="3"/>
+
+</Context>
+
+The next step was to update the web.xml file so that the application can use the resource.  In here we added the 
+resource ref tag to describe the resource we wanted to use.  Here is the lines added to the file:
+
+<resource-ref>
+	<description>Pooling</description>
+	<res-ref-name>jdbc/MovieDB</res-ref-name>
+	<res-type>javax.sql.DataSource</res-type>
+	<res-auth>Container</res-auth>
+</resource-ref>
+
+
+Once these changaes are made, our application is ready to start using connection pooling.  In our wrapper class for 
+connecting to our database, we made the changes to grab a connection through resource we defined instead of just 
+initaiting a new connection.
+
+
+For connection pooling to work with load balancing, each of the instances need to have their own set of connection pools
+for operation.
