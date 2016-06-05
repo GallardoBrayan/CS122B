@@ -424,17 +424,7 @@ public class dbFunctions
 
 		
 	}
-	
-	public void gim_batch_insert(String final_genres_in_movies_query) throws SQLException
-	{
-		connection.setAutoCommit(false);
-		Statement stmt = connection.createStatement();
-		stmt.executeUpdate(final_genres_in_movies_query);
-		connection.commit();
-		connection.setAutoCommit(true);
-		
-	}
-	
+
 	public HashSet<String> getStarFromMovieId(Integer id) throws SQLException 
 	{
 		String query = "select CONCAT(first_name, ' ', last_name) as name FROM stars INNER JOIN stars_in_movies ON stars.id = stars_in_movies.star_id"
