@@ -102,8 +102,22 @@
 					directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log."
 					suffix=".txt" />
 
-				<Context docBase="fabflix" path="/fabflix" reloadable="true"
-					source="org.eclipse.jst.jee.server:fabflix" />
+
+					
+        <Context docBase="fabflix" path="/fabflix" reloadable="true" source="org.eclipse.jst.jee.server:fabflix">
+
+        <Resource name="jdbc/MovieDB"
+        auth="Container"
+        type="javax.sql.DataSource"
+        username="root"
+        password="root"
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://localhost:3306/moviedb"
+         maxActive="15"
+         maxIdle="3"/>
+
+       </Context>
+					
 			</Host>
 		</Engine>
 	</Service>

@@ -11,6 +11,8 @@ public class run_search extends HttpServlet
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
     {
+	  	long startTime = System.nanoTime();
+	  	long TS =0, TJ =0;;
     	HttpSession sess = request.getSession();
     	SearchParameters curSearch = (SearchParameters) sess.getAttribute("curSearch");
 
@@ -65,13 +67,15 @@ public class run_search extends HttpServlet
 		}
     	
     	//If the user just changed a sorting, we can use the search critera that is already stored in session.
-	
+    	long startTime2 = System.nanoTime();
   		dbFunctions movie_actions = new dbFunctions();
+  		TJ += System.nanoTime() - startTime2;
   		
   		LinkedHashMap<Integer,Movie> movie_list = new LinkedHashMap<Integer,Movie>();
     		
     	try
     	{
+    		startTime2 = System.nanoTime();
     		movie_actions.make_connection("jdbc:mysql://localhost:3306/moviedb", "root", "root");
     		if( curSearch.getFromBrowse() && ! curSearch.getByTitle())
 	    	{
@@ -82,6 +86,8 @@ public class run_search extends HttpServlet
 	    		
 	    		movie_list = movie_actions.search_movies(curSearch);
 	    	}
+    		movie_actions.close();
+    		TJ += System.nanoTime() - startTime2;
     	}
     	catch(Exception e)
     	{
@@ -90,9 +96,14 @@ public class run_search extends HttpServlet
     	}
     	System.out.println("updating session");
     	sess.setAttribute("curSearch", curSearch);
-
     	sess.setAttribute("movie_list", movie_list);
-    	movie_actions.close();
+    	
     	response.sendRedirect("movie_list");
+    	TS += System.nanoTime() - startTime;
+    	
+    	FileWriter  logForTiming = new FileWriter ("JMeterFile.log", true);
+    	logForTiming.write(TJ + "," + TS + "\n" );
+    	logForTiming.close();
+    	
     }
 }

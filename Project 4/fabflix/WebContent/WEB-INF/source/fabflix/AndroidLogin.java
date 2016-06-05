@@ -3,15 +3,12 @@ package fabflix;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.net.ssl.HttpsURLConnection;
 import org.json.simple.*;
 
 @SuppressWarnings("serial")
 public class AndroidLogin extends HttpServlet 
 {
+	@SuppressWarnings("unchecked")
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 		      throws ServletException, IOException
 	  {
